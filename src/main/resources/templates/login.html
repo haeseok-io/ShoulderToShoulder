@@ -1,6 +1,54 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
 
+<th:block layout:fragment="css">
+<style>
+    .login { width: 400px; margin: 0 auto; margin-top: 150px; }
+    .login .loginTitle { text-align: center; }
+    .login .loginTitle h2 { font-size: 26px; font-weight: 700; color: #fff; }
+
+    .login .loginField { margin-top: 50px; }
+    .login .loginField .fieldWrap { margin-bottom: 30px; }
+    .login .loginField .fieldWrap .title { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; font-weight: 600; }
+    .login .loginField .fieldWrap .title a { color: #818CF8; }
+    .login .loginField .fieldWrap .title a:hover { color: #A5B4E0; }
+    .login .loginField .fieldWrap .field {}
+    .login .loginField .fieldWrap .field input { width: 100%; height: 40px; }
+</style>
+</th:block>
+
 <th:block layout:fragment="container">
-    <p class="text-3xl font-bold underline">로그인</p>
+<main id="main">
+    <div class="container">
+        <div class="login">
+            <div class="loginTitle">
+                <h2>함께 성장하는 어깨동무!</h2>
+            </div>
+            <div class="loginField">
+                <form action="">
+                    <div class="fieldWrap">
+                        <div class="title">
+                            <span>이메일주소</span>
+                        </div>
+                        <div class="field">
+                            <input type="text" name="email" tabindex="1">
+                        </div>
+                    </div>
+                    <div class="fieldWrap">
+                        <div class="title">
+                            <span>비밀번호</span>
+                            <a href="">비밀번호를 잊으셨나요?</a>
+                        </div>
+                        <div class="field">
+                            <input type="password" name="password" tabindex="2">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="loginOther">
+
+            </div>
+        </div>
+    </div>
+</main>
 </th:block>
 </html>
