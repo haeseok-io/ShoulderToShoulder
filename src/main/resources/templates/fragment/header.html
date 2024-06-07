@@ -1,9 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="header">
-    <header>
+    <header id="header">
         <div class="container">
             <div class="logo">
-                <a href="/">어깨동무</a>
+                <a href="/">
+                    <img src="/images/sts_logo.png" alt="">
+                </a>
+                <div class="version">
+                    <span class="badge text-bg-success">BETA</span>
+                </div>
             </div>
             <div class="gnb">
                 <ul>
