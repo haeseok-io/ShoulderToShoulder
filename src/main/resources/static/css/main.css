@@ -17,6 +17,11 @@ input[type='password'] { padding: 5px 10px; background: #1D2432; border: 1px sol
 input[type='text']:focus,
 input[type='password']:focus { border: 2px solid #6366F1; }
 
+/* # 버튼 색상 */
+.btn-main { background: #6366F1; color: #fff; }
+.btn-main:hover,
+.btn-main:focus { background: #818CF8; }
+
 /* # 벳지 색상 */
 .text-bg-main { background: #6366F1; color: #fff; }
 
