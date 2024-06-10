@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Mapper
-public interface Member {
+public interface MemberDAO {
     void addMember(MemberDTO memberDTO);
     MemberDTO readMember(Long no);
+    Boolean emailExist(String email);
+    Boolean nicknameExist(String nickname);
+
     void dropMember(Long no);
 
     default void addMemberWithDetail(MemberDTO memberDTO) {
