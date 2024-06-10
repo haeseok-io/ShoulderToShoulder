@@ -1,0 +1,241 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .register { width: 500px; margin: 0 auto; padding-top: 100px; }
+        .register .registerTitle {}
+        .register .registerTitle h2 { font-size: 22px; font-weight: 600; }
+        .register .registerTitle p { margin-top: 10px; font-size: 14px; color: #aaa; }
+
+        .register .registerField { margin-top: 50px; }
+        .register .registerField .fieldWrap { margin-top: 20px; }
+        .register .registerField .fieldWrap label { width: 100%; }
+        .register .registerField .fieldWrap label p { margin-bottom: 10px; font-size: 14px; font-weight: 600; }
+        .register .registerField .fieldWrap label input { width: 100%; height: 40px; }
+
+        .register .registerField .fieldWrap .message { margin-top: 5px; }
+        .register .registerField .fieldWrap[data-error=true] .message { color: #ff0000; }
+        .register .registerField .fieldWrap[data-error=false] .message { color: #198754; }
+
+        .register .registerField .fieldAction { margin-top: 50px; }
+    </style>
+</th:block>
+
+<th:block layout:fragment="js">
+    <script>
+        $(() => {
+            // 이메일 체크
+            $("input[name='email']").on("keyup", e => {
+                let _this = $(e.currentTarget);
+
+                // Check
+                if( !_this.val() ) {
+                    errorMessage(_this, "error", "이메일을 입력해주세요.");
+                } else {
+
+                    if( !isEmailValid(_this.val()) ) {
+                        errorMessage(_this, "error", "유효하지 않은 이메일 형식입니다.");
+                    } else {
+                        let emailExist = isEmailExist(_this.val());
+                        if( emailExist.type==='error' )  errorMessage(_this, "error", emailExist.message);
+                        else                            errorMessage(_this, "success", emailExist.message);
+                    }
+                }
+            });
+
+            // 비밀번호 체크
+            $("input[name='password']").on("keyup", e => {
+                let _this = $(e.currentTarget);
+
+                if( !_this.val() ) {
+                    errorMessage(_this, "error", "비밀번호를 입력해주세요.");
+                } else {
+                    if( !isPasswordValid(_this.val()) ) {
+                        errorMessage(_this, "error", "8자 이상 영문,숫자,특수문자를 포함한 비밀번호를 입력해주세요.");
+                    } else {
+                        errorMessage(_this, "success", "사용 가능한 비밀번호 입니다.");
+                    }
+                }
+            });
+
+            $("input[name='passwordCheck']").on("keyup", e => {
+                let _this = $(e.currentTarget);
+                let password = $("input[name='password']").val();
+
+                if( password ) {
+                    if( !_this.val() ) {
+                        errorMessage(_this, "error", "비밀번호를 입력해주세요.");
+                    } else {
+                        if( _this.val()!==password ) {
+                            errorMessage(_this, "error", "비밀번호가 일치하지 않습니다.");
+                        } else {
+                            errorMessage(_this, "success", "비밀번호가 일치합니다.");
+                        }
+                    }
+                }
+            });
+
+            // 닉네임 체크
+            $("input[name='nickname']").on("keyup", e => {
+                let _this = $(e.currentTarget);
+
+                if( !_this.val() ) {
+                    errorMessage(_this, "error", "닉네임을 입력해주세요.");
+                } else {
+                    let nicknameExist = isNicknameExist(_this.val());
+                    if( nicknameExist.type==='error' )  errorMessage(_this, "error", nicknameExist.message);
+                    else                                errorMessage(_this, "success", nicknameExist.message);
+                }
+            });
+        });
+
+        function register() {
+            let emailExist, nicknameExist;
+            let form = document.registerForm;
+
+            // Check
+            if( !form.email.value ) {
+                errorMessage($(form.email), "error", "이메일을 입력해주세요.");
+                return false;
+            } else if( !isEmailValid(form.email.value) ) {
+                errorMessage($(form.email), "error", "유효하지 않은 이메일 형식입니다.");
+                return false;
+            } else if( !form.password.value ) {
+                errorMessage($(form.password), "error", "비밀번호를 입력해주세요.");
+                return false;
+            } else if( !isPasswordValid(form.password.value) ) {
+                errorMessage($(form.password), "error", "8자 이상 영문,숫자,특수문자를 포함한 비밀번호를 입력해주세요.");
+                return false;
+            } else if( !form.passwordCheck.value ) {
+                errorMessage($(form.passwordCheck), "error", "비밀번호를 입력해주세요.");
+                return false;
+            } else if( form.password.value!==form.passwordCheck.value ) {
+                errorMessage($(form.passwordCheck), "error", "비밀번호가 일치하지 않습니다.");
+                return false;
+            } else if( !form.nickname.value ) {
+                errorMessage($(form.nickname), "error", "닉네임을 입력해주세요.");
+                return false;
+            }
+
+            if( emailExist = isEmailExist(form.email.value) ) {
+                if( emailExist.type==='error' ) {
+                    errorMessage($(form.email), "error", emailExist.message);
+                    return false;
+                }
+            }
+            if( nicknameExist = isNicknameExist(form.nickname.value) ) {
+                if( nicknameExist.type==='error' ) {
+                    errorMessage($(form.nickname), "error", nicknameExist.message);
+                    return false;
+                }
+            }
+
+            // Process
+            $.post("/register", $(form).serialize(), data => {
+
+            }, "json");
+
+            console.log("가입!")
+            return false;
+        }
+
+        function isEmailValid(email) {
+            let regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
+        }
+
+        function isEmailExist(email) {
+            let result = {type: null, message: null};
+
+            $.ajaxSetup({async: false});
+            $.get("/emailExist", {email: email}, data => {
+                result = data;
+            }, "json").always(() => {
+                $.ajaxSetup({async: true});
+            });
+
+            return result;
+        }
+
+        function isPasswordValid(password) {
+            let regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~`!@#$%^&*()\-_=+[{\]}\\|;:'",<.>/?]).{8,}$/;
+            return regex.test(password);
+        }
+
+        function isNicknameExist(nickname) {
+            let result = {type: null, message: null};
+
+            $.ajaxSetup({async: false});
+            $.get("/nicknameExist", {nickname: nickname}, data => {
+                result = data;
+            }, "json").always(() => {
+                $.ajaxSetup({async: true});
+            });
+
+            return result;
+        }
+
+        function errorMessage(input, type, message) {
+            let parents = input.parents(".fieldWrap");
+            let hasMessage = parents.find(".message").length > 0;
+            let messageElement = hasMessage ? parents.find(".message") : $("<p class='message' />");
+
+            // Check
+            if( type=="error" )     parents.attr("data-error", true);
+            else                    parents.attr("data-error", false);
+
+            // Data
+            messageElement.text(message);
+
+            // Result
+            if( !hasMessage ) {
+                parents.append(messageElement);
+            }
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="container">
+    <main id="main">
+        <div class="container">
+            <div class="register">
+                <div class="registerTitle">
+                    <h2>회원가입</h2>
+                    <p>회원이 되어 다양한 프로젝트에 참여해보세요!</p>
+                </div>
+                <div class="registerField">
+                    <form action="/register" name="registerForm" onsubmit="return register();">
+                        <div class="fieldWrap">
+                            <label for="email">
+                                <p>이메일</p>
+                                <input type="text" name="email" id="email">
+                            </label>
+                        </div>
+                        <div class="fieldWrap">
+                            <label for="password">
+                                <p>비밀번호</p>
+                                <input type="password" name="password" id="password">
+                            </label>
+                        </div>
+                        <div class="fieldWrap">
+                            <label for="passwordCheck">
+                                <p>비밀번호 확인</p>
+                                <input type="password" name="passwordCheck" id="passwordCheck">
+                            </label>
+                        </div>
+                        <div class="fieldWrap">
+                            <label for="nickname">
+                                <p>닉네임</p>
+                                <input type="text" name="nickname" id="nickname">
+                            </label>
+                        </div>
+                        <div class="fieldAction d-grid gap-2">
+                            <button type="submit" class="btn btn-main">회원가입</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+</html>
