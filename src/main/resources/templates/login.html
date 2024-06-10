@@ -2,7 +2,7 @@
 
 <th:block layout:fragment="css">
 <style>
-    .login { width: 400px; margin: 0 auto; margin-top: 150px; }
+    .login { width: 400px; margin: 0 auto; padding-top: 150px; }
     .login .loginTitle { text-align: center; }
     .login .loginTitle h2 { font-size: 26px; font-weight: 700; color: #fff; }
 
@@ -13,6 +13,11 @@
     .login .loginField .fieldWrap .title a:hover { color: #A5B4E0; }
     .login .loginField .fieldWrap .field {}
     .login .loginField .fieldWrap .field input { width: 100%; height: 40px; }
+
+    .login .loginOther { margin-top: 30px; }
+    .login .loginOther  .otherJoin { text-align: center; font-size: 14px; }
+    .login .loginOther  .otherJoin a { margin-left: 10px; color: #818CF8; }
+    .login .loginOther  .otherJoin a:hover { color: #A5B4E0; }
 </style>
 </th:block>
 
@@ -42,10 +47,19 @@
                             <input type="password" name="password" tabindex="2">
                         </div>
                     </div>
+                    <div class="fieldAction d-grid gap-2">
+                        <button type="submit" class="btn btn-main">로그인</button>
+                    </div>
                 </form>
             </div>
             <div class="loginOther">
+                <div class="otherJoin">
+                    아직 회원이 아니신가요?
+                    <a href="/register">회원가입</a>
+                </div>
+                <div class="otherSns">
 
+                </div>
             </div>
         </div>
     </div>
