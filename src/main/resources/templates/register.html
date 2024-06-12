@@ -132,10 +132,13 @@
 
             // Process
             $.post("/register", $(form).serialize(), data => {
+                alert(data.message);
 
+                if( data.type==='success' ) {
+                    document.location.href = "/login";
+                }
             }, "json");
 
-            console.log("가입!")
             return false;
         }
 
@@ -204,7 +207,7 @@
                     <p>회원이 되어 다양한 프로젝트에 참여해보세요!</p>
                 </div>
                 <div class="registerField">
-                    <form action="/register" name="registerForm" onsubmit="return register();">
+                    <form action="/register" name="registerForm" onsubmit="return register();" autocomplete="off">
                         <div class="fieldWrap">
                             <label for="email">
                                 <p>이메일</p>
