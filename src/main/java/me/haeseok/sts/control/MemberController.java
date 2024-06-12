@@ -32,20 +32,30 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> registerOk(MemberDTO memberDTO) {
+    public ResponseEntity<Map<String, String>> registerOk(MemberDTO memberDTO) {
+        Map<String, String> resultMap = new HashMap<>();
+
         // 필수값 체크
         if( memberDTO.getEmail()==null || memberDTO.getEmail().isBlank() ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일은 필수 입력 항목입니다.");
+            resultMap.put("type", "error");
+            resultMap.put("message", "이메일은 필수 입력 항목입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
         } else if( memberDTO.getPassword()==null || memberDTO.getPassword().isBlank() ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호는 필수 입력 항목입니다.");
+            resultMap.put("type", "error");
+            resultMap.put("message", "비밀번호는 필수 입력 항목입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
         } else if( memberDTO.getNickname()==null || memberDTO.getNickname().isBlank() ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("닉네임은 필수 입력 항목입니다.");
+            resultMap.put("type", "error");
+            resultMap.put("message", "닉네임은 필수 입력 항목입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
         }
 
         // 회원가입 처리
         MemberDTO member = memberService.register(memberDTO);
 
-        return null;
+        resultMap.put("type", "success");
+        resultMap.put("message", "회원가입이 완료 되었습니다.");
+        return ResponseEntity.ok().body(resultMap);
     }
 
     @ResponseBody
