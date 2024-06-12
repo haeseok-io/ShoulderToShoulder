@@ -16,8 +16,12 @@ public class MemberServiceImple implements MemberService {
 
     @Override
     public MemberDTO register(MemberDTO memberDTO) {
+        memberDTO.hashPassword(bCryptPasswordEncoder);
+        memberDTO.setRole("USER");
 
-        return null;
+        memberDAO.addMember(memberDTO);
+        
+        return memberDTO;
     }
 
     /**
