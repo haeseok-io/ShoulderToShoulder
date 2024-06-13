@@ -1,8 +1,10 @@
 package me.haeseok.sts.control;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dto.MemberDTO;
 import me.haeseok.sts.service.MemberService;
+import me.haeseok.sts.util.SessionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,22 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpSession session) {
+        // 로그인이 되어있을 경우 메인페이지로 이동
+        if( SessionUtils.isLoggedIn(session) ) {
+            return "redirect:/";
+        }
+
         return "login";
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(HttpSession session) {
+        // 로그인이 되어있을 경우 메인페이지로 이동
+        if( SessionUtils.isLoggedIn(session) ) {
+            return "redirect:/";
+        }
+
         return "register";
     }
 
