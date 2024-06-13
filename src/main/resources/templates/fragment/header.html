@@ -18,9 +18,13 @@
                 </ul>
             </div>
             <div class="unb">
-                <ul>
+                <ul th:if="${session.MEMBEREMAIL == null}">
                     <li><a href="/register">회원가입</a></li>
                     <li><a href="/login">로그인</a></li>
+                </ul>
+                <ul th:unless="${session.MEMBEREMAIL == null}">
+                    <li><a href="/">마이페이지</a></li>
+                    <li><a href="/logout">로그아웃</a></li>
                 </ul>
             </div>
         </div>
