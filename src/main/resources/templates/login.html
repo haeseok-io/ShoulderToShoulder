@@ -1,24 +1,88 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
 
 <th:block layout:fragment="css">
-<style>
-    .login { width: 400px; margin: 0 auto; padding-top: 150px; }
-    .login .loginTitle { text-align: center; }
-    .login .loginTitle h2 { font-size: 26px; font-weight: 700; color: #fff; }
+    <style>
+        .login { width: 400px; margin: 0 auto; padding-top: 150px; }
+        .login .loginTitle { text-align: center; }
+        .login .loginTitle h2 { font-size: 26px; font-weight: 700; color: #fff; }
 
-    .login .loginField { margin-top: 50px; }
-    .login .loginField .fieldWrap { margin-bottom: 30px; }
-    .login .loginField .fieldWrap .title { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; font-weight: 600; }
-    .login .loginField .fieldWrap .title a { color: #818CF8; }
-    .login .loginField .fieldWrap .title a:hover { color: #A5B4E0; }
-    .login .loginField .fieldWrap .field {}
-    .login .loginField .fieldWrap .field input { width: 100%; height: 40px; }
+        .login .loginField { margin-top: 50px; }
+        .login .loginField .fieldWrap { margin-bottom: 30px; }
+        .login .loginField .fieldWrap label { width: 100%; }
+        .login .loginField .fieldWrap label p { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: 600; }
+        .login .loginField .fieldWrap label p a { font-size: 12px; color: #818CF8; }
+        .login .loginField .fieldWrap label p a:hover { color: #A5B4E0; }
+        .login .loginField .fieldWrap label input { width: 100%; height: 40px; }
 
-    .login .loginOther { margin-top: 30px; }
-    .login .loginOther  .otherJoin { text-align: center; font-size: 14px; }
-    .login .loginOther  .otherJoin a { margin-left: 10px; color: #818CF8; }
-    .login .loginOther  .otherJoin a:hover { color: #A5B4E0; }
-</style>
+        .login .loginField .fieldWrap .message { margin-top: 5px; }
+        .login .loginField .fieldWrap[data-error=true] .message { color: #ff0000; }
+        .login .loginField .fieldWrap[data-error=false] .message { color: #198754; }
+
+
+        .login .loginOther { margin-top: 30px; }
+        .login .loginOther  .otherJoin { text-align: center; font-size: 14px; }
+        .login .loginOther  .otherJoin a { margin-left: 10px; color: #818CF8; }
+        .login .loginOther  .otherJoin a:hover { color: #A5B4E0; }
+    </style>
+</th:block>
+
+<th:block layout:fragment="js">
+    <script>
+        $(() => {
+
+        });
+
+        function loginCheck() {
+            let form = document.loginForm;
+
+            // Check
+            if( !form.email.value ) {
+                errorMessage($(form.email), "error", "이메일을 입력해주세요.", true);
+                return false;
+            } else if( !form.password.value ) {
+                errorMessage($(form.password), "error", "비밀번호를 입력해주세요.", true);
+                return false;
+            }
+
+            // Process
+            $.ajax({
+                type: "POST",
+                url: "/login/loginProc",
+                data: new FormData(form),
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: data => {
+                    if( data.type==="error" ) {
+                        alert(data.message);
+                        return false;
+                    }
+
+                    document.location.href = data.redirect;
+                }
+            });
+
+            // Result
+            return false;
+        }
+
+        function errorMessage(input, type, message, focus = false) {
+            let parents = input.parents(".fieldWrap");
+            let hasMessage = parents.find(".message").length > 0;
+            let messageElement = hasMessage ? parents.find(".message") : $("<p class='message' />");
+
+            // Check
+            if( type=="error" )     parents.attr("data-error", true);
+            else                    parents.attr("data-error", false);
+
+            // Data
+            messageElement.text(message);
+            if( focus )         input.focus();
+
+            // Result
+            if( !hasMessage )   parents.append(messageElement);
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="container">
@@ -29,23 +93,23 @@
                 <h2>함께 성장하는 어깨동무!</h2>
             </div>
             <div class="loginField">
-                <form action="">
+                <form method="post" name="loginForm" autocomplete="off" onsubmit="return loginCheck();">
+                    <input type="hidden" name="redirect" th:value="${param.redirectUrl}">
+
                     <div class="fieldWrap">
-                        <div class="title">
-                            <span>이메일주소</span>
-                        </div>
-                        <div class="field">
-                            <input type="text" name="email" tabindex="1">
-                        </div>
+                        <label for="email">
+                            <p>이메일</p>
+                            <input type="text" name="email" id="email" tabindex="1">
+                        </label>
                     </div>
                     <div class="fieldWrap">
-                        <div class="title">
-                            <span>비밀번호</span>
-                            <a href="">비밀번호를 잊으셨나요?</a>
-                        </div>
-                        <div class="field">
-                            <input type="password" name="password" tabindex="2">
-                        </div>
+                        <label for="password">
+                            <p>
+                                비밀번호
+                                <a href="/find">비밀번호를 잊으셨나요?</a>
+                            </p>
+                            <input type="password" name="password" id="password" tabindex="2">
+                        </label>
                     </div>
                     <div class="fieldAction d-grid gap-2">
                         <button type="submit" class="btn btn-main">로그인</button>
