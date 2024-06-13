@@ -38,7 +38,7 @@ class MemberDAOTest {
     @DisplayName("단일 회원 조회")
     void readMember() {
         memberDAO.addMember(memberDTO);
-        MemberDTO member = memberDAO.readMember(memberDTO.getNo());
+        MemberDTO member = memberDAO.findMemberNo(memberDTO.getNo());
         assertThat(member.getNickname()).isEqualTo("테스트");
     }
 
@@ -48,6 +48,6 @@ class MemberDAOTest {
         memberDAO.addMember(memberDTO);
         memberDAO.dropMember(memberDTO.getNo());
 
-        assertThat(memberDAO.readMember(memberDTO.getNo())).isNull();
+        assertThat(memberDAO.findMemberNo(memberDTO.getNo())).isNull();
     }
 }
