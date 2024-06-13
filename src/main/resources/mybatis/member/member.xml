@@ -10,10 +10,12 @@
         Values (#{email}, #{password}, #{nickname}, now())
     </insert>
 
-    <select id="readMember" parameterType="long" resultType="memberDTO">
+    <select id="findMemberNo" parameterType="long" resultType="memberDTO">
         Select * From member Where no=#{no}
     </select>
-
+    <select id="findMemberEmail" parameterType="String" resultType="memberDTO">
+        select * From member Where email=#{email}
+    </select>
     <select id="emailExist" parameterType="String" resultType="boolean">
         Select count(*) From member Where email=#{email}
     </select>
