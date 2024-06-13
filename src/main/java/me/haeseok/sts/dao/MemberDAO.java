@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface MemberDAO {
     void addMember(MemberDTO memberDTO);
-    MemberDTO readMember(Long no);
+    MemberDTO findMemberNo(Long no);
+    MemberDTO findMemberEmail(String email);
     Boolean emailExist(String email);
     Boolean nicknameExist(String nickname);
 
