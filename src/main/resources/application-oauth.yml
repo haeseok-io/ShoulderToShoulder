@@ -13,6 +13,12 @@ spring:
             scope:
               - account_email
               - profile_nickname
+          google:
+            client-id: 68173911510-gabsc86hphsf7oc3jsj8tfks361vc8dh.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
           naver:
             client-name: Naver
             client-id: zJOOM7S82s9QO2fMLZve

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dao.MemberDAO;
 import me.haeseok.sts.dto.MemberDTO;
 import me.haeseok.sts.security.CustomOAuth2User;
+import me.haeseok.sts.security.dto.GoogleResponse;
 import me.haeseok.sts.security.dto.KakaoResponse;
 import me.haeseok.sts.security.dto.NaverResponse;
 import me.haeseok.sts.security.dto.OAuth2Response;
@@ -27,6 +28,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = null;
         if( serviceProvider.equals("kakao") ) {
             oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
+        } else if( serviceProvider.equals("google") ) {
+            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
         } else if( serviceProvider.equals("naver") ) {
             oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
         } else {
