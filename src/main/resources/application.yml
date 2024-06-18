@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    include: oauth
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://34.64.197.88:3306/shoulder
+    username: shoulder
+    password: '@shoulder!database@'
+    hikari:
+      connection-test-query: select now()
+      maximum-pool-size: 10
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  type-aliases-package: me.haeseok.sts.dto
