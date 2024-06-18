@@ -27,13 +27,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        MemberDTO memberDTO = memberDAO.findMemberEmail(userDetails.getUsername());
+        MemberDTO member = memberDAO.findMemberEmail(userDetails.getUsername());
 
         // 로그인 정보 세션에 담기
         HttpSession session = request.getSession();
-        session.setAttribute("MEMBERNO", memberDTO.getNo());
-        session.setAttribute("MEMBEREMAIL", memberDTO.getEmail());
-        session.setAttribute("MEMBERNICKNAME", memberDTO.getNickname());
+        session.setAttribute("MEMBERNO", member.getNo());
+        session.setAttribute("MEMBEREMAIL", member.getEmail());
+        session.setAttribute("MEMBERNICKNAME", member.getNickname());
 
         // 로그인 처리
         ObjectMapper objectMapper = new ObjectMapper();
