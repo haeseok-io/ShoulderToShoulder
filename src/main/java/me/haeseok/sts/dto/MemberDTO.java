@@ -23,6 +23,7 @@ public class MemberDTO {
     private String gitLink;
     private String blogLink;
     private Timestamp regdate;
+    private String provider;
     private String role;
 
     public MemberDTO hashPassword(PasswordEncoder passwordEncoder) {
