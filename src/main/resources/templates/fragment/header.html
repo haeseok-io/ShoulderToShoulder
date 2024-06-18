@@ -23,6 +23,7 @@
                     <li><a href="/login">로그인</a></li>
                 </ul>
                 <ul th:unless="${session.MEMBEREMAIL == null}">
+                    <li><a href="/">모임개설</a></li>
                     <li><a href="/">마이페이지</a></li>
                     <li><a href="/logout">로그아웃</a></li>
                 </ul>
