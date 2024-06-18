@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.haeseok.sts.security.handler.CustomAuthenticationFailureHandler;
 import me.haeseok.sts.security.handler.CustomAuthenticationSuccessHandler;
+import me.haeseok.sts.security.handler.CustomOAuth2AuthenticationSuccessHandler;
+import me.haeseok.sts.security.service.CustomOAuth2UserService;
 import me.haeseok.sts.security.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +23,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomOAuth2AuthenticationSuccessHandler customOAuth2AuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -67,6 +71,15 @@ public class SecurityConfig {
                                 .passwordParameter("password")
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .failureHandler(customAuthenticationFailureHandler)
+                )
+                .oauth2Login(oauth2 ->
+                        oauth2
+                                .loginPage("/login")
+                                .userInfoEndpoint(user ->
+                                    user.userService(customOAuth2UserService)
+                                )
+                                .successHandler(customOAuth2AuthenticationSuccessHandler)
+                                .failureUrl("/")
                 )
                 .logout(logout ->
                         logout
