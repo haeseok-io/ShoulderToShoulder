@@ -18,18 +18,21 @@
         .login .loginField .fieldWrap[data-error=true] .message { color: #ff0000; }
         .login .loginField .fieldWrap[data-error=false] .message { color: #198754; }
 
+        .login .loginField .fieldAction button { height: 40px; }
 
         .login .loginOther { margin-top: 30px; }
-        .login .loginOther  .otherJoin { text-align: center; font-size: 14px; }
-        .login .loginOther  .otherJoin a { margin-left: 10px; color: #818CF8; }
-        .login .loginOther  .otherJoin a:hover { color: #A5B4E0; }
+        .login .loginOther .otherJoin { text-align: center; font-size: 14px; }
+        .login .loginOther .otherJoin a { margin-left: 10px; color: #818CF8; }
+        .login .loginOther .otherJoin a:hover { color: #A5B4E0; }
+
+        .login .loginOther .otherSns { display: flex; justify-content: center; margin-top: 50px; }
+        .login .loginOther .otherSns a { border-radius: 12px; margin: 0 10px; overflow: hidden; }
     </style>
 </th:block>
 
 <th:block layout:fragment="js">
     <script>
         $(() => {
-
         });
 
         function loginCheck() {
@@ -122,7 +125,15 @@
                     <a href="/register">회원가입</a>
                 </div>
                 <div class="otherSns">
-
+                    <a href="/oauth2/authorization/kakao">
+                        <img src="/images/oauth2/kakao.png" width="40" height="40" alt="">
+                    </a>
+                    <a href="/oauth2/authorization/google">
+                        <img src="/images/oauth2/google.png" width="40" height="40" alt="">
+                    </a>
+                    <a href="/oauth2/authorization/naver">
+                        <img src="/images/oauth2/naver.png" width="40" height="40" alt="">
+                    </a>
                 </div>
             </div>
         </div>
