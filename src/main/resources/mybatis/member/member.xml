@@ -6,8 +6,8 @@
 <mapper namespace="me.haeseok.sts.dao.MemberDAO">
 
     <insert id="addMember" parameterType="MemberDTO" useGeneratedKeys="true" keyProperty="no">
-        Insert Into member (email, password, nickname, regdate)
-        Values (#{email}, #{password}, #{nickname}, now())
+        Insert Into member (email, password, nickname, provider, regdate)
+        Values (#{email}, #{password}, #{nickname}, #{provider}, now())
     </insert>
 
     <select id="findMemberNo" parameterType="long" resultType="memberDTO">
@@ -15,6 +15,9 @@
     </select>
     <select id="findMemberEmail" parameterType="String" resultType="memberDTO">
         select * From member Where email=#{email}
+    </select>
+    <select id="findMemberEmailAsProvider" parameterType="map" resultType="memberDTO">
+        select * From member Where email=#{email} And provider=#{provider}
     </select>
     <select id="emailExist" parameterType="String" resultType="boolean">
         Select count(*) From member Where email=#{email}
