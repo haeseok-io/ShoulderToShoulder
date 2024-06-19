@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        #main .container { width: 970px; max-width: 970px; }
+        #main .container form {}
+        #main .container .writeField { margin-top: 40px; }
+        #main .container .writeField input[type='text'] { width: 100%; height: 40px; border: 1px solid #666; border-radius: 5px; padding: 0 10px; color: #fff; }
+        #main .container .writeField input[type='text']::placeholder { color: #888; }
+
+        #main .container .writeTitle { margin-bottom: 15px; }
+        #main .container .writeTitle .name { margin-bottom: 10px; font-weight: 600; font-size: 18px; color: #fff; }
+        #main .container .writeTitle .name .desc { font-size: 12px; color: #aaa; }
+
+        #main .type {}
+        #main .type label { display: inline-block; border-width: 1px; border-style: solid; border-color: #666; border-radius: 5px; padding: 10px 15px; margin-right: 10px; cursor: pointer; }
+        #main .type label input[type='radio'] { display: none; }
+        #main .type label:has(input[type='radio'][value='P']:checked) { border-color: #7b27ff; background: #7b27ff; }
+        #main .type label:has(input[type='radio'][value='S']:checked) { border-color: #ff7f50; background: #ff7f50; }
+        #main .type label span { font-weight: 600; font-size: 14px; }
+
+        #main .moimImg {}
+        #main .moimImg .content { display: flex; justify-content: space-between; align-items: end; }
+        #main .moimImg .thumbnail { position: relative; display: flex; justify-content: center; align-items: center; width: 400px; height: 230px; background: #e0e0e0; }
+        #main .moimImg .thumbnail button { position: absolute; width: 100%; height: 100%; background: transparent; border: none; }
+        #main .moimImg .thumbnail button img { width: 100%; height: 100%; object-fit: cover; }
+        #main .moimImg .thumbnail i { font-size: 3rem; color: #aaa; }
+        #main .moimImg .wrap { width: calc(100% - 430px); }
+        #main .moimImg .wrap input[type='file'] { display: none; }
+        #main .moimImg .wrap button { background: #fff; border: 1px solid #382B47; border-radius: 5px; padding: 10px 15px; font-size: .9rem; color: #111827; }
+        #main .moimImg .wrap p { margin-top: 10px; color: #aaa; }
+        #main .moimImg .wrap p:nth-of-type(1) { margin-top: 20px; }
+
+        #main .category {}
+        #main .category[data-type='project'] .content { display: flex; justify-content: flex-start; flex-wrap: wrap; }
+        #main .category[data-type='project'] .content .wrap { width: 20%; height: 50px; align-items: center; }
+        #main .category[data-type='project'] label { position: relative; display: flex; padding-left: 30px; cursor: pointer; }
+        #main .category[data-type='project'] label:after { position: absolute; top: 50%; left: 0; transform: translateY(-50%); content: ""; width: 20px; height: 20px; border: 1px solid #666; border-radius: 3px; }
+        #main .category[data-type='project'] label input[type='radio'] { display: none; }
+        #main .category[data-type='project'] label:has(input[type='radio']:checked):after { background: #7B27FF; }
+
+
+    </style>
+</th:block>
+
+<th:block layout:fragment="container">
+    <section class="pageBanner">
+        <img src="/images/moimWriteBanner.png" alt="">
+    </section>
+    <main id="main">
+        <div class="container">
+            <form>
+                <input type="hidden" name="moimNo">
+
+                <div class="writeField type">
+                    <div class="writeTitle">
+                        <div class="name">
+                            <p>모임 유형</p>
+                            <p class="desc">모집하려는 모임의 유형을 선택해주세요.</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <label for="type_p">
+                            <input type="radio" name="type" value="P" id="type_p" checked>
+                            <span>프로젝트</span>
+                        </label>
+                        <label for="type_s">
+                            <input type="radio" name="type" value="S" id="type_s">
+                            <span>스터디</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="templateContainer">
+                    <th:block th:replace="fragment/moim/projectWriteTemplate :: projectWriteTemplate"></th:block>
+                </div>
+            </form>
+        </div>
+    </main>
+</th:block>
+</html>
