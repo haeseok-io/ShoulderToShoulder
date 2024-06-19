@@ -53,14 +53,12 @@ public class SecurityConfig {
         log.info("# 시큐리티 적용중 #");
 
         http
-                .csrf((csrfConfig) ->
-                        csrfConfig.disable()
-                )
+                .csrf((csrfConfig) -> csrfConfig.disable())
                 .authenticationProvider(daoAuthenticationProvider())
                 // 권한 설정
                 .authorizeHttpRequests((authorizeRequest) ->
                         authorizeRequest
-                                .requestMatchers("/moim/").hasRole("USER") // USER 권한이 있는 사용자만 접근 가능
+                                .requestMatchers("/moim/write").hasAnyRole("USER") // user 권한이 있는 사용자만 접근 가능
                                 .anyRequest().permitAll()
                 )
                 .formLogin(auth ->
