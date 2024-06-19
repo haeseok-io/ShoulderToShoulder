@@ -32,6 +32,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errorMsg.append("비밀번호 정보가 존재하지 않습니다.");
         } else if ( exception instanceof UsernameNotFoundException ) {
             errorMsg.append(exception.getMessage());
+        } else if( exception.getMessage().equals("Bad credentials") ) {
+            errorMsg.append("비밀번호가 일치하지 않습니다.");
         }
 
         // 로그인 실패 처리
