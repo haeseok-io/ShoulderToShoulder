@@ -89,55 +89,55 @@
 </th:block>
 
 <th:block layout:fragment="container">
-<main id="main">
-    <div class="container">
-        <div class="login">
-            <div class="loginTitle">
-                <h2>함께 성장하는 어깨동무!</h2>
-            </div>
-            <div class="loginField">
-                <form method="post" name="loginForm" autocomplete="off" onsubmit="return loginCheck();">
-                    <input type="hidden" name="redirect" th:value="${param.redirectUrl}">
-
-                    <div class="fieldWrap">
-                        <label for="email">
-                            <p>이메일</p>
-                            <input type="text" name="email" id="email" tabindex="1">
-                        </label>
-                    </div>
-                    <div class="fieldWrap">
-                        <label for="password">
-                            <p>
-                                비밀번호
-                                <a href="/find">비밀번호를 잊으셨나요?</a>
-                            </p>
-                            <input type="password" name="password" id="password" tabindex="2">
-                        </label>
-                    </div>
-                    <div class="fieldAction d-grid gap-2">
-                        <button type="submit" class="btn btn-main">로그인</button>
-                    </div>
-                </form>
-            </div>
-            <div class="loginOther">
-                <div class="otherJoin">
-                    아직 회원이 아니신가요?
-                    <a href="/register">회원가입</a>
+    <main id="main">
+        <div class="container">
+            <div class="login">
+                <div class="loginTitle">
+                    <h2>함께 성장하는 어깨동무!</h2>
                 </div>
-                <div class="otherSns">
-                    <a href="/oauth2/authorization/kakao">
-                        <img src="/images/oauth2/kakao.png" width="40" height="40" alt="">
-                    </a>
-                    <a href="/oauth2/authorization/google">
-                        <img src="/images/oauth2/google.png" width="40" height="40" alt="">
-                    </a>
-                    <a href="/oauth2/authorization/naver">
-                        <img src="/images/oauth2/naver.png" width="40" height="40" alt="">
-                    </a>
+                <div class="loginField">
+                    <form method="post" name="loginForm" autocomplete="off" onsubmit="return loginCheck();">
+                        <input type="hidden" name="redirect" th:value="${param.redirectUrl}">
+
+                        <div class="fieldWrap">
+                            <label for="email">
+                                <p>이메일</p>
+                                <input type="text" name="email" id="email" tabindex="1">
+                            </label>
+                        </div>
+                        <div class="fieldWrap">
+                            <label for="password">
+                                <p>
+                                    비밀번호
+                                    <a href="/find">비밀번호를 잊으셨나요?</a>
+                                </p>
+                                <input type="password" name="password" id="password" tabindex="2">
+                            </label>
+                        </div>
+                        <div class="fieldAction d-grid gap-2">
+                            <button type="submit" class="btn btn-main">로그인</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loginOther">
+                    <div class="otherJoin">
+                        아직 회원이 아니신가요?
+                        <a href="/register">회원가입</a>
+                    </div>
+                    <div class="otherSns">
+                        <a href="/oauth2/authorization/kakao">
+                            <img src="/images/oauth2/kakao.png" width="40" height="40" alt="">
+                        </a>
+                        <a href="/oauth2/authorization/google">
+                            <img src="/images/oauth2/google.png" width="40" height="40" alt="">
+                        </a>
+                        <a href="/oauth2/authorization/naver">
+                            <img src="/images/oauth2/naver.png" width="40" height="40" alt="">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 </th:block>
 </html>
