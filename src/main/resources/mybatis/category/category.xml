@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.CategoryDAO">
+    <select id="getAll" resultType="CategoryDTO">
+        Select no, name From category Where 1
+    </select>
+</mapper>
