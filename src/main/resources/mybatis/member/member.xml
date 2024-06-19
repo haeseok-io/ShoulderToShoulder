@@ -14,7 +14,7 @@
         Select * From member Where no=#{no}
     </select>
     <select id="findMemberEmail" parameterType="String" resultType="memberDTO">
-        select * From member Where email=#{email}
+        select * From member Where email=#{email} And provider is NULL
     </select>
     <select id="findMemberEmailAsProvider" parameterType="map" resultType="memberDTO">
         select * From member Where email=#{email} And provider=#{provider}
