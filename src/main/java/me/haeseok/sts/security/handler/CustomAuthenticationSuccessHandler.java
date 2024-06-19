@@ -43,7 +43,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // 리다이렉트 경로 지정
         String redirectParam = request.getParameter("redirect");
-        System.out.println(redirectParam);
         if( redirectParam!=null && !redirectParam.isBlank() ) {
             resultMap.put("redirect", redirectParam);
         }
