@@ -46,4 +46,12 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 #header .container .unb ul { display: flex; }
 #header .container .unb ul li { padding: 0 10px; }
 #header .container .unb ul li a { font-size: 14px; font-weight: 600; color: #aaa; }
-#header .container .unb ul li:first-child a { color: #FF7F50; }
+#header .container .unb ul li.active a { color: #FF7F50; }
+
+/*
+ * -------------------------------------------------------
+ *  Container
+ * -------------------------------------------------------
+*/
+.pageBanner { width: 100%; height: 150px; }
+.pageBanner img { width: 100%; height: 100%; object-fit: cover; }
