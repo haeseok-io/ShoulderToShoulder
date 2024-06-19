@@ -1,0 +1,185 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="projectWriteTemplate">
+    <div class="writeField subject">
+        <div class="writeTitle">
+            <div class="name">
+                <p>프로젝트명</p>
+                <p class="desc">직관적인 프로젝트명을 사용하시면 클릭율이 올라갑니다.</p>
+            </div>
+        </div>
+        <div class="content">
+            <input type="text" name="subject" placeholder="3 ~ 20 글자로 적어주세요 예) 승차거부 신고앱">
+        </div>
+    </div>
+    <div class="writeField shortDesc">
+        <div class="writeTitle">
+            <div class="name">
+                <p>간단 설명</p>
+                <p class="desc">프로젝트에 대해 간단하게 설명해주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <input type="text" name="shortDesc" placeholder="간단한 설명을 30 글자 이내로 적어주세요 에)승차거부하는 택시를 신고하는 앱입니다.">
+        </div>
+    </div>
+    <div class="writeField moimImg">
+        <div class="writeTitle">
+            <div class="name">
+                <p>프로젝트 대표 이미지</p>
+                <p class="desc">프로젝트를 알아볼 수 있는 이미지를 업로드 해주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <div class="thumbnail">
+                <button type="button" id="moimImg-thumbnail-btn" onclick="moimImgUploadTrigger()"></button>
+                <i class="bi bi-camera"></i>
+            </div>
+            <div class="wrap">
+                <input type="file" name="moimImg">
+                <button type="button" onclick="moimImgUploadTrigger();">이미지 업로드</button>
+                <p>- 가로/세로의 비율이 3:2일 때 썸네일이 가장 예쁩니다.</p>
+                <p>- 저작권에 위배되지 않는 파일만 업로드해주세요.</p>
+            </div>
+        </div>
+    </div>
+    <div class="writeField category" data-type="project">
+        <div class="writeTitle">
+            <div class="name">
+                <p>프로젝트 분야</p>
+                <p class="desc">아래 분야 중에 한가지를 선택해주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <th:block th:each="category : ${categoryList}">
+                <div class="wrap">
+                    <label th:for="'category-'+${category.no}">
+                        <input type="radio" name="categoryNo" th:value="${category.no}" th:id="'category-'+${category.no}">
+                        <span>[[${category.name}]]</span>
+                    </label>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <div class="writeField platform">
+        <div class="writeTitle">
+            <div class="name">
+                <p>출시 플랫폼</p>
+                <p class="desc">출시 플랫폼은 충복 선택이 가능합니다.</p>
+            </div>
+        </div>
+        <div class="content">
+            <select name="platformNo" multiple>
+
+            </select>
+        </div>
+    </div>
+    <div class="writeField online">
+        <div class="writeTitle">
+            <div class="name">
+                <p>지역</p>
+                <p class="desc">온/오프라인 여부와 장소를 선택해주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <div class="rowItem">
+                <div class="itemWrap">
+                    <select name="onlineNo">
+
+                    </select>
+                </div>
+                <div class="itemWrap">
+                    <input type="text" name="offAddr" placeholder="상세한 지역을 입력해주세요.">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="writeField fee">
+        <div class="writeTitle">
+            <div class="name">
+                <p>오프라인 참가비용</p>
+                <p class="desc">오프라인 모임시 발생할 수 금액을 입력해주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <input type="text" name="fee" placeholder="금액을 입력해주세요.">
+        </div>
+    </div>
+    <div class="writeField headcount">
+        <div class="writeTitle">
+            <div class="name">
+                <p>모집인원</p>
+                <p class="desc">3~4명을 추천합니다. (최대 9명, 추후변경가능)</p>
+            </div>
+            <div class="etc">
+                <button type="button" class="btn btn-secondary" onclick="positionAddToDrop('drop');">제거</button>
+                <button type="button" class="btn btn-custom-add" onclick="positionAddToDrop('add');">추가</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="colItem">
+                <div class="itemWrap position">
+                    <input type="hidden" name="headcountNo">
+                    <select name="positionNo">
+
+                    </select>
+                    <select name="positionDetailNo"></select>
+                </div>
+                <div class="itemWrap personnel">
+                    <button type="button" onclick="personnelControl(this, 'minus')">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+                    <input type="text" name="personnel" value="1" readonly>
+                    <button type="button" onclick="personnelControl(this, 'plus')">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="writeField detailDesc">
+        <div class="writeTitle">
+            <div class="name">
+                <p>프로젝트 설명</p>
+                <p class="desc">설명이 풍부한 프로젝트는 ,아닌 프로젝트에 비해 지원율이 50% 높습니다.</p>
+            </div>
+        </div>
+        <div class="content">
+            <input type="hidden" name="detailDesc">
+            <div id="detailDesc"></div>
+        </div>
+    </div>
+    <div class="writeField language">
+        <div class="writeTitle">
+            <div class="name">
+                <p>사용 언어/기술</p>
+                <p class="desc">프로젝트에 적용된/적용하고자 하는 기술/디자인 플랫폼을 적어주세요.</p>
+            </div>
+        </div>
+        <div class="content">
+            <select name="language" multiple></select>
+        </div>
+    </div>
+    <div class="writeField link">
+        <div class="writeTitle">
+            <div class="name">
+                <p>참고자료</p>
+                <p class="desc">벤치마킹하는 프로덕트나, 프로젝트를 정리하신 자료의 웹주소를 등록해주세요.</p>
+            </div>
+            <div class="etc">
+                <button type="button" class="btn btn-secondary" onclick="linkControl('drop');">제거</button>
+                <button type="button" class="btn btn-custom-add" onclick="linkControl('add');">추가</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="rowItem">
+                <div class="itemWrap">
+                    <input type="hidden" name="linkNo">
+                    <input type="text" name="link" placeholder="http://www.shoulder-friends.com">
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>
