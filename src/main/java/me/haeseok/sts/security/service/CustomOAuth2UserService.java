@@ -50,6 +50,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             memberDAO.addMember(member);
         }
 
-        return new CustomOAuth2User(oAuth2Response, "user", member.getNo());
+        return new CustomOAuth2User(oAuth2Response, member.getRole(), member.getNo());
     }
 }
