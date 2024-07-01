@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CategoryDAO {
-    List<CategoryDTO> getAll();
+    List<CategoryDTO> getCategoryList();
 }
