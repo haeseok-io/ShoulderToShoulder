@@ -13,14 +13,24 @@ body { background: #111827; }
 .container { max-width: 1600px; }
 
 input[type='text'],
-input[type='password'] { padding: 5px 10px; background: #1D2432; border: 1px solid #343A47; border-radius: 5px; color: #aaa; }
+input[type='password'] { padding: 5px 10px; background: #1D2432; border: 1px solid #343A47; border-radius: 5px; color: #eee; }
+input[type='text']::placeholder,
+input[type='password']::placeholder { color: #888; }
 input[type='text']:focus,
 input[type='password']:focus { border: 2px solid #6366F1; }
 
 /* # 버튼 색상 */
+.btn-light { background: #e4e4e4; color: #111827; }
+
 .btn-main { background: #6366F1; color: #fff; }
 .btn-main:hover,
-.btn-main:focus { background: #818CF8; }
+.btn-main:focus { background: #5D61F1; }
+.btn-main:active { background: #575CF1 !important; border: 1px solid #575CF1 !important; }
+
+.btn-active { background: #FF7745; color: #fff; }
+.btn-active:hover,
+.btn-active:focus { background: #FF6E39; }
+.btn-active:active { background: #FF672F !important; border: 1px solid #FF672F !important; }
 
 /* # 벳지 색상 */
 .text-bg-main { background: #6366F1; color: #fff; }
@@ -55,3 +65,5 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 */
 .pageBanner { width: 100%; height: 150px; }
 .pageBanner img { width: 100%; height: 100%; object-fit: cover; }
+
+#main { padding-bottom: 100px; }
