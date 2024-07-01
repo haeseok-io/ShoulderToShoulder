@@ -15,7 +15,7 @@ public class CategoryServiceImple implements CategoryService {
     private final CategoryDAO categoryDAO;
 
     @Override
-    public List<CategoryDTO> readAll() {
-        return categoryDAO.getAll();
+    public List<CategoryDTO> readCategoryList() {
+        return categoryDAO.getCategoryList();
     }
 }
