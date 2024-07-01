@@ -1,46 +1,257 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
 
 <th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/theme/toastui-editor-dark.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <style>
         #main .container { width: 970px; max-width: 970px; }
-        #main .container form {}
-        #main .container .writeField { margin-top: 40px; }
-        #main .container .writeField input[type='text'] { width: 100%; height: 40px; border: 1px solid #666; border-radius: 5px; padding: 0 10px; color: #fff; }
-        #main .container .writeField input[type='text']::placeholder { color: #888; }
 
-        #main .container .writeTitle { margin-bottom: 15px; }
+        #main .container .writeField { margin-top: 40px; }
+        #main .container .writeField input[type='text'] { width: 100%; height: 40px; }
+        #main .container .formButton { margin-top: 50px; text-align: center; }
+        #main .container .formButton button { margin-right: 5px; }
+
+        #main .container .writeTitle { display: flex; justify-content: space-between; margin-bottom: 15px; }
         #main .container .writeTitle .name { margin-bottom: 10px; font-weight: 600; font-size: 18px; color: #fff; }
         #main .container .writeTitle .name .desc { font-size: 12px; color: #aaa; }
+        #main .container .writeTitle .etc {}
+
+        #main .container .rowItem .itemWrap { margin-top: 10px; }
+        #main .container .rowItem .itemWrap:first-child { margin-top: 0; }
+        #main .container .colItem { display: flex; justify-content: flex-start; align-items: center; margin-top: 10px; }
 
         #main .type {}
         #main .type label { display: inline-block; border-width: 1px; border-style: solid; border-color: #666; border-radius: 5px; padding: 10px 15px; margin-right: 10px; cursor: pointer; }
         #main .type label input[type='radio'] { display: none; }
-        #main .type label:has(input[type='radio'][value='P']:checked) { border-color: #7b27ff; background: #7b27ff; }
+        #main .type label:has(input[type='radio'][value='P']:checked) { border-color: #7b27ff; background: #6366F1; }
         #main .type label:has(input[type='radio'][value='S']:checked) { border-color: #ff7f50; background: #ff7f50; }
         #main .type label span { font-weight: 600; font-size: 14px; }
 
-        #main .moimImg {}
         #main .moimImg .content { display: flex; justify-content: space-between; align-items: end; }
-        #main .moimImg .thumbnail { position: relative; display: flex; justify-content: center; align-items: center; width: 400px; height: 230px; background: #e0e0e0; }
+        #main .moimImg .thumbnail { position: relative; display: flex; justify-content: center; align-items: center; width: 400px; height: 230px; background: #1D2432; border: 1px solid #343A47; border-radius: 5px; }
         #main .moimImg .thumbnail button { position: absolute; width: 100%; height: 100%; background: transparent; border: none; }
         #main .moimImg .thumbnail button img { width: 100%; height: 100%; object-fit: cover; }
-        #main .moimImg .thumbnail i { font-size: 3rem; color: #aaa; }
+        #main .moimImg .thumbnail i { font-size: 3rem; color: #666; }
         #main .moimImg .wrap { width: calc(100% - 430px); }
         #main .moimImg .wrap input[type='file'] { display: none; }
-        #main .moimImg .wrap button { background: #fff; border: 1px solid #382B47; border-radius: 5px; padding: 10px 15px; font-size: .9rem; color: #111827; }
-        #main .moimImg .wrap p { margin-top: 10px; color: #aaa; }
+        #main .moimImg .wrap .btn-custom { font-size: .8rem; }
+        #main .moimImg .wrap p { margin-top: 10px; color: #888; }
         #main .moimImg .wrap p:nth-of-type(1) { margin-top: 20px; }
 
-        #main .category {}
         #main .category[data-type='project'] .content { display: flex; justify-content: flex-start; flex-wrap: wrap; }
         #main .category[data-type='project'] .content .wrap { width: 20%; height: 50px; align-items: center; }
         #main .category[data-type='project'] label { position: relative; display: flex; padding-left: 30px; cursor: pointer; }
         #main .category[data-type='project'] label:after { position: absolute; top: 50%; left: 0; transform: translateY(-50%); content: ""; width: 20px; height: 20px; border: 1px solid #666; border-radius: 3px; }
         #main .category[data-type='project'] label input[type='radio'] { display: none; }
-        #main .category[data-type='project'] label:has(input[type='radio']:checked):after { background: #7B27FF; }
+        #main .category[data-type='project'] label:has(input[type='radio']:checked):after { background: #6366F1; }
 
+        #main .container .headcount {}
+        #main .container .headcount input[name='everyone'] {}
+        #main .container .headcount input[name='everyone'] + label { font-weight: 300; font-size: 1rem; }
+        #main .container .headcount .content .itemWrap.position { width: 80%; }
+        #main .container .headcount .content .itemWrap.personnel { width: 20%; display: flex; justify-content: space-between; align-items: center; }
+        #main .container .headcount .content .itemWrap.personnel button { width: 24%; height: 50px; background: transparent; border: none; color: #888; }
+        #main .container .headcount .content .itemWrap.personnel input[type='text'] { width: 50%; text-align: center; }
 
+        /* Select */
+        #main .container .select2-selection--single,
+        #main .container .select2-selection--multiple { display: flex; flex-wrap: wrap; align-items: center; width: 100%; height: 40px; background: #1D2432; border: 1px solid #343A47; padding: 0 10px 0 5px; }
+        #main .container .select2-container--default .select2-selection--single { padding-left: 10px !important; }
+        #main .container .select2-container--default .select2-selection--single .select2-selection__rendered { color: #eee; }
+
+        #main .container .select2-selection--single .select2-selection__arrow { top: 50%; transform: translateY(-50%); right: 10px; }
+        #main .container .select2-selection--single .select2-selection__rendered { padding-left: 0; padding-right: 0; }
+        #main .container .select2 .select2-search__field::placeholder { color: #888; }
+
+        #main .container .select2-selection--multiple .select2-search { display: flex; flex: 1; }
+        #main .container .select2-container .select2-search--inline .select2-search__field { display: flex; flex: 1; margin-top: 0; color: #eee; }
+        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice { margin-top: 0; }
+
+        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #e4e4e4; }
+        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove { color: #111827; }
+        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice__display { color: #111827; }
+
+        .select2-dropdown { background-color: #1D2432; border: 1px solid #666; }
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable { background-color: #262D3C; }
+        .select2-container--default .select2-results__option--selected { background-color: #6366F1 !important; }
     </style>
+</th:block>
+<th:block layout:fragment="js">
+    <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        const editor = toastui.Editor;
+        const colorSyntax = toastui.Editor.plugin['colorSyntax'];
+        $.fn.select2.defaults.set("minimumResultsForSearch", -1);
+        $.fn.select2.defaults.set("width", '100%');
+
+        let detailDescEditor;
+        let onlineSelect, languageSelect, platformSelect, positionSelect, positionDetailSelect;
+        let thumbnailFileInfo, headcountHtml;
+
+        $(() => {
+            $("input[name='type']").on("change", typeChangeEvent); // 모임유형 변경
+            $(document).on("click change", "input[name='thumbnail']", thumbnailUploadEvent); // 썸네일 선택
+            $(document).on("change", "select[name='positionNo']", positionChange); // 직무 대분류 선택
+
+            getHtmlTemplate("S");
+        });
+
+
+        // 모임 유형 변경
+        const typeChangeEvent = e => {
+            getHtmlTemplate($(e.currentTarget).val());
+        }
+        const getHtmlTemplate = type => {
+            let appendTarget = $(".templateContainer");
+            let templateName = type==="P" ? "projectTemplate" : "studyTemplate";
+            let template = document.getElementById(templateName);
+
+            // 템플릿 교체
+            appendTarget.html("");
+            appendTarget.html(template.innerHTML);
+
+            // 이벤트 처리
+            positionChange();
+            initializePositionSelect("init");
+
+            onlineSelect = $("select[name='onlineNo']").select2();
+            languageSelect = $("select[name='language']").select2({
+                tags: true,
+                placeholder: "사용하는 기술/언어를 입력해주세요.",
+                minimumResultsForSearch: 0
+            });
+            detailDescEditor = new editor({
+                el: document.querySelector("#contents"),
+                height: type==="P" ? "800px" : "500px",
+                theme: 'dark',
+                previewStyle: 'tab',
+                initialEditType: 'markdown',
+                autofocus: false,
+                initialValue: template.content.getElementById("contentsPlaceholder").innerHTML,
+                plugins: [colorSyntax]
+            });
+
+            if( type==="P" ) {
+                platformSelect = $("select[name='platformNo']").select2({placeholder: "출시할 플랫폼을 선택 해주세요."});
+            }
+        }
+
+        // 썸네일 업로드
+        const thumbnailUploadTrigger = () => {
+            $("input[name='thumbnail']").click();
+        }
+        const thumbnailUploadEvent = e => {
+            if( e.type==="click" ) {
+                thumbnailFileInfo = e.target.files[0];
+            } else {
+                let target = $("#thumbnailBtn");
+
+                if( e.target.files.length>0 ) {
+                    let file = e.target.files[0];
+
+                    if( file!==thumbnailFileInfo ) {
+                        let reader = new FileReader();
+
+                        reader.onload = e => {
+                            let imgElement = $("<img />");
+                            imgElement.attr("src", e.target.result);
+
+                            target.html("");
+                            target.append(imgElement);
+                        }
+
+                        reader.readAsDataURL(file);
+                    }
+                } else {
+                    $(e.currentTarget).prop("files", thumbnailFileInfo);
+                }
+            }
+        }
+
+        // 직무 대분류 변경
+        const positionChange = e => {
+            let _this = e ? $(e.currentTarget) : $("select[name='positionNo']");
+            let positionDetailTarget = _this.siblings("select[name='positionDetailNo']");
+
+            getPositionDetail(_this, positionDetailTarget);
+        }
+        // 직무 플러그인 컨트롤
+        const initializePositionSelect = type => {
+            if( type==="init" ) {
+                positionSelect = $("select[name='positionNo']").select2({width: "49%"});
+                positionDetailSelect = $("select[name='positionDetailNo']").select2({width: "49%"});
+            } else {
+                if( positionSelect )        positionSelect.select2("destroy");
+                if( positionDetailSelect )  positionDetailSelect.select2("destroy");
+            }
+        }
+        // 직무 추가/제거
+        const positionAddToDrop = type => {
+            let cloneItem, cloneHtml;
+            let appendSel = $(".headcount .content");
+
+            // 추가
+            if( type==="add" ) {
+                if( appendSel.find(".colItem").length>0 ) {
+                    initializePositionSelect("destroy");
+
+                    cloneHtml = appendSel.find(".colItem").eq(0).html();
+                    cloneItem = $("<div class='colItem clone' />");
+                } else {
+                    cloneHtml = headcountHtml;
+                    cloneItem = $("<div class='colItem' />")
+                }
+
+                cloneItem.append(cloneHtml);
+                cloneItem.find("input[name='headcountNo']").val("");
+                appendSel.append(cloneItem);
+
+                initializePositionSelect("init");
+
+                return cloneItem;
+            }
+
+            // 제거
+            if( type==="drop" ) {
+                appendSel.find(".colItem.clone").eq(-1).remove();
+            }
+        }
+        // 모집인원 수 증감
+        const personnelControl = (target, type) => {
+            let actionTarget = $(target).parent().find("input[name='personnel']");
+            let personnelCount = parseInt(actionTarget.val());
+
+            if( type==="plus" )     personnelCount = personnelCount>=9 ? personnelCount : personnelCount+1;
+            else                    personnelCount = personnelCount<=1 ? personnelCount : personnelCount-1;
+
+            actionTarget.val(personnelCount);
+        }
+
+        // 참고링크 추가/제거
+        const linkControl = type => {
+            let appendSel = $(".link .content .rowItem");
+            let linkCount = $("input[name='link']").length;
+
+            if( type==="add" ) {
+                if( linkCount<5 ) {
+                    let cloneHtml = appendSel.find(".itemWrap").eq(0).html();
+                    let cloneItem = $("<div class='itemWrap clone' />");
+
+                    cloneItem.append(cloneHtml);
+                    cloneItem.find("input[name='linkNo']").val("");
+                    appendSel.append(cloneItem);
+                }
+            } else {
+                appendSel.find(".itemWrap.clone").eq(-1).remove();
+            }
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="container">
@@ -71,10 +282,22 @@
                     </div>
                 </div>
                 <div class="templateContainer">
-                    <th:block th:replace="fragment/moim/projectWriteTemplate :: projectWriteTemplate"></th:block>
+
+                </div>
+                <div class="formButton">
+                    <button type="submit" class="btn btn-success">작성완료</button>
+                    <a href="/" class="btn btn-secondary">다음에 하기</a>
                 </div>
             </form>
         </div>
     </main>
+
+
+    <template id="projectTemplate">
+        <th:block th:replace="fragment/moim/projectWriteTemplate :: projectWriteTemplate"></th:block>
+    </template>
+    <template id="studyTemplate">
+        <th:block th:replace="fragment/moim/studyWriteTemplate :: studyWriteTemplate"></th:block>
+    </template>
 </th:block>
 </html>
