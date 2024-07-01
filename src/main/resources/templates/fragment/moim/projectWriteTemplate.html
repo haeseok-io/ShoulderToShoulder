@@ -15,12 +15,12 @@
     <div class="writeField shortDesc">
         <div class="writeTitle">
             <div class="name">
-                <p>간단 설명</p>
+                <p>간단한 설명</p>
                 <p class="desc">프로젝트에 대해 간단하게 설명해주세요.</p>
             </div>
         </div>
         <div class="content">
-            <input type="text" name="shortDesc" placeholder="간단한 설명을 30 글자 이내로 적어주세요 에)승차거부하는 택시를 신고하는 앱입니다.">
+            <input type="text" name="desc" placeholder="간단한 설명을 30 글자 이내로 적어주세요 에)승차거부하는 택시를 신고하는 앱입니다.">
         </div>
     </div>
     <div class="writeField moimImg">
@@ -32,12 +32,12 @@
         </div>
         <div class="content">
             <div class="thumbnail">
-                <button type="button" id="moimImg-thumbnail-btn" onclick="moimImgUploadTrigger()"></button>
+                <button type="button" id="thumbnailBtn" onclick="thumbnailUploadTrigger();"></button>
                 <i class="bi bi-camera"></i>
             </div>
             <div class="wrap">
-                <input type="file" name="moimImg">
-                <button type="button" onclick="moimImgUploadTrigger();">이미지 업로드</button>
+                <input type="file" name="thumbnail">
+                <button type="button" class="btn btn-light btn-custom" onclick="thumbnailUploadTrigger();">이미지 업로드</button>
                 <p>- 가로/세로의 비율이 3:2일 때 썸네일이 가장 예쁩니다.</p>
                 <p>- 저작권에 위배되지 않는 파일만 업로드해주세요.</p>
             </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="content">
             <select name="platformNo" multiple>
-
+                <option th:each="platform : ${platformList}" th:value="${platform.no}">[[${platform.name}]]</option>
             </select>
         </div>
     </div>
@@ -85,11 +85,11 @@
             <div class="rowItem">
                 <div class="itemWrap">
                     <select name="onlineNo">
-
+                        <option th:each="online : ${onlineList}" th:value="${online.no}">[[${online.name}]]</option>
                     </select>
                 </div>
                 <div class="itemWrap">
-                    <input type="text" name="offAddr" placeholder="상세한 지역을 입력해주세요.">
+                    <input type="text" name="location" placeholder="상세한 지역을 입력해주세요.">
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="content">
-            <input type="text" name="fee" placeholder="금액을 입력해주세요.">
+            <input type="text" name="price" placeholder="금액을 입력해주세요.">
         </div>
     </div>
     <div class="writeField headcount">
@@ -112,16 +112,16 @@
                 <p class="desc">3~4명을 추천합니다. (최대 9명, 추후변경가능)</p>
             </div>
             <div class="etc">
-                <button type="button" class="btn btn-secondary" onclick="positionAddToDrop('drop');">제거</button>
-                <button type="button" class="btn btn-custom-add" onclick="positionAddToDrop('add');">추가</button>
+                <button type="button" class="btn btn-main btn-sm" onclick="positionAddToDrop('add');">추가</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="positionAddToDrop('drop');">제거</button>
             </div>
         </div>
         <div class="content">
             <div class="colItem">
                 <div class="itemWrap position">
-                    <input type="hidden" name="headcountNo">
+                    <input type="hidden" name="moimMemberNo">
                     <select name="positionNo">
-
+                        <option th:each="position : ${positionList}" th:value="${position.no}">[[${position.name}]]</option>
                     </select>
                     <select name="positionDetailNo"></select>
                 </div>
@@ -145,8 +145,8 @@
             </div>
         </div>
         <div class="content">
-            <input type="hidden" name="detailDesc">
-            <div id="detailDesc"></div>
+            <input type="hidden" name="contents">
+            <div id="contents"></div>
         </div>
     </div>
     <div class="writeField language">
@@ -167,8 +167,8 @@
                 <p class="desc">벤치마킹하는 프로덕트나, 프로젝트를 정리하신 자료의 웹주소를 등록해주세요.</p>
             </div>
             <div class="etc">
-                <button type="button" class="btn btn-secondary" onclick="linkControl('drop');">제거</button>
-                <button type="button" class="btn btn-custom-add" onclick="linkControl('add');">추가</button>
+                <button type="button" class="btn btn-main btn-sm" onclick="linkControl('add');">추가</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="linkControl('drop');">제거</button>
             </div>
         </div>
         <div class="content">
@@ -180,6 +180,44 @@
             </div>
         </div>
     </div>
-</th:block>
 
+
+    <template id="contentsPlaceholder"># 1. 프로젝트의 시작 동기
+- **왜 이 프로덕트를 만드시고 싶은지 적어주세요**
+ex) 국내여행을 가려고 하는데 어떤곳이 좋은지에 대한 경험이 없어서 어려웠습니다.
+국내도 해외만큼이나 다양한 지역의 명소가 있는데, 이것이 잘 정리되어. 있지 않아 잊어버리기 일쑤입니다.
+전국적인 행사정보와 국내 유명여행지를 모아보여준다면, 사람들이 많이 사용할 것 같습니다)
+
+- **만들고자 하는 프로덕트에 대해 알려주세요**
+ex) 계절별/축제별 국내여행을 모아서 추천해주는 프로덕트를 만들고자합니다.
+꽃이 피는 시기를 기준으로 , 꽃구경을 갈 수 있는 장소를, 월별로 축제가 있는 지역을 추천합니다.
+추천시에는 블로그 리뷰 등을 묶어서 해당 부분을 참고할 수 있게 하고 , 이메일이나 앱 푸시등으로 사용자에게 주기적으로 안내합니다.
+
+- **어떤 사용자들을 타겟하고 있는지 적어주세요**
+ex) 주말에 평범한 데이트가 아닌 특별한 데이트를 찾거나, 미취학아동들과 같이 갈수있는 체험형 코스를 찾는 사용자를 대상으로 합니다.
+
+# 2. 회의 진행/모임 방식
+- **1주에 몇번정도 회의나 모임을 진행할 계획인가요?**
+ex) 1주일에 1회/2회 정도 정기적으로 회의합니다
+
+- **온/오프라인 회의 진행시 진행방식을 적어주세요**
+ex) 온라인은 줌을 활용하고, 오프라인은 강남역 카페등을 대관할예정입니다.
+커뮤니케이션은 슬랙을 위주로 사용합니다
+
+# 3. 나의 경험 및 경력 및 맡게 되는 역할
+- **재직시 전문적으로 담당한 업무나, 별도로 진행하신 팀 프로젝트가 있으시다면 적어주세요**
+ex) 재직중인 회사에서 사업기획 및 PM을 담당했습니다.
+사람간의 일정조율, 요구사항 조절에 자신이 있습니다.
+이와 별개로 총 10명정도의 규모의 팀에서 부팀장으로 역할을 담당하였고,
+출시까지 한 경험이 있습니다.
+
+- **이 프로젝트에서 나(리더) 역할을 적어주세요.**
+ex) 전체 프로덕트의 기획 및 프로젝트 매니징을 담당하게 됩니다.
+다만 한분이 더 같이 들어오셔서, 논의를 같이 했으면 좋겠습니다.
+
+# 4. 그외 자유기재
+ex) 대학생분들만 지원해주시면 감사하겠습니다.
+현재 모든팀원이 대학생으로 이루어져있어, 시간 등을 맞추기 위함입니다
+    </template>
+</th:block>
 </html>
