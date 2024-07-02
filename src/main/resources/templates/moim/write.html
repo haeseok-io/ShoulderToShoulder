@@ -14,7 +14,7 @@
         #main .container .formButton { margin-top: 50px; text-align: center; }
         #main .container .formButton button { margin-right: 5px; }
 
-        #main .container .writeTitle { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        #main .container .writeTitle { display: flex; justify-content: space-between; margin-bottom: 10px; }
         #main .container .writeTitle .name { margin-bottom: 10px; font-weight: 600; font-size: 18px; color: #fff; }
         #main .container .writeTitle .name .desc { font-size: 12px; color: #aaa; }
         #main .container .writeTitle .etc {}
@@ -90,16 +90,19 @@
         $.fn.select2.defaults.set("minimumResultsForSearch", -1);
         $.fn.select2.defaults.set("width", '100%');
 
+        let positionCount = 1;
+        let linkCount = 1;
+
         let detailDescEditor;
-        let onlineSelect, languageSelect, platformSelect, positionSelect, positionDetailSelect;
-        let thumbnailFileInfo, headcountHtml;
+        let onlineSelect, languageSelect, platformSelect, positionSelect, positionDetailSelect, studyCategorySelect;
+        let thumbnailFileInfo;
 
         $(() => {
             $("input[name='type']").on("change", typeChangeEvent); // 모임유형 변경
             $(document).on("click change", "input[name='thumbnail']", thumbnailUploadEvent); // 썸네일 선택
-            $(document).on("change", "select[name='positionNo']", positionChange); // 직무 대분류 선택
+            $(document).on("change", "select[name^='headcountGroupList'][name$='positionNo']", positionChange); // 직무 대분류 선택
 
-            getHtmlTemplate("S");
+            $("input[name='type'][value='P']").attr("checked", true).trigger("change");
         });
 
 
@@ -107,10 +110,15 @@
         const typeChangeEvent = e => {
             getHtmlTemplate($(e.currentTarget).val());
         }
+
         const getHtmlTemplate = type => {
             let appendTarget = $(".templateContainer");
             let templateName = type==="P" ? "projectTemplate" : "studyTemplate";
             let template = document.getElementById(templateName);
+
+            // 변수 초기화
+            positionCount = 1;
+            linkCount = 1;
 
             // 템플릿 교체
             appendTarget.html("");
@@ -137,8 +145,12 @@
                 plugins: [colorSyntax]
             });
 
+
             if( type==="P" ) {
                 platformSelect = $("select[name='platformNo']").select2({placeholder: "출시할 플랫폼을 선택 해주세요."});
+            } else {
+
+                studyCategorySelect = $("select[name='studyCategoryNo']").select2();
             }
         }
 
@@ -176,16 +188,16 @@
 
         // 직무 대분류 변경
         const positionChange = e => {
-            let _this = e ? $(e.currentTarget) : $("select[name='positionNo']");
-            let positionDetailTarget = _this.siblings("select[name='positionDetailNo']");
+            let _this = e ? $(e.currentTarget) : $("select[name^='headcountGroupList'][name$='.positionNo']");
+            let positionDetailTarget = _this.siblings("select[name^='headcountGroupList'][name$='.positionDetailNo']");
 
             getPositionDetail(_this, positionDetailTarget);
         }
         // 직무 플러그인 컨트롤
         const initializePositionSelect = type => {
             if( type==="init" ) {
-                positionSelect = $("select[name='positionNo']").select2({width: "49%"});
-                positionDetailSelect = $("select[name='positionDetailNo']").select2({width: "49%"});
+                positionSelect = $("select[name^='headcountGroupList'][name$='positionNo']").select2({width: "49%"});
+                positionDetailSelect = $("select[name^='headcountGroupList'][name$='positionDetailNo']").select2({width: "49%"});
             } else {
                 if( positionSelect )        positionSelect.select2("destroy");
                 if( positionDetailSelect )  positionDetailSelect.select2("destroy");
@@ -193,38 +205,48 @@
         }
         // 직무 추가/제거
         const positionAddToDrop = type => {
-            let cloneItem, cloneHtml;
             let appendSel = $(".headcount .content");
+            let cloneItem = $("<div class='colItem' />");
 
             // 추가
             if( type==="add" ) {
-                if( appendSel.find(".colItem").length>0 ) {
+                if( positionCount<9 ) {
                     initializePositionSelect("destroy");
+                    cloneItem.append(appendSel.find(".colItem").eq(0).html());
 
-                    cloneHtml = appendSel.find(".colItem").eq(0).html();
-                    cloneItem = $("<div class='colItem clone' />");
-                } else {
-                    cloneHtml = headcountHtml;
-                    cloneItem = $("<div class='colItem' />")
+                    // name 조정
+                    let noElement = cloneItem.find("input[name^='headcountGroupList'][name$='no']");
+                    let positionNoElement = cloneItem.find("select[name^='headcountGroupList'][name$='positionNo']");
+                    let positionDetailNoElement = cloneItem.find("select[name^='headcountGroupList'][name$='positionDetailNo']");
+                    let personnelElement = cloneItem.find("input[name^='headcountGroupList'][name$='personnel']");
+
+                    noElement.attr("name", noElement.attr("name").replace(/\[\d+\]/, `[${positionCount}]`));
+                    positionNoElement.attr("name", positionNoElement.attr("name").replace(/\[\d+\]/, `[${positionCount}]`));
+                    positionDetailNoElement.attr("name", positionDetailNoElement.attr("name").replace(/\[\d+\]/, `[${positionCount}]`));
+                    personnelElement.attr("name", personnelElement.attr("name").replace(/\[\d+\]/, `[${positionCount}]`));
+
+                    // value 조정
+                    noElement.val("");
+
+                    // Result
+                    appendSel.append(cloneItem);
+                    initializePositionSelect("init");
+
+                    positionCount++;
                 }
-
-                cloneItem.append(cloneHtml);
-                cloneItem.find("input[name='headcountNo']").val("");
-                appendSel.append(cloneItem);
-
-                initializePositionSelect("init");
-
-                return cloneItem;
             }
 
             // 제거
             if( type==="drop" ) {
-                appendSel.find(".colItem.clone").eq(-1).remove();
+                if( positionCount>1 ) {
+                    appendSel.find(".colItem").eq(-1).remove();
+                    positionCount--;
+                }
             }
         }
         // 모집인원 수 증감
         const personnelControl = (target, type) => {
-            let actionTarget = $(target).parent().find("input[name='personnel']");
+            let actionTarget = $(target).parent().find("input[name^='headcountGroupList'][name$='personnel']");
             let personnelCount = parseInt(actionTarget.val());
 
             if( type==="plus" )     personnelCount = personnelCount>=9 ? personnelCount : personnelCount+1;
@@ -236,19 +258,32 @@
         // 참고링크 추가/제거
         const linkControl = type => {
             let appendSel = $(".link .content .rowItem");
-            let linkCount = $("input[name='link']").length;
+            let cloneItem = $("<div class='itemWrap' />");
 
             if( type==="add" ) {
                 if( linkCount<5 ) {
-                    let cloneHtml = appendSel.find(".itemWrap").eq(0).html();
-                    let cloneItem = $("<div class='itemWrap clone' />");
+                    cloneItem.append(appendSel.find(".itemWrap").eq(0).html());
+                    let noElement = cloneItem.find("input[name^='linkGroupList'][name$='no']");
+                    let urlElement = cloneItem.find("input[name^='linkGroupList'][name$='url']");
 
-                    cloneItem.append(cloneHtml);
-                    cloneItem.find("input[name='linkNo']").val("");
+                    // name 조정
+                    noElement.attr("name", noElement.attr("name").replace(/\[\d+\]/, `[${linkCount}]`))
+                    urlElement.attr("name", urlElement.attr("name").replace(/\[\d+\]/, `[${linkCount}]`))
+
+                    // value 조정
+                    noElement.val("");
+
+                    // Result
                     appendSel.append(cloneItem);
+                    linkCount++;
                 }
-            } else {
-                appendSel.find(".itemWrap.clone").eq(-1).remove();
+            }
+
+            if( type==="drop" ) {
+                if( linkCount>1 ) {
+                    appendSel.find(".itemWrap").eq(-1).remove();
+                    linkCount--;
+                }
             }
         }
     </script>
@@ -260,7 +295,7 @@
     </section>
     <main id="main">
         <div class="container">
-            <form>
+            <form th:action="'/moim/write'" method="post" enctype="multipart/form-data" autocomplete="off">
                 <input type="hidden" name="moimNo">
 
                 <div class="writeField type">
