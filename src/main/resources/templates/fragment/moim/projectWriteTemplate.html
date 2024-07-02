@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <div class="writeField fee">
+    <div class="writeField price">
         <div class="writeTitle">
             <div class="name">
                 <p>오프라인 참가비용</p>
@@ -119,17 +119,17 @@
         <div class="content">
             <div class="colItem">
                 <div class="itemWrap position">
-                    <input type="hidden" name="moimMemberNo">
-                    <select name="positionNo">
+                    <input type="hidden" name="headcountGroupList[0].no">
+                    <select name="headcountGroupList[0].positionNo">
                         <option th:each="position : ${positionList}" th:value="${position.no}">[[${position.name}]]</option>
                     </select>
-                    <select name="positionDetailNo"></select>
+                    <select name="headcountGroupList[0].positionDetailNo"></select>
                 </div>
                 <div class="itemWrap personnel">
                     <button type="button" onclick="personnelControl(this, 'minus')">
                         <i class="bi bi-dash-lg"></i>
                     </button>
-                    <input type="text" name="personnel" value="1" readonly>
+                    <input type="text" name="headcountGroupList[0].personnel" value="1" readonly>
                     <button type="button" onclick="personnelControl(this, 'plus')">
                         <i class="bi bi-plus-lg"></i>
                     </button>
@@ -174,15 +174,16 @@
         <div class="content">
             <div class="rowItem">
                 <div class="itemWrap">
-                    <input type="hidden" name="linkNo">
-                    <input type="text" name="link" placeholder="http://www.shoulder-friends.com">
+                    <input type="hidden" name="linkGroupList[0].no">
+                    <input type="text" name="linkGroupList[0].url" placeholder="http://www.shoulder-friends.com">
                 </div>
             </div>
         </div>
     </div>
 
 
-    <template id="contentsPlaceholder"># 1. 프로젝트의 시작 동기
+    <template id="contentsPlaceholder">
+# 1. 프로젝트의 시작 동기
 - **왜 이 프로덕트를 만드시고 싶은지 적어주세요**
 ex) 국내여행을 가려고 하는데 어떤곳이 좋은지에 대한 경험이 없어서 어려웠습니다.
 국내도 해외만큼이나 다양한 지역의 명소가 있는데, 이것이 잘 정리되어. 있지 않아 잊어버리기 일쑤입니다.
