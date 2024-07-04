@@ -14,3 +14,10 @@ spring:
 mybatis:
   mapper-locations: mybatis/*.xml
   type-aliases-package: me.haeseok.sts.dto
+
+me:
+  haeseok:
+    sts:
+      upload:
+        directory:
+          moim: d:/uploads/moim
