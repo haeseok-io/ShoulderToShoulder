@@ -147,7 +147,7 @@
 
 
             if( type==="P" ) {
-                platformSelect = $("select[name='platformNo']").select2({placeholder: "출시할 플랫폼을 선택 해주세요."});
+                platformSelect = $("select[name='platformNoList']").select2({placeholder: "출시할 플랫폼을 선택 해주세요."});
             } else {
 
                 studyCategorySelect = $("select[name='studyCategoryNo']").select2();
@@ -286,6 +286,13 @@
                 }
             }
         }
+
+        const checkForm = () => {
+            let form = document.writeForm;
+
+            alert("111");
+            return false;
+        }
     </script>
 </th:block>
 
@@ -295,7 +302,8 @@
     </section>
     <main id="main">
         <div class="container">
-            <form th:action="'/moim/write'" method="post" enctype="multipart/form-data" autocomplete="off">
+            [[${error}]]
+            <form th:action="'/moim/write'" name="writeForm" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return checkForm();">
                 <input type="hidden" name="moimNo">
 
                 <div class="writeField type">
