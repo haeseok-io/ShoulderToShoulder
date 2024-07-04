@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="content">
-            <input type="text" name="desc" placeholder="간단한 설명을 30 글자 이내로 적어주세요 에)승차거부하는 택시를 신고하는 앱입니다.">
+            <input type="text" name="explanation" placeholder="간단한 설명을 30 글자 이내로 적어주세요 에)승차거부하는 택시를 신고하는 앱입니다.">
         </div>
     </div>
     <div class="writeField moimImg">
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="content">
-            <select name="platformNo" multiple>
+            <select name="platformNoList" multiple>
                 <option th:each="platform : ${platformList}" th:value="${platform.no}">[[${platform.name}]]</option>
             </select>
         </div>
