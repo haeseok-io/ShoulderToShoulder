@@ -15,7 +15,7 @@ import java.util.List;
 public class MoimWriteRequest {
     private String type;
     private String subject;
-    private String desc;
+    private String explanation;
     private MultipartFile thumbnail;
     private Integer categoryNo;
     private Integer studyCategoryNo;
