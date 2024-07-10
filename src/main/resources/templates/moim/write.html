@@ -290,8 +290,41 @@
         const checkForm = () => {
             let form = document.writeForm;
 
-            alert("111");
-            return false;
+            // Check
+            if( !form.subject.value ) {
+                alert("모임의 제목을 입력해주세요.");
+                return false;
+            } else if( !form.explanation.value ) {
+                alert("모임에 대한 간단한 설명을 입력해주세요.");
+                return false;
+            } else if( getMultipleValues("language").length<1 ) {
+                alert("사용하실 언어/기술을 하나 이상 입력해주세요.");
+                return false;
+            } else if( form.onlineNo.value!==2 ) {
+                if( !form.location.value ) {
+                    alert("오프라인 장소를 입력해주세요.");
+                    return false;
+                } else if( !form.price.value ) {
+                    alert("오프라인 참가 비용을 입력해주세요.");
+                    return false;
+                }
+            }
+
+            if( form.type.value==="P" ) {
+                if( !form.categoryNo.value ) {
+                    alert("프로젝트의 분야를 선택해주세요.");
+                    return false;
+                } else if( getMultipleValues("platformNoList").length<1 ) {
+                    alert("출시 플랫폼을 하나 이상 선택해주세요.");
+                    return false;
+                }
+            }
+
+            // Data
+            form.contents.value = detailDescEditor.getMarkdown();
+
+            // Result
+            return true;
         }
     </script>
 </th:block>
