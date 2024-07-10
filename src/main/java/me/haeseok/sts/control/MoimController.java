@@ -45,13 +45,14 @@ public class MoimController {
 
         // Check
         if( request.getSubject()==null || request.getSubject().isBlank() ) {
-            return errorMessage(redirectAttributes, "프로젝트명이 존재하지 않습니다.", "/moim/write");
+            return errorMessage(redirectAttributes, "모임명이 존재하지 않습니다.", "/moim/write");
         } else if( request.getHeadcountGroupList()==null ) {
             return errorMessage(redirectAttributes, "모집인원이 존재하지 않습니다.", "/moim/write");
         } else if( request.getLanguage()==null ) {
             return errorMessage(redirectAttributes, "사용 언어/기술이 존재하지 않습니다.", "/moim/write");
+        } else if( request.getContents().isBlank() ) {
+            return errorMessage(redirectAttributes, "설명이 존재하지 않습니다.", "/moim/write");
         }
-        // TODO::상세설명 조건 추가해야함 ( 프론트 작업 완료 후 )
 
         if( !request.getOnlineNo().equals(2) ) {
             if( request.getLocation()==null || request.getLocation().isBlank() ) {
