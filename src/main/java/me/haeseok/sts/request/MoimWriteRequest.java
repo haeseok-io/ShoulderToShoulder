@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -27,4 +29,12 @@ public class MoimWriteRequest {
     private String contents;
     private List<String> language;
     private List<LinkGroupRequest> linkGroupList;
+
+    public void filterNullLinkGroup() {
+        if( this.linkGroupList!=null ) {
+            this.linkGroupList = this.linkGroupList.stream()
+                    .filter(linkGroup -> linkGroup.getUrl()!=null && !linkGroup.getUrl().isBlank())
+                    .collect(Collectors.toList());
+        }
+    }
 }
