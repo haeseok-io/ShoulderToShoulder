@@ -63,16 +63,6 @@ public class MoimServiceImple implements MoimService {
                 .build();
             moimDetailDAO.addOne(moimDetailDTO);
 
-            // 출시 플랫폼 등록
-            if( !request.getPlatformNoList().isEmpty() ) {
-                request.getPlatformNoList().forEach(platformNo -> moimPlatformDAO.addOne(
-                        MoimPlatformDTO.builder()
-                                .platformNo(platformNo)
-                                .moimNo(moimDTO.getNo())
-                                .build()
-                ));
-            }
-
             // 모집인원 등록
             request.getHeadcountGroupList().forEach(headcountGroup -> moimHeadcountDAO.addOne(
                     MoimHeadcountDTO.builder()
@@ -90,8 +80,18 @@ public class MoimServiceImple implements MoimService {
                         .build()
             ));
 
+            // 출시 플랫폼 등록
+            if( request.getPlatformNoList()!=null && !request.getPlatformNoList().isEmpty() ) {
+                request.getPlatformNoList().forEach(platformNo -> moimPlatformDAO.addOne(
+                        MoimPlatformDTO.builder()
+                                .platformNo(platformNo)
+                                .moimNo(moimDTO.getNo())
+                                .build()
+                ));
+            }
+
             // 참고자료 등록
-            if( !request.getLinkGroupList().isEmpty() ) {
+            if( request.getLinkGroupList()!=null && !request.getLinkGroupList().isEmpty() ) {
                 request.getLinkGroupList().forEach(linkGroup -> moimLinkDAO.addOne(
                         MoimLinkDTO.builder()
                                 .url(linkGroup.getUrl())
