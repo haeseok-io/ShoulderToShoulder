@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.request.MoimWriteRequest;
 import me.haeseok.sts.service.*;
 import me.haeseok.sts.util.Result;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -24,10 +25,20 @@ public class MoimController {
 
     private final MoimService moimService;
 
+    // String 값이 빈값으로 들어올 경우 null 로 변환
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
     @GetMapping("/")
     public String moimList() {
         return "moim/list";
     }
+
+    //@ResponseBody
+    //@GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    //public ResponseEntity
 
     @GetMapping("/write")
     public String write(Model model) {
@@ -42,6 +53,9 @@ public class MoimController {
 
     @PostMapping("/write")
     public String writeProcess(@ModelAttribute MoimWriteRequest request, RedirectAttributes redirectAttributes) {
+
+        // 참고링크 url 이 null 일 경우 리스트 null 처리
+        request.filterNullLinkGroup();
 
         // Check
         if( request.getSubject()==null || request.getSubject().isBlank() ) {
