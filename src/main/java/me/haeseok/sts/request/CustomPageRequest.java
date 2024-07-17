@@ -22,7 +22,15 @@ public class CustomPageRequest {
     private String queryString;
 
     public Pageable getPageable(String ... props) {
-        PageRequest pageRequest = PageRequest.of(this.page-1, this.scale, Sort.by(props).descending());
-        return pageRequest;
+        Sort sort = null;
+        String sortField = props[0];
+        String sortType = props[1];
+
+        // Check
+        if( sortType.equals("asc") )        sort = Sort.by(sortField).ascending();
+        else if( sortType.equals("desc") )  sort = Sort.by(sortField).descending();
+
+        // Result
+        return PageRequest.of(this.page-1, this.scale, sort);
     }
 }
