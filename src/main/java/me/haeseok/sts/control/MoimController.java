@@ -1,7 +1,9 @@
 package me.haeseok.sts.control;
 
 import lombok.RequiredArgsConstructor;
+import me.haeseok.sts.request.MoimListRequest;
 import me.haeseok.sts.request.MoimWriteRequest;
+import me.haeseok.sts.response.MoimListResponse;
 import me.haeseok.sts.service.*;
 import me.haeseok.sts.util.Result;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -36,9 +38,13 @@ public class MoimController {
         return "moim/list";
     }
 
-    //@ResponseBody
-    //@GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    //public ResponseEntity
+    @ResponseBody
+    @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MoimListResponse> moimListData(MoimListRequest request) {
+        moimService.readMoimList(request);
+
+        return null;
+    }
 
     @GetMapping("/write")
     public String write(Model model) {
