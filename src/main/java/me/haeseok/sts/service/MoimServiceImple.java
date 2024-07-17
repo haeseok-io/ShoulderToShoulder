@@ -4,13 +4,18 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dao.*;
 import me.haeseok.sts.dto.*;
+import me.haeseok.sts.request.MoimListRequest;
 import me.haeseok.sts.request.MoimWriteRequest;
+import me.haeseok.sts.response.CustomPageResponse;
+import me.haeseok.sts.response.MoimListResponse;
 import me.haeseok.sts.util.Result;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,9 +30,40 @@ public class MoimServiceImple implements MoimService {
     private final MoimLanguageDAO moimLanguageDAO;
     private final MoimLinkDAO moimLinkDAO;
     private final FileUploadService fileUploadService;
+    private final MemberDAO memberDAO;
 
     @Value("${me.haeseok.sts.upload.directory.moim}")
     private String uploadDirectory;
+
+    @Override
+    public CustomPageResponse<MoimListResponse> readMoimList(MoimListRequest request) {
+        int total = moimDAO.readSearchTotal(request);
+
+        Pageable pageable = request.getPageRequest().getPageable(request.getSortField(), request.getSortType());
+        request.setStart(pageable.getOffset());
+        request.setEnd(pageable.getPageSize());
+
+        List<MoimDTO> moimList = moimDAO.readSearchList(request);
+
+        List<MoimListResponse> moimResponseList = moimList.stream().map(data -> {
+            MoimListResponse moimListResponse = MoimListResponse.convertMoimDTO(data);
+
+            System.out.println(data );
+            moimListResponse.setWriter(memberDAO.findMemberNo(data.getMemberNo()));
+            //moimListResponse.setCategory();
+            //moimListResponse.setLanguageList();
+            //moimListResponse.setHeadcountList();
+
+            return moimListResponse;
+        }).toList();
+
+
+        System.out.println(moimResponseList);
+        //CustomPageResponse<MoimListResponse
+
+
+        return null;
+    }
 
     @Override
     public Result addMoim(MoimWriteRequest request) {
