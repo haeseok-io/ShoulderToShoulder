@@ -8,4 +8,8 @@
         Insert Into moim_language (name, moim_no)
         Values (#{name}, #{moimNo})
     </insert>
+
+    <select id="getMoimLanguageByMoimNo" parameterType="long" resultType="MoimLanguageDTO">
+        Select no, name From moim_language Where moim_no=#{moimNo}
+    </select>
 </mapper>
