@@ -33,7 +33,15 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 .btn-active:active { background: #FF672F !important; border: 1px solid #FF672F !important; }
 
 /* # 벳지 색상 */
-.text-bg-main { background: #6366F1; color: #fff; }
+.badge { font-weight: 400; font-size: 14px; }
+
+.badge.badge-size-sm { font-size: 12px; }
+.badge.badge-size-lg { font-size: 16px; }
+
+.badge.badge-black_opacity { background: rgba(0, 0, 0, .8); }
+.badge.badge-white_opacity { background: rgba(255, 255, 255, .8); color: #333; }
+.badge.badge-main { background: #6366F1; }
+.badge.badge-active { background: #FF7745; }
 
 /*
  * -------------------------------------------------------
