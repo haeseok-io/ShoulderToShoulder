@@ -11,7 +11,7 @@ public class CustomPageResponse<E> {
     private int page;
     private int scale;
     private int pageScale;
-    private int total;
+    private Long total;
     private String queryString;
 
     private int start;
@@ -23,7 +23,7 @@ public class CustomPageResponse<E> {
     private List<E> dataList;
 
     @Builder(builderMethodName = "pageBuilder")
-    public CustomPageResponse(CustomPageRequest request, List<E> dataList, int total) {
+    public CustomPageResponse(CustomPageRequest request, List<E> dataList, Long total) {
         if( total<1 )   return;
 
         this.page = request.getPage();
