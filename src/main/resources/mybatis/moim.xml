@@ -105,8 +105,4 @@
         Insert Into moim (type, subject, explanation, thumbnail, regdate, member_no)
         Values (#{type}, #{subject}, #{explanation}, #{thumbnail}, now(), #{memberNo})
     </insert>
-
-    <select id="readSearchList" parameterType="MoimListRequest" resultMap="moimDTOResultMap">
-        select * from moim where type=#{type} Order By ${sortField} ${sortType} Limit #{start}, #{end}
-    </select>
 </mapper>
