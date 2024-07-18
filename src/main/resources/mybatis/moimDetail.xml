@@ -5,7 +5,7 @@
 
 <mapper namespace="me.haeseok.sts.dao.MoimDetailDAO">
     <insert id="addOne" parameterType="MoimDetailDTO">
-        Insert Into moim_detail (no, contents, price, location, online_no, category_no)
-        Values (#{no}, #{contents}, #{price}, #{location}, #{onlineNo}, #{categoryNo})
+        Insert Into moim_detail (no, contents, price, location, online_no, category_no, study_category_no)
+        Values (#{no}, #{contents}, #{price}, #{location}, #{onlineNo}, #{categoryNo}, #{studyCategoryNo})
     </insert>
 </mapper>
