@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface PositionService {
     List<PositionDTO> readPositionList();
-    List<PositionDetailDTO> readPositionDetailList();
-    List<PositionDetailDTO> readPositionDetailListByPositionNo(Integer positionNo);
+    List<PositionDetailDTO> readPositionDetailByPositionNo(Integer positionNo);
 }
