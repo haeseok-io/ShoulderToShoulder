@@ -36,6 +36,7 @@ public class MoimServiceImple implements MoimService {
     private final StudyCategoryDAO studyCategoryDAO;
     private final PositionDAO positionDAO;
     private final PositionDetailDAO positionDetailDAO;
+    private final MoimApplicantDAO moimApplicantDAO;
 
 
     @Value("${me.haeseok.sts.upload.directory.moim}")
@@ -63,14 +64,16 @@ public class MoimServiceImple implements MoimService {
 
                 return MoimHeadcountResponse.builder()
                         .no(headcount.getNo())
-                        .personnel(headcount.getPersonnel())
                         .position(position)
                         .positionDetail(positionDetail)
+                        .personnelCount(headcount.getPersonnel())
+                        .appliedCount(moimApplicantDAO.getAppliedCountByMoimHeadcountNo(headcount.getNo()))
+                        .approvedCount(moimApplicantDAO.getApprovedCountByMoimHeadcountNo(headcount.getNo()))
                         .build();
             }).toList());
 
             return moimListResponse;
-        }).toList();;
+        }).toList();
 
         return CustomPageResponse.<MoimListResponse>pageBuilder()
                 .request(request.getPageRequest())
@@ -94,23 +97,24 @@ public class MoimServiceImple implements MoimService {
 
             // 모임 등록
             MoimDTO moimDTO = MoimDTO.builder()
-                .type(request.getType())
-                .subject(request.getSubject())
-                .explanation(request.getExplanation())
-                .thumbnail(uploadFilename)
-                .memberNo(memberNo)
-                .build();
+                    .type(request.getType())
+                    .subject(request.getSubject())
+                    .explanation(request.getExplanation())
+                    .thumbnail(uploadFilename)
+                    .memberNo(memberNo)
+                    .build();
             moimDAO.addOne(moimDTO);
 
             // 모임 상세 등록
             MoimDetailDTO moimDetailDTO = MoimDetailDTO.builder()
-                .no(moimDTO.getNo())
-                .contents(request.getContents())
-                .price(request.getPrice())
-                .location(request.getLocation())
-                .onlineNo(request.getOnlineNo())
-                .categoryNo(categoryNo)
-                .build();
+                    .no(moimDTO.getNo())
+                    .contents(request.getContents())
+                    .price(request.getPrice())
+                    .location(request.getLocation())
+                    .onlineNo(request.getOnlineNo())
+                    .categoryNo(request.getCategoryNo())
+                    .studyCategoryNo(request.getStudyCategoryNo())
+                    .build();
             moimDetailDAO.addOne(moimDetailDTO);
 
             // 모집인원 등록
