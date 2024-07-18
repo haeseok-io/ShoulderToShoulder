@@ -3,6 +3,7 @@ package me.haeseok.sts.control;
 import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.request.MoimListRequest;
 import me.haeseok.sts.request.MoimWriteRequest;
+import me.haeseok.sts.response.CustomPageResponse;
 import me.haeseok.sts.response.MoimListResponse;
 import me.haeseok.sts.service.*;
 import me.haeseok.sts.util.Result;
@@ -40,16 +41,14 @@ public class MoimController {
 
     @ResponseBody
     @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MoimListResponse> moimListData(MoimListRequest request) {
-        moimService.readMoimList(request);
-
-        return null;
+    public ResponseEntity<CustomPageResponse<MoimListResponse>> moimListData(MoimListRequest request) {
+        return ResponseEntity.ok().body(moimService.readMoimList(request));
     }
 
     @GetMapping("/write")
     public String write(Model model) {
-        model.addAttribute("categoryList", categoryService.readCategoryList());
-        model.addAttribute("studyCategoryList", studyCategoryService.readStudyCategoryList());
+        model.addAttribute("categoryList", categoryService.readCategoryAll());
+        model.addAttribute("studyCategoryList", studyCategoryService.readStudyCategoryAll());
         model.addAttribute("platformList", platformService.readPlatformList());
         model.addAttribute("onlineList", onlineService.readOnlineList());
         model.addAttribute("positionList", positionService.readPositionList());
