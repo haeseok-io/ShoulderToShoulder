@@ -7,6 +7,7 @@ import me.haeseok.sts.dto.*;
 import me.haeseok.sts.request.MoimListRequest;
 import me.haeseok.sts.request.MoimWriteRequest;
 import me.haeseok.sts.response.CustomPageResponse;
+import me.haeseok.sts.response.MoimHeadcountResponse;
 import me.haeseok.sts.response.MoimListResponse;
 import me.haeseok.sts.util.Result;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class MoimServiceImple implements MoimService {
+    private final FileUploadService fileUploadService;
     private final HttpSession session;
     private final MoimDAO moimDAO;
     private final MoimDetailDAO moimDetailDAO;
@@ -29,40 +31,52 @@ public class MoimServiceImple implements MoimService {
     private final MoimHeadcountDAO moimHeadcountDAO;
     private final MoimLanguageDAO moimLanguageDAO;
     private final MoimLinkDAO moimLinkDAO;
-    private final FileUploadService fileUploadService;
     private final MemberDAO memberDAO;
+    private final CategoryDAO categoryDAO;
+    private final StudyCategoryDAO studyCategoryDAO;
+    private final PositionDAO positionDAO;
+    private final PositionDetailDAO positionDetailDAO;
+
 
     @Value("${me.haeseok.sts.upload.directory.moim}")
     private String uploadDirectory;
 
     @Override
     public CustomPageResponse<MoimListResponse> readMoimList(MoimListRequest request) {
-        int total = moimDAO.readSearchTotal(request);
-
         Pageable pageable = request.getPageRequest().getPageable(request.getSortField(), request.getSortType());
         request.setStart(pageable.getOffset());
         request.setEnd(pageable.getPageSize());
 
-        List<MoimDTO> moimList = moimDAO.readSearchList(request);
-
+        List<MoimDTO> moimList = moimDAO.findSearchList(request);
         List<MoimListResponse> moimResponseList = moimList.stream().map(data -> {
-            MoimListResponse moimListResponse = MoimListResponse.convertMoimDTO(data);
+            Object category = data.getType().equals("P")
+                    ? categoryDAO.findCategoryByMoinNo(data.getNo())
+                    : studyCategoryDAO.getStudyCategoryByMoimNo(data.getNo());
 
-            System.out.println(data );
+            MoimListResponse moimListResponse = MoimListResponse.convertMoimDTO(data);
             moimListResponse.setWriter(memberDAO.findMemberNo(data.getMemberNo()));
-            //moimListResponse.setCategory();
-            //moimListResponse.setLanguageList();
-            //moimListResponse.setHeadcountList();
+            moimListResponse.setCategory(category);
+            moimListResponse.setLanguageList(moimLanguageDAO.getMoimLanguageByMoimNo(data.getNo()));
+            moimListResponse.setHeadcountList(moimHeadcountDAO.getMoimHeadcountByMoimNo(data.getNo()).stream().map(headcount -> {
+                PositionDetailDTO positionDetail = positionDetailDAO.getPositionDetailByNo(headcount.getPositionDetailNo());
+                PositionDTO position = positionDAO.getPositionByNo(positionDetail.getPositionNo());
+
+                return MoimHeadcountResponse.builder()
+                        .no(headcount.getNo())
+                        .personnel(headcount.getPersonnel())
+                        .position(position)
+                        .positionDetail(positionDetail)
+                        .build();
+            }).toList());
 
             return moimListResponse;
-        }).toList();
+        }).toList();;
 
-
-        System.out.println(moimResponseList);
-        //CustomPageResponse<MoimListResponse
-
-
-        return null;
+        return CustomPageResponse.<MoimListResponse>pageBuilder()
+                .request(request.getPageRequest())
+                .dataList(moimResponseList)
+                .total(moimDAO.getSearchTotal(request))
+                .build();
     }
 
     @Override
