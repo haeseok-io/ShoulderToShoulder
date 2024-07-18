@@ -4,7 +4,10 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.haeseok.sts.dao.CategoryDAO">
-    <select id="getCategoryList" resultType="CategoryDTO">
+    <select id="getCategoryAll" resultType="CategoryDTO">
         Select no, name From category Where 1
+    </select>
+    <select id="findCategoryByMoinNo" parameterType="long" resultType="CategoryDTO">
+        Select c.no, c.name From category c, moim_detail md where md.category_no=c.no And md.no=#{moimNo}
     </select>
 </mapper>
