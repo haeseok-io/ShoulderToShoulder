@@ -16,4 +16,5 @@ public class MoimDetailDTO {
     private String location;
     private Integer onlineNo;
     private Integer categoryNo;
+    private Integer studyCategoryNo;
 }
