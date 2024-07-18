@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.MoimApplicantDAO">
+    <resultMap id="moimApplicantResultMap" type="MoimApplicantDTO">
+        <result property="applicantStatus" column="applicant_status" />
+        <result property="approvalStatus" column="approval_status" />
+        <result property="rejectionReason" column="rejection_reason" />
+        <result property="memberNo" column="member_no" />
+        <result property="moimHeadcountNo" column="moim_headcount_no" />
+    </resultMap>
+
+    <select id="getAppliedCountByMoimHeadcountNo" parameterType="long" resultType="int">
+        Select count(*)
+        From moim_applicant
+        Where applicant_status='A' And moim_headcount_no=#{headcountNo}
+    </select>
+    <select id="getApprovedCountByMoimHeadcountNo" parameterType="long" resultType="int">
+        Select count(*)
+        From moim_applicant
+        Where applicant_status='A' And approval_status='A' And moim_headcount_no=#{headcountNo}
+    </select>
+</mapper>
