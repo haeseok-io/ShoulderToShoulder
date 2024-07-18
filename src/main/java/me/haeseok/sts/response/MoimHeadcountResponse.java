@@ -13,7 +13,9 @@ import me.haeseok.sts.dto.PositionDetailDTO;
 @AllArgsConstructor
 public class MoimHeadcountResponse {
     private Long no;
-    private Integer personnel;
     private PositionDTO position;
     private PositionDetailDTO positionDetail;
+    private Integer personnelCount; // 모집인원
+    private Integer appliedCount; // 지원자수
+    private Integer approvedCount; // 승인자수
 }
