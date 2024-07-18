@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface StudyCategoryDAO {
-    List<StudyCategoryDTO> getStudyCategoryList();
+    List<StudyCategoryDTO> getStudyCategoryAll();
+    StudyCategoryDTO getStudyCategoryByMoimNo(Long moimNo);
 }
