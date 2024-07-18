@@ -4,7 +4,10 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.haeseok.sts.dao.StudyCategoryDAO">
-    <select id="getStudyCategoryList" resultType="StudyCategoryDTO">
+    <select id="getStudyCategoryAll" resultType="StudyCategoryDTO">
         Select no, name From study_category Where 1
+    </select>
+    <select id="getStudyCategoryByMoimNo" parameterType="long" resultType="StudyCategoryDTO">
+        Select sc.no, sc.name From study_category sc, moim_detail md Where sc.no=md.category_no And md.no=#{moimNo}
     </select>
 </mapper>
