@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.PositionDetailDAO">
+    <resultMap id="positionDetailDTOResultMap" type="PositionDetailDTO">
+        <result property="positionNo" column="position_no" />
+    </resultMap>
+
+
+    <select id="getPositionDetailByNo" parameterType="int" resultMap="positionDetailDTOResultMap">
+        Select no, name, position_no From position_detail Where no=#{no}
+    </select>
+    <select id="getPositionDetailByPositionNo" parameterType="int" resultMap="positionDetailDTOResultMap">
+        Select no, name, position_no From position_detail Where position_no=#{positionNo}
+    </select>
+</mapper>
