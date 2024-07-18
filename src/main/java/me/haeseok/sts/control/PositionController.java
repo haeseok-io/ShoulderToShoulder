@@ -21,6 +21,6 @@ public class PositionController {
     @ResponseBody
     @GetMapping(value = "/{no}/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PositionDetailDTO> getPositionDetailList(@PathVariable("no") Integer no) {
-        return positionService.readPositionDetailListByPositionNo(no);
+        return positionService.readPositionDetailByPositionNo(no);
     }
 }
