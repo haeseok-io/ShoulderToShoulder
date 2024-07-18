@@ -21,6 +21,18 @@ public class CustomPageRequest {
     private int pageScale = 10;
     private String queryString;
 
+    public String getQueryString() {
+        if( this.queryString==null ) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("page="+this.page);
+            builder.append("&scale="+this.scale);
+
+            this.queryString = builder.toString();
+        }
+
+        return this.queryString;
+    }
+
     public Pageable getPageable(String ... props) {
         Sort sort = null;
         String sortField = props[0];
