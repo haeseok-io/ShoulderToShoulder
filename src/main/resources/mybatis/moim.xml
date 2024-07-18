@@ -7,6 +7,98 @@
     <resultMap id="moimDTOResultMap" type="MoimDTO">
         <result property="memberNo" column="member_no" />
     </resultMap>
+
+    <!-- 모임 전체 갯수 가져오기 -->
+    <select id="getTotal" resultType="long">
+        Select count(*) From moim Where 1
+    </select>
+
+    <!-- 검색된 모임의 갯수 가져오기 -->
+    <select id="getSearchTotal" parameterType="MoimListRequest" resultType="long">
+        Select count(Distinct m.no)
+        From moim m
+            Left Join moim_detail md On md.no=m.no
+            Left Join moim_headcount mh On mh.moim_no=m.no
+            Left Join moim_language ml On ml.moim_no=m.no
+            Left Join position_detail pd On pd.no=mh.pd_no
+            Left Join position p On p.no=pd.position_no
+            Left Join category c On c.no=md.category_no
+            Left Join study_category sc On sc.no=md.category_no
+
+        <where>
+            <trim prefixOverrides="And">
+                <if test="type!=null and type!=''">
+                    And m.type=#{type}
+                </if>
+                <if test="positionNo!=null and positionNo!=''">
+                    And p.no=#{positionNo}
+                </if>
+                <if test="positionDetailNo!=null and positionDetailNo!=''">
+                    And pd.no=#{positionDetailNo}
+                </if>
+                <if test="status!=null and status.size>0">
+                    And m.status In
+                    <foreach collection="status" item="item" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="keyword!=null and keyword!=''">
+                    And (
+                        m.subject Like CONCAT('%',#{keyword},'%')
+                        Or ml.name Like CONCAT('%',#{keyword},'%')
+                        Or p.name Like CONCAT('%',#{keyword},'%')
+                        Or pd.name Like CONCAT('%',#{keyword},'%')
+                        Or c.name Like CONCAT('%',#{keyword},'%')
+                        Or sc.name Like CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findSearchList" parameterType="MoimListRequest" resultMap="moimDTOResultMap">
+        Select DISTINCT m.no, m.type, m.subject, m.explanation, m.thumbnail, m.status, m.like, m.hits, m.regdate, m.member_no
+        From moim m
+        Left Join moim_detail md On md.no=m.no
+        Left Join moim_headcount mh On mh.moim_no=m.no
+        Left Join moim_language ml On ml.moim_no=m.no
+        Left Join position_detail pd On pd.no=mh.pd_no
+        Left Join position p On p.no=pd.position_no
+        Left Join category c On c.no=md.category_no
+        Left Join study_category sc On sc.no=md.category_no
+
+        <where>
+            <trim prefixOverrides="And">
+                <if test="type!=null and type!=''">
+                    And m.type=#{type}
+                </if>
+                <if test="positionNo!=null and positionNo!=''">
+                    And p.no=#{positionNo}
+                </if>
+                <if test="positionDetailNo!=null and positionDetailNo!=''">
+                    And pd.no=#{positionDetailNo}
+                </if>
+                <if test="status!=null and status.size>0">
+                    And m.status In
+                    <foreach collection="status" item="item" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="keyword!=null and keyword!=''">
+                    And (
+                        m.subject Like CONCAT('%',#{keyword},'%')
+                        Or ml.name Like CONCAT('%',#{keyword},'%')
+                        Or p.name Like CONCAT('%',#{keyword},'%')
+                        Or pd.name Like CONCAT('%',#{keyword},'%')
+                        Or c.name Like CONCAT('%',#{keyword},'%')
+                        Or sc.name Like CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+            </trim>
+        </where>
+        Order By ${sortField} ${sortType} Limit #{start}, #{end}
+    </select>
+
     
     
     <insert id="addOne" parameterType="MoimDTO" useGeneratedKeys="true" keyProperty="no">
@@ -14,10 +106,6 @@
         Values (#{type}, #{subject}, #{explanation}, #{thumbnail}, now(), #{memberNo})
     </insert>
 
-
-    <select id="readSearchTotal" parameterType="MoimListRequest" resultType="int">
-        select count(*) from moim where type=#{type}
-    </select>
     <select id="readSearchList" parameterType="MoimListRequest" resultMap="moimDTOResultMap">
         select * from moim where type=#{type} Order By ${sortField} ${sortType} Limit #{start}, #{end}
     </select>
