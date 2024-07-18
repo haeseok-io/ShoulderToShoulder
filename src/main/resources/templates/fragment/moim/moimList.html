@@ -3,8 +3,8 @@
 <th:block th:fragment="moimList">
     <li data-no="">
         <div class="visual">
-            <div class="category">
-                <span class="badge badge-size-sm badge-category"></span>
+            <div class="type">
+                <span class="badge"></span>
             </div>
             <div class="thumbnail">
                 <img src="" alt="">
@@ -12,9 +12,7 @@
         </div>
         <div class="content">
             <div class="etc">
-                <div class="type">
-                    <span class="badge badge-size-sm"></span>
-                </div>
+                <span class="category"></span>
                 <div class="like">
                     <i class="bi bi-heart"></i>
                     <span></span>
@@ -23,32 +21,30 @@
             <div class="subject"></div>
             <div class="explanation"></div>
             <div class="language">
-                <ul class="languageList">
-                    <li></li>
-                </ul>
+                <ul class="languageList"></ul>
             </div>
-            <div class="headcount">
-                <div class="headcountToggle">
-                    <div class="toggleName">
-                        <span></span>
+        </div>
+        <div class="headcount">
+            <div class="headcountToggle">
+                <div class="toggleName">
+                    <span></span>
+                    <div class="personnel">
+                        <span></span> / <span></span>
+                    </div>
+                </div>
+                <div class="toggleIcon">
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+            <div class="headcountList">
+                <ul>
+                    <li>
+                        <p class="positionDetail"></p>
                         <div class="personnel">
                             <span></span> / <span></span>
                         </div>
-                    </div>
-                    <div class="toggleIcon">
-                        <i class="bi bi-chevron-down"></i>
-                    </div>
-                </div>
-                <div class="headcountList">
-                    <ul>
-                        <li>
-                            <p class="positionDetail"></p>
-                            <div class="personnel">
-                                <span></span> / <span></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </li>
