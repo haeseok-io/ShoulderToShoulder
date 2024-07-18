@@ -30,7 +30,7 @@ public class MoimListResponse {
     private MemberDTO writer;
     private Object category;
     private List<MoimLanguageDTO> languageList;
-    private List<MoimHeadcountDTO> headcountList;
+    private List<MoimHeadcountResponse> headcountList;
 
     public static MoimListResponse convertMoimDTO(MoimDTO moimDTO) {
         return MoimListResponse.builder()
