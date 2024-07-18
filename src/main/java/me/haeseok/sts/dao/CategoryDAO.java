@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CategoryDAO {
-    List<CategoryDTO> getCategoryList();
+    List<CategoryDTO> getCategoryAll();
+    CategoryDTO findCategoryByMoinNo(Long moimNo);
 }
