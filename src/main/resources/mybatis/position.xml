@@ -7,10 +7,7 @@
     <select id="getPositionList" resultType="PositionDTO">
         Select no, name From position Where 1
     </select>
-    <select id="getPositionDetailList" resultType="PositionDetailDTO">
-        Select no, name, position_no From position_detail Where 1
-    </select>
-    <select id="getPositionDetailListByPositionNo" parameterType="int" resultType="PositionDetailDTO">
-        Select no, name, position_no from position_detail Where position_no=#{positionNo}
+    <select id="getPositionByNo" parameterType="int" resultType="PositionDTO">
+        Select no, name From position Where no=#{no}
     </select>
 </mapper>
