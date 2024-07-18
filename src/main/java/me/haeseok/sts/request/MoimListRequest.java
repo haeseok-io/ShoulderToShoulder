@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,6 +15,7 @@ public class MoimListRequest {
     private String type;
     private Integer positionNo;
     private Integer positionDetailNo;
+    private List<String> status;
     private String keyword;
     private CustomPageRequest pageRequest;
 
