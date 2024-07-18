@@ -10,7 +10,7 @@
  * -------------------------------------------------------
 */
 body { background: #111827; }
-.container { max-width: 1600px; }
+.container { width: 1440px; max-width: 1440px; }
 
 input[type='text'],
 input[type='password'] { padding: 5px 10px; background: #1D2432; border: 1px solid #343A47; border-radius: 5px; color: #eee; }
@@ -34,6 +34,18 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 
 /* # 벳지 색상 */
 .text-bg-main { background: #6366F1; color: #fff; }
+
+/*
+ * -------------------------------------------------------
+ *  Title
+ * -------------------------------------------------------
+*/
+.mainTitle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.mainTitle .subject {}
+.mainTitle .subject p { margin-bottom: 5px; font-weight: 600; font-size: 20px; }
+.mainTitle .subject p.desc { font-weight: 300; font-size: 14px; color: #aaa; }
+
+.mainTitle .etc .more { font-size: 14px; color: #aaa; }
 
 /*
  * -------------------------------------------------------
@@ -67,3 +79,5 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 .pageBanner img { width: 100%; height: 100%; object-fit: cover; }
 
 #main { padding-bottom: 100px; }
+#main .container {}
+#main .container .wrapper { margin-top: 50px; padding: 10px 0; }
