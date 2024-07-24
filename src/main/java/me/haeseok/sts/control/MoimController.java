@@ -17,15 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/moim")
 @RequiredArgsConstructor
+@RequestMapping("/moim")
 public class MoimController {
     private final CategoryService categoryService;
     private final StudyCategoryService studyCategoryService;
     private final PlatformService platformService;
     private final OnlineService onlineService;
     private final PositionService positionService;
-
     private final MoimService moimService;
 
     // String 값이 빈값으로 들어올 경우 null 로 변환
@@ -35,7 +34,8 @@ public class MoimController {
     }
 
     @GetMapping("/")
-    public String moimList() {
+    public String moimList(Model model) {
+        model.addAttribute("positionMergeList", positionService.readPositionMergeList());
         return "moim/list";
     }
 
