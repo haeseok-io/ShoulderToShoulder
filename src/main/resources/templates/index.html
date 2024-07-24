@@ -2,6 +2,7 @@
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" href="/css/moimList.css">
+    <link rel="stylesheet" href="/css/memberList.css">
     <style>
         .banner { position: relative; width: 100%; overflow: hidden; }
         .banner .swiper-wrapper {}
@@ -12,20 +13,27 @@
 
 <th:block layout:fragment="js">
     <script src="/js/moimList.js"></script>
+    <script src="/js/memberList.js"></script>
     <script>
         $(() => {
-            callMoimBestList();
-        });
-
-        const callMoimBestList = () => {
-            getMoimListData($(".moimList"), $("#moimListTemplate"), {
+            // 인기모임 가져오기
+            getMoimListData({
                 "pageRequest.page": 1,
-                "pageRequest.scale": 8,
+                "pageRequest.scale": 12,
                 sortField: "hits",
                 sortType: "desc",
                 status: ["W"]
-            }, null);
-        }
+            });
+
+            // 새로운 팀원 가져오기
+            getMemberListData({
+                "pageRequest.page": 1,
+                "pageRequest.scale": 8,
+                sortField: "regdate",
+                sortType: "desc"
+            });
+
+        });
     </script>
 </th:block>
 
@@ -41,18 +49,33 @@
     </section>
     <main id="main">
         <div class="container">
-            <div class="wrapper weekBest">
+            <div class="wrapper">
                 <div class="mainTitle">
                     <div class="subject">
                         <p>인기 모임</p>
                         <p class="desc">현재 가장 인기있는 모임을 만나보세요!</p>
                     </div>
                     <div class="etc">
-                        <a href="/moim/" class="more">전체 모임 보기</a>
+                        <a href="/moim/" class="more">모임 전체보기</a>
                     </div>
                 </div>
                 <div class="content">
-                    <ul class="moimList"></ul>
+                    <ul id="moimList"></ul>
+                </div>
+            </div>
+
+            <div class="wrapper newMember">
+                <div class="mainTitle">
+                    <div class="subject">
+                        <p>새로운 팀원</p>
+                        <p class="desc">새롭게 합류한 팀원들을 알아보세요!</p>
+                    </div>
+                    <div class="etc">
+                        <a href="/member/" class="more">팀원 전체보기</a>
+                    </div>
+                </div>
+                <div class="content">
+                    <ul id="memberList"></ul>
                 </div>
             </div>
         </div>
@@ -60,6 +83,9 @@
 
     <template id="moimListTemplate">
         <th:block th:replace="fragment/moim/moimList :: moimList"></th:block>
+    </template>
+    <template id="memberListTemplate">
+        <th:block th:replace="fragment/member/memberList :: memberList"></th:block>
     </template>
 </th:block>
 </html>
