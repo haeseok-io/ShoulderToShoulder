@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css">
     <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/css/customSelect2.css">
     <style>
         #main .container { width: 970px; max-width: 970px; }
 
@@ -55,28 +56,6 @@
         #main .container .headcount .content .itemWrap.personnel { width: 20%; display: flex; justify-content: space-between; align-items: center; }
         #main .container .headcount .content .itemWrap.personnel button { width: 24%; height: 50px; background: transparent; border: none; color: #888; }
         #main .container .headcount .content .itemWrap.personnel input[type='text'] { width: 50%; text-align: center; }
-
-        /* Select */
-        #main .container .select2-selection--single,
-        #main .container .select2-selection--multiple { display: flex; flex-wrap: wrap; align-items: center; width: 100%; height: 40px; background: #1D2432; border: 1px solid #343A47; padding: 0 10px 0 5px; }
-        #main .container .select2-container--default .select2-selection--single { padding-left: 10px !important; }
-        #main .container .select2-container--default .select2-selection--single .select2-selection__rendered { color: #eee; }
-
-        #main .container .select2-selection--single .select2-selection__arrow { top: 50%; transform: translateY(-50%); right: 10px; }
-        #main .container .select2-selection--single .select2-selection__rendered { padding-left: 0; padding-right: 0; }
-        #main .container .select2 .select2-search__field::placeholder { color: #888; }
-
-        #main .container .select2-selection--multiple .select2-search { display: flex; flex: 1; }
-        #main .container .select2-container .select2-search--inline .select2-search__field { display: flex; flex: 1; margin-top: 0; color: #eee; }
-        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice { margin-top: 0; }
-
-        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #e4e4e4; }
-        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove { color: #111827; }
-        #main .container .select2-container--default .select2-selection--multiple .select2-selection__choice__display { color: #111827; }
-
-        .select2-dropdown { background-color: #1D2432; border: 1px solid #666; }
-        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable { background-color: #262D3C; }
-        .select2-container--default .select2-results__option--selected { background-color: #6366F1 !important; }
     </style>
 </th:block>
 <th:block layout:fragment="js">
