@@ -4,29 +4,84 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.haeseok.sts.dao.MemberDAO">
+    <select id="getTotal" resultType="long">
+        Select count(*) From member Where 1
+    </select>
+    <select id="getSearchTotal" parameterType="MemberListRequest" resultType="long">
+        Select count(Distinct m.no)
+        From member m
+        Left Join member_category mc On mc.member_no=m.no
+        Left Join member_job mj On mj.member_no=m.no
+        Left Join member_language ml On ml.member_no=m.no
+
+        <where>
+            <trim prefixOverrides="And">
+                <if test="positionDetailNo!=null and positionDetailNo!=''">
+                    And mj.pd_no=#{positionDetailNo}
+                </if>
+                <if test="categoryNo!=null and categoryNo!=''">
+                    And mc.category_no=#{categoryNo}
+                </if>
+                <if test="keyword!=null and keyword!=''">
+                    And (
+                    m.nickname Like CONCAT('%',#{keyword},'%')
+                    Or ml.name Like CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+    <select id="findMemberByNo" parameterType="long" resultType="memberDTO">
+        Select * From member Where no=#{no}
+    </select>
+    <select id="findMemberByEmail" parameterType="String" resultType="memberDTO">
+        select * From member Where email=#{email} And provider is NULL
+    </select>
+    <select id="findMemberByEmailAndProvider" parameterType="map" resultType="memberDTO">
+        select * From member Where email=#{email} And provider=#{provider}
+    </select>
+    <select id="findSearchList" parameterType="MemberListRequest" resultType="MemberDTO">
+        Select m.no, m.email, m.nickname, m.regdate, m.provider
+        From member m
+        Left Join member_category mc On mc.member_no=m.no
+        Left Join member_job mj On mj.member_no=m.no
+        Left Join member_language ml On ml.member_no=m.no
+
+        <where>
+            <trim prefixOverrides="And">
+                <if test="positionDetailNo!=null and positionDetailNo!=''">
+                    And mj.pd_no=#{positionDetailNo}
+                </if>
+                <if test="categoryNo!=null and categoryNo!=''">
+                    And mc.category_no=#{categoryNo}
+                </if>
+                <if test="keyword!=null and keyword!=''">
+                    And (
+                        m.nickname Like CONCAT('%',#{keyword},'%')
+                        Or ml.name Like CONCAT('%',#{keyword},'%')
+                    )
+                </if>
+            </trim>
+        </where>
+
+        Order By ${sortField} ${sortType} Limit #{start}, #{end}
+    </select>
 
     <insert id="addMember" parameterType="MemberDTO" useGeneratedKeys="true" keyProperty="no">
         Insert Into member (email, password, nickname, provider, regdate)
         Values (#{email}, #{password}, #{nickname}, #{provider}, now())
     </insert>
 
-    <select id="findMemberNo" parameterType="long" resultType="memberDTO">
-        Select * From member Where no=#{no}
-    </select>
-    <select id="findMemberEmail" parameterType="String" resultType="memberDTO">
-        select * From member Where email=#{email} And provider is NULL
-    </select>
-    <select id="findMemberEmailAsProvider" parameterType="map" resultType="memberDTO">
-        select * From member Where email=#{email} And provider=#{provider}
-    </select>
+    <delete id="dropMember" parameterType="long">
+        Delete From member Where no=#{no}
+    </delete>
+
     <select id="emailExist" parameterType="String" resultType="boolean">
         Select count(*) From member Where email=#{email}
     </select>
     <select id="nicknameExist" parameterType="String" resultType="boolean">
         Select count(*) From member Where nickname=#{nickname}
     </select>
-
-    <delete id="dropMember" parameterType="long">
-        Delete From member Where no=#{no}
-    </delete>
 </mapper>
