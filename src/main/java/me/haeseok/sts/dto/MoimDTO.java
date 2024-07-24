@@ -18,7 +18,7 @@ public class MoimDTO {
     private String explanation;
     private String thumbnail;
     private String status;
-    private int like;
+    private int heart;
     private int hits;
     private Timestamp regdate;
     private Long memberNo;
