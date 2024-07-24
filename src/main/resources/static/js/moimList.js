@@ -4,31 +4,38 @@ $(() => {
     // 모임 좋아요
 });
 
-const getMoimListData = (target, template, request, form, init = true) => {
+const getMoimListData = (request, init = true) => {
+    // Val
+    let target = $("#moimList");
+
     // Init
     if( init )  target.html("");
 
     // Data
-    $.get("/moim/data", request, data => {
-        if( data.total<1 ) {
+    $.ajax({
+        type: "GET",
+        url: "/moim/data",
+        data: request,
+        dataType: "json",
+        success: data => {
+            if( data.total<1 ) {
 
-        } else {
-            convertMoimList(target, template, data.dataList);
+            } else {
+                convertMoimList(data.dataList);
+            }
         }
-    })
+    });
 }
 
-const convertMoimList = (target, template, data) => {
+const convertMoimList = data => {
     // Val
-    let appendSel = target;
-    let appendHtml = template.html();
+    let appendSel = $("#moimList");
+    let appendHtml = $("#moimListTemplate").html();
 
     // Data
     data.forEach(obj => {
         let append = $(appendHtml);
-        console.log(obj);
 
-        // 데이터
         // - 타입
         let typeName = obj.type==="P" ? "프로젝트" : "스터디";
         let typeClass = obj.type==="P" ? "main" : "active";
@@ -39,14 +46,14 @@ const convertMoimList = (target, template, data) => {
         // - 상태
         let statusName = obj.status==="W" ? "모집중" : "모집완료";
 
-        // 데이터 담기
+        // - 데이터 담기
         append.attr("data-type", obj.type);
         append.attr("data-no", obj.no);
         append.attr("data-thumbnail", true);
         append.find(".thumbnail img").attr("src", thumbnailPath);
         append.find(".category").text(obj.category.name);
         append.find(".type span").addClass("badge-"+typeClass).text(typeName);
-        append.find(".like span").text(obj.like);
+        append.find(".heart span").text(obj.heart);
         append.find(".subject").text(obj.subject);
         append.find(".explanation").text(obj.explanation);
         append.find(".headcountToggle .toggleName span:nth-of-type(1)").text(statusName);
