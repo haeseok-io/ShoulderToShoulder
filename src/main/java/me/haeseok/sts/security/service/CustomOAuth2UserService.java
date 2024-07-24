@@ -37,7 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 회원 조회
-        MemberDTO member = memberDAO.findMemberEmailAsProvider(oAuth2Response.getEmail(), serviceProvider);
+        MemberDTO member = memberDAO.findMemberByEmailAndProvider(oAuth2Response.getEmail(), serviceProvider);
 
         // 조회되는 회원이 없을 경우 가입 처리
         if( member==null ) {
