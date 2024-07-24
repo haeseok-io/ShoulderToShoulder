@@ -19,12 +19,12 @@
             </div>
             <div class="unb">
                 <ul th:if="${session.MEMBEREMAIL == null}">
-                    <li><a href="/register">회원가입</a></li>
-                    <li><a href="/login">로그인</a></li>
+                    <li><a href="/member/register">회원가입</a></li>
+                    <li><a href="/member/login">로그인</a></li>
                 </ul>
                 <ul th:unless="${session.MEMBEREMAIL == null}">
                     <li class="active"><a href="/moim/write">모임개설</a></li>
-                    <li><a href="/">마이페이지</a></li>
+                    <li><a href="/mypage/">마이페이지</a></li>
                     <li><a href="/logout">로그아웃</a></li>
                 </ul>
             </div>
