@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        MemberDTO member = memberDAO.findMemberEmail(email);
+        MemberDTO member = memberDAO.findMemberByEmail(email);
 
         if( member==null ) {
             throw new UsernameNotFoundException("조회되는 이메일이 없습니다.");
