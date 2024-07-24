@@ -55,7 +55,7 @@ public class MoimServiceImple implements MoimService {
                     : studyCategoryDAO.getStudyCategoryByMoimNo(data.getNo());
 
             MoimListResponse moimListResponse = MoimListResponse.convertMoimDTO(data);
-            moimListResponse.setWriter(memberDAO.findMemberNo(data.getMemberNo()));
+            moimListResponse.setWriter(memberDAO.findMemberByNo(data.getMemberNo()));
             moimListResponse.setCategory(category);
             moimListResponse.setLanguageList(moimLanguageDAO.getMoimLanguageByMoimNo(data.getNo()));
             moimListResponse.setHeadcountList(moimHeadcountDAO.getMoimHeadcountByMoimNo(data.getNo()).stream().map(headcount -> {
