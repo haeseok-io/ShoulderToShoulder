@@ -3,22 +3,24 @@ package me.haeseok.sts.control;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dto.MemberDTO;
+import me.haeseok.sts.request.MemberListRequest;
+import me.haeseok.sts.response.CustomPageResponse;
+import me.haeseok.sts.response.MemberListResponse;
 import me.haeseok.sts.service.MemberService;
 import me.haeseok.sts.util.SessionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping(value = "/member")
 public class MemberController {
     private final MemberService memberService;
 
@@ -40,6 +42,12 @@ public class MemberController {
         }
 
         return "register";
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CustomPageResponse<MemberListResponse>> memberList(MemberListRequest request) {
+        return ResponseEntity.ok().body(memberService.readMemberList(request));
     }
 
     @ResponseBody
