@@ -22,7 +22,7 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        MemberDTO member = memberDAO.findMemberNo(customOAuth2User.getNo());
+        MemberDTO member = memberDAO.findMemberByNo(customOAuth2User.getNo());
 
         // 로그인 정보 세션에 담기
         HttpSession session = request.getSession();
