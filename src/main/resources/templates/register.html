@@ -131,7 +131,7 @@
             }
 
             // Process
-            $.post("/register", $(form).serialize(), data => {
+            $.post("/member/register", $(form).serialize(), data => {
                 alert(data.message);
 
                 if( data.type==='success' ) {
@@ -151,7 +151,7 @@
             let result = {type: null, message: null};
 
             $.ajaxSetup({async: false});
-            $.get("/emailExist", {email: email}, data => {
+            $.get("/member/emailExist", {email: email}, data => {
                 result = data;
             }, "json").always(() => {
                 $.ajaxSetup({async: true});
@@ -169,7 +169,7 @@
             let result = {type: null, message: null};
 
             $.ajaxSetup({async: false});
-            $.get("/nicknameExist", {nickname: nickname}, data => {
+            $.get("/member/nicknameExist", {nickname: nickname}, data => {
                 result = data;
             }, "json").always(() => {
                 $.ajaxSetup({async: true});
