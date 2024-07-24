@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.haeseok.sts.dao.MoimDAO">
-    <resultMap id="moimDTOResultMap" type="MoimDTO">
+    <resultMap id="moimResultMap" type="MoimDTO">
         <result property="memberNo" column="member_no" />
     </resultMap>
 
@@ -56,8 +56,8 @@
         </where>
     </select>
 
-    <select id="findSearchList" parameterType="MoimListRequest" resultMap="moimDTOResultMap">
-        Select DISTINCT m.no, m.type, m.subject, m.explanation, m.thumbnail, m.status, m.like, m.hits, m.regdate, m.member_no
+    <select id="findSearchList" parameterType="MoimListRequest" resultMap="moimResultMap">
+        Select DISTINCT m.no, m.type, m.subject, m.explanation, m.thumbnail, m.status, m.heart, m.hits, m.regdate, m.member_no
         From moim m
         Left Join moim_detail md On md.no=m.no
         Left Join moim_headcount mh On mh.moim_no=m.no
