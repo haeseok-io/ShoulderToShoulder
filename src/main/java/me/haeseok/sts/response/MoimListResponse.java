@@ -23,7 +23,7 @@ public class MoimListResponse {
     private String explanation;
     private String thumbnail;
     private String status;
-    private int like;
+    private int heart;
     private int hits;
     private Timestamp regdate;
 
@@ -40,7 +40,7 @@ public class MoimListResponse {
                 .explanation(moimDTO.getExplanation())
                 .thumbnail(moimDTO.getThumbnail())
                 .status(moimDTO.getStatus())
-                .like(moimDTO.getLike())
+                .heart(moimDTO.getHeart())
                 .hits(moimDTO.getHits())
                 .regdate(moimDTO.getRegdate())
                 .build();
