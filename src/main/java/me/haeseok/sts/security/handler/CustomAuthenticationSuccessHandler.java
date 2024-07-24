@@ -27,7 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        MemberDTO member = memberDAO.findMemberEmail(userDetails.getUsername());
+        MemberDTO member = memberDAO.findMemberByEmail(userDetails.getUsername());
 
         // 로그인 정보 세션에 담기
         HttpSession session = request.getSession();
