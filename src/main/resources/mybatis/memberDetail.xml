@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.MemberDetailDAO">
+    <resultMap id="memberDetailResultMap" type="MemberDetailDTO">
+        <result property="preferArea" column="prefer_area" />
+        <result property="profileImg" column="profile_img" />
+        <result property="gitLink" column="git_link" />
+        <result property="blogLink" column="blog_link" />
+    </resultMap>
+
+    <select id="findMemberDetailByNo" parameterType="long" resultMap="memberDetailResultMap">
+        Select no, introduce, prefer_area, profile_img, git_link, blog_link
+        From member_detail
+        Where no=#{no}
+    </select>
+</mapper>
