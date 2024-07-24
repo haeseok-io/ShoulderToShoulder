@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+#memberList { display: flex; justify-content: flex-start; flex-wrap: wrap; }
+#memberList > li { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; width: calc(25% - (60px/4)); border: 1px solid #343A47; border-radius: 10px; margin-right: 20px; margin-bottom: 30px; padding: 20px; overflow: hidden; cursor: pointer; }
+#memberList > li:nth-child(4n) { margin-right: 0; }
+
+
+#memberList > li .profileImg { width: 25%; }
+#memberList > li .profileImg img { width: 50px; height: 50px; border-radius: 10px; overflow: hidden; object-fit: cover; }
+
+#memberList > li .content { width: 75%; }
+#memberList > li .content .profile {}
+#memberList > li .content .profile .nickname { font-size: 14px; font-weight: 600; color: #ccc; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+
+#memberList > li .content .job { display: flex; justify-content: flex-start; align-items: center; margin-top: 5px; color: #888; }
+#memberList > li .content .job .positionDetail {}
+#memberList > li .content .job .level { margin-left: 10px; }
+#memberList > li .content .job .career { margin-left: 10px; }
+
+#memberList > li .ongoing { width: 100%; margin: 20px 0; }
+#memberList > li .ongoing p { color: #777; }
+#memberList > li .ongoing p span { color: #FF7745; }
+
+#memberList > li .message { width: 100%; }
+#memberList > li .message button { width: 100%; height: 40px; background: #282a41; border: 0; border-radius: 5px; font-size: 14px; color: #ccc; }
