@@ -1,0 +1,30 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="memberList">
+    <li data-no="">
+        <div class="profileImg">
+            <img src="" alt="">
+        </div>
+        <div class="content">
+            <div class="profile">
+                <p class="nickname"></p>
+            </div>
+            <div class="job">
+                <p class="positionDetail">웹 서버</p>
+                <p class="level">초보</p>
+                <p class="career">1~3년차</p>
+            </div>
+        </div>
+        <div class="ongoing">
+            <p>진행중인 모임이 없습니다.</p>
+        </div>
+        <div class="message">
+            <button>
+                <i class="bi bi-envelope"></i>
+                메세지 보내기
+            </button>
+        </div>
+    </li>
+</th:block>
+
+</html>
