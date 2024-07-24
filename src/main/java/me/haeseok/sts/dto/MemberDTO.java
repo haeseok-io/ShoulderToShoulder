@@ -17,11 +17,6 @@ public class MemberDTO {
     private String email;
     private String password;
     private String nickname;
-    private String introduce;
-    private String preferArea;
-    private String profileImg;
-    private String gitLink;
-    private String blogLink;
     private Timestamp regdate;
     private String provider;
     private String role;
