@@ -4,7 +4,7 @@ $(() => {
 
 const getMemberListData = (request, init = true) => {
     // Val
-    let target = $("#memberList");
+    let target = $(".memberList");
 
     // Init
     if( init ) target.html("");
@@ -21,7 +21,7 @@ const getMemberListData = (request, init = true) => {
 
 const convertMemberList = data => {
     // Val
-    let appendSel = $("#memberList");
+    let appendSel = $(".memberList");
     let appendHtml = $("#memberListTemplate").html();
 
     // Data

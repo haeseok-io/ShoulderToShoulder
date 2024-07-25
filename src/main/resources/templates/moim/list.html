@@ -1,32 +1,59 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
 
 <th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="/css/customSelect2.css">
     <link rel="stylesheet" href="/css/moimList.css">
     <style>
-        .search { margin-bottom: 30px; }
-        .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .wrapper { display: flex; justify-content: space-between; }
 
-        .search form .type { width: 200px; }
-        .search form .position { width: 250px; margin-left: 10px; }
-        .search form .keyword { width: 350px; margin-left: 10px; }
-        .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
-        .search form .submit { margin-left: 10px; }
-        .search form .sort { width: 150px; margin-left: auto; }
+        .newMoim { width: 49%; }
+        .newMoim .newMoimSlider { position: relative; width: 100%; overflow: hidden; }
+        .newMoim .newMoimSlider .swiper-pagination { z-index: 10; }
+        .recomMoim { width: 49%; }
+
+        .allMoim { width: 100%; }
+        .allMoim .search { margin-bottom: 30px; }
+        .allMoim .search form { display: flex; justify-content: flex-start; align-items: center; }
+
+        .allMoim .search form .type { width: 200px; }
+        .allMoim .search form .position { width: 250px; margin-left: 10px; }
+        .allMoim .search form .keyword { width: 350px; margin-left: 10px; }
+        .allMoim .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .allMoim .search form .submit { margin-left: 10px; }
+        .allMoim .search form .sort { width: 150px; margin-left: auto; }
     </style>
 </th:block>
 <th:block layout:fragment="js">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="/js/moimList.js"></script>
     <script>
         let callStatus;
+        let newMoimSlider;
         let typeSelect, positionSelect, sortSelect;
 
         $.fn.select2.defaults.set("minimumResultsForSearch", -1);
         $.fn.select2.defaults.set("width", "100%");
 
         $(() => {
+            // swiper
+            newMoimSlider = new Swiper(".newMoimSlider", {
+                loop: true,
+                slideClass: "moimItem",
+            });
+
+            // 신규프로젝트 호출
+            getMoimListData({
+                type: "P",
+                "pageRequest.page": 1,
+                "pageRequest.scale": 3,
+                sortField: "no",
+                sortType: "desc",
+                status: ["W"]
+            }, "new");
+
             // select 플러그인 적용
             typeSelect = $("select[name='type']").select2();
             positionSelect = $("select[name='positionDetailNo']").select2();
@@ -49,6 +76,11 @@
             // Result
             return false;
         }
+
+        const callbackMoimList = () => {
+            newMoimSlider.update();
+            newMoimSlider.slideTo(0);
+        }
     </script>
 </th:block>
 
@@ -66,59 +98,69 @@
                             <p>신규 프로젝트</p>
                         </div>
                     </div>
+                    <div class="content">
+                        <div class="newMoimSlider">
+                            <ul class="swiper-wrapper moimList" data-type="new"></ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="bestMoim">
+                <div class="recomMoim">
                     <div class="mainTitle">
                         <div class="subject">
                             <p>추천 프로젝트</p>
                         </div>
                     </div>
+                    <div class="content">
+                        <p>준비중입니다.</p>
+                    </div>
                 </div>
             </div>
             <div class="wrapper">
-                <div class="mainTitle">
-                    <div class="subject">
-                        <p>전체 프로젝트/스터디</p>
+                <div class="allMoim">
+                    <div class="mainTitle">
+                        <div class="subject">
+                            <p>전체 프로젝트/스터디</p>
+                        </div>
                     </div>
-                </div>
-                <div class="search">
-                    <form name="searchForm" onsubmit="return callList();">
-                        <input type="hidden" name="pageRequest.page" value="1">
-                        <input type="hidden" name="pageRequest.scale" value="12">
+                    <div class="search">
+                        <form name="searchForm" onsubmit="return callList();">
+                            <input type="hidden" name="pageRequest.page" value="1">
+                            <input type="hidden" name="pageRequest.scale" value="12">
 
-                        <div class="type">
-                            <select name="type" onchange="callList();">
-                                <option value="">모임 전체</option>
-                                <option value="P">프로젝트</option>
-                                <option value="S">스터디</option>
-                            </select>
-                        </div>
-                        <div class="position">
-                            <select name="positionDetailNo" onchange="callList();">
-                                <option value="">모집분야</option>
-                                <optgroup th:each="position : ${positionMergeList}" th:label="${position.name}">
-                                    <option th:each="detail : ${position.positionDetailList}" th:value="${detail.no}">[[${detail.name}]]</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="keyword">
-                            <input type="text" name="keyword" placeholder="ex) 프로젝트/스터디명, 사용언어/기술, 키워드">
-                        </div>
-                        <div class="submit">
-                            <button type="submit" class="btn btn-main">검색</button>
-                        </div>
-                        <div class="sort">
-                            <select name="sortField" onchange="callList();">
-                                <option value="no">최근 등록순</option>
-                                <option value="hits">조회수 많은순</option>
-                                <option value="heart">좋아요 많은순</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
+                            <div class="type">
+                                <select name="type" onchange="callList();">
+                                    <option value="">모임 전체</option>
+                                    <option value="P">프로젝트</option>
+                                    <option value="S">스터디</option>
+                                </select>
+                            </div>
+                            <div class="position">
+                                <select name="positionDetailNo" onchange="callList();">
+                                    <option value="">모집분야</option>
+                                    <optgroup th:each="position : ${positionMergeList}" th:label="${position.name}">
+                                        <option th:each="detail : ${position.positionDetailList}" th:value="${detail.no}">[[${detail.name}]]</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="keyword">
+                                <input type="text" name="keyword" placeholder="ex) 프로젝트/스터디명, 사용언어/기술, 키워드">
+                            </div>
+                            <div class="submit">
+                                <button type="submit" class="btn btn-main">검색</button>
+                            </div>
+                            <div class="sort">
+                                <select name="sortField" onchange="callList();">
+                                    <option value="no">최근 등록순</option>
+                                    <option value="hits">조회수 많은순</option>
+                                    <option value="heart">좋아요 많은순</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
 
-                <div class="content">
-                    <ul id="moimList"></ul>
+                    <div class="content">
+                        <ul class="moimList" data-type="default"></ul>
+                    </div>
                 </div>
             </div>
         </div>

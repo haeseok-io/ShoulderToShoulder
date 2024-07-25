@@ -4,12 +4,12 @@ $(() => {
     // 모임 좋아요
 });
 
-const getMoimListData = (request, init = true) => {
+const getMoimListData = (request, target = "default", init = true) => {
     // Val
-    let target = $("#moimList");
+    let appendSel = $(`.moimList[data-type='${target}']`);
 
     // Init
-    if( init )  target.html("");
+    if( init )  appendSel.html("");
 
     // Data
     $.ajax({
@@ -21,15 +21,14 @@ const getMoimListData = (request, init = true) => {
             if( data.total<1 ) {
 
             } else {
-                convertMoimList(data.dataList);
+                convertMoimList(appendSel, data.dataList);
             }
         }
     });
 }
 
-const convertMoimList = data => {
+const convertMoimList = (appendSel, data) => {
     // Val
-    let appendSel = $("#moimList");
     let appendHtml = $("#moimListTemplate").html();
 
     // Data
@@ -90,4 +89,9 @@ const convertMoimList = data => {
         // Result
         appendSel.append(append);
     });
+
+    // Callback
+    if( typeof callbackMoimList==="function" ) {
+        callbackMoimList();
+    }
 }
