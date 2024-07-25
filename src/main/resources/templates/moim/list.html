@@ -13,16 +13,16 @@
         .newMoim .newMoimSlider .swiper-pagination { z-index: 10; }
         .recomMoim { width: 49%; }
 
-        .allMoim { width: 100%; }
-        .allMoim .search { margin-bottom: 30px; }
-        .allMoim .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .moim { width: 100%; }
+        .moim .search { margin-bottom: 30px; }
+        .moim .search form { display: flex; justify-content: flex-start; align-items: center; }
 
-        .allMoim .search form .type { width: 200px; }
-        .allMoim .search form .position { width: 250px; margin-left: 10px; }
-        .allMoim .search form .keyword { width: 350px; margin-left: 10px; }
-        .allMoim .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
-        .allMoim .search form .submit { margin-left: 10px; }
-        .allMoim .search form .sort { width: 150px; margin-left: auto; }
+        .moim .search form .type { width: 200px; }
+        .moim .search form .position { width: 250px; margin-left: 10px; }
+        .moim .search form .keyword { width: 350px; margin-left: 10px; }
+        .moim .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .moim .search form .submit { margin-left: 10px; }
+        .moim .search form .sort { width: 150px; margin-left: auto; }
     </style>
 </th:block>
 <th:block layout:fragment="js">
@@ -30,20 +30,14 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="/js/moimList.js"></script>
     <script>
+        $.fn.select2.defaults.set("minimumResultsForSearch", -1);
+        $.fn.select2.defaults.set("width", "100%");
+
         let callStatus;
         let newMoimSlider;
         let typeSelect, positionSelect, sortSelect;
 
-        $.fn.select2.defaults.set("minimumResultsForSearch", -1);
-        $.fn.select2.defaults.set("width", "100%");
-
         $(() => {
-            // swiper
-            newMoimSlider = new Swiper(".newMoimSlider", {
-                loop: true,
-                slideClass: "moimItem",
-            });
-
             // 신규프로젝트 호출
             getMoimListData({
                 type: "P",
@@ -78,8 +72,14 @@
         }
 
         const callbackMoimList = () => {
-            newMoimSlider.update();
-            newMoimSlider.slideTo(0);
+            newMoimSlider = new Swiper(".newMoimSlider", {
+                loop: true,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                slideClass: "moimItem"
+            });
         }
     </script>
 </th:block>
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="wrapper">
-                <div class="allMoim">
+                <div class="moim">
                     <div class="mainTitle">
                         <div class="subject">
                             <p>전체 프로젝트/스터디</p>
