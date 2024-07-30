@@ -1,6 +1,7 @@
 package me.haeseok.sts.dao;
 
 import me.haeseok.sts.dto.MemberDTO;
+import me.haeseok.sts.dto.MemberIdRangeDTO;
 import me.haeseok.sts.request.MemberListRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,8 @@ import java.util.List;
 public interface MemberDAO {
     Long getTotal();
     Long getSearchTotal(MemberListRequest request);
+    MemberIdRangeDTO getMemberIdRange();
+    MemberDTO getMemberRandom();
 
     MemberDTO findMemberByNo(Long no);
     MemberDTO findMemberByEmail(String email);
