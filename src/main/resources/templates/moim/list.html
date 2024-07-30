@@ -6,23 +6,23 @@
     <link rel="stylesheet" href="/css/customSelect2.css">
     <link rel="stylesheet" href="/css/moimList.css">
     <style>
-        .wrapper { display: flex; justify-content: space-between; }
+        .container > section { display: flex; justify-content: space-between; }
 
-        .newMoim { width: 49%; }
-        .newMoim .newMoimSlider { position: relative; width: 100%; overflow: hidden; }
-        .newMoim .newMoimSlider .swiper-pagination { z-index: 10; }
-        .recomMoim { width: 49%; }
+        .container > section .moimNew { width: 49%; }
+        .container > section .moimNew .slider { width: 100%; overflow: hidden; }
 
-        .moim { width: 100%; }
-        .moim .search { margin-bottom: 30px; }
-        .moim .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .container > section .moimRecom { width: 49%; }
 
-        .moim .search form .type { width: 200px; }
-        .moim .search form .position { width: 250px; margin-left: 10px; }
-        .moim .search form .keyword { width: 350px; margin-left: 10px; }
-        .moim .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
-        .moim .search form .submit { margin-left: 10px; }
-        .moim .search form .sort { width: 150px; margin-left: auto; }
+        .container > section .moim { width: 100%; }
+        .container > section .moim .search { margin-bottom: 30px; }
+        .container > section .moim .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .container > section .moim .search form .type { width: 200px; }
+        .container > section .moim .search form .position { width: 250px; margin-left: 10px; }
+        .container > section .moim .search form .keyword { width: 350px; margin-left: 10px; }
+        .container > section .moim .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .container > section .moim .search form .submit { margin-left: 10px; }
+        .container > section .moim .search form .sort { width: 150px; margin-left: auto; }
+
     </style>
 </th:block>
 <th:block layout:fragment="js">
@@ -72,7 +72,7 @@
         }
 
         const callbackMoimList = () => {
-            newMoimSlider = new Swiper(".newMoimSlider", {
+            newMoimSlider = new Swiper(".slider", {
                 loop: true,
                 autoplay: {
                     delay: 4000,
@@ -92,31 +92,31 @@
 
     <main id="main">
         <div class="container">
-            <div class="wrapper">
-                <div class="newMoim">
+            <section>
+                <div class="moimNew">
                     <div class="mainTitle">
                         <div class="subject">
                             <p>신규 프로젝트</p>
                         </div>
                     </div>
-                    <div class="content">
-                        <div class="newMoimSlider">
+                    <div class="wrap">
+                        <div class="slider">
                             <ul class="swiper-wrapper moimList" data-type="new"></ul>
                         </div>
                     </div>
                 </div>
-                <div class="recomMoim">
+                <div class="moimRecom">
                     <div class="mainTitle">
                         <div class="subject">
                             <p>추천 프로젝트</p>
                         </div>
                     </div>
-                    <div class="content">
+                    <div class="wrap">
                         <p>준비중입니다.</p>
                     </div>
                 </div>
-            </div>
-            <div class="wrapper">
+            </section>
+            <section>
                 <div class="moim">
                     <div class="mainTitle">
                         <div class="subject">
@@ -159,11 +159,11 @@
                         </form>
                     </div>
 
-                    <div class="content">
+                    <div class="wrap">
                         <ul class="moimList" data-type="default"></ul>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </main>
 

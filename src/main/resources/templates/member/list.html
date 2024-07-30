@@ -5,26 +5,26 @@
     <link rel="stylesheet" href="/css/customSelect2.css">
     <link rel="stylesheet" href="/css/memberList.css">
     <style>
-        .todayMember { display: flex; justify-content: space-between; border: 1px solid #343A47; border-radius: 10px; overflow: hidden; }
-        .todayMember .profileImg { width: 250px; }
-        .todayMember .profileImg img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
-        .todayMember .content { width: calc(100% - 250px); padding: 50px 50px; }
-        .todayMember .content > div { margin-bottom: 10px; color: #aaa; font-size: 14px; }
-        .todayMember .content > div:last-child { margin-bottom: 0; }
-        .todayMember .content .tit { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: #eee; }
-        .todayMember .content .tit span { margin-right: 10px; }
+        .today .wrap { display: flex; justify-content: space-between; border: 1px solid #343A47; border-radius: 10px; overflow: hidden; }
+        .today .wrap .profileImg { width: 250px; }
+        .today .wrap .profileImg img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
+        .today .wrap .content { width: calc(100% - 250px); padding: 50px 50px; }
+        .today .wrap .content > div { margin-bottom: 10px; color: #aaa; font-size: 14px; }
+        .today .wrap .content > div:last-child { margin-bottom: 0; }
+        .today .wrap .content .tit { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: #eee; }
+        .today .wrap .content .tit span { margin-right: 10px; }
 
-        .todayMember .content .nickname { margin-bottom: 40px; }
-        .todayMember .content .nickname .tit { font-size: 18px; }
+        .today .wrap .content .nickname { margin-bottom: 40px; }
+        .today .wrap .content .nickname .tit { font-size: 18px; }
 
-        .search { margin-bottom: 30px; }
-        .search form { display: flex; justify-content: flex-start; align-items: center; }
-        .search form .type { width: 200px; }
-        .search form .position { width: 250px; margin-left: 10px; }
-        .search form .category { width: 250px; margin-left: 10px; }
-        .search form .keyword { width: 350px; margin-left: 10px; }
-        .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
-        .search form .submit { margin-left: 10px; }
+        .member .search { margin-bottom: 30px; }
+        .member .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .member .search form .type { width: 200px; }
+        .member .search form .position { width: 250px; margin-left: 10px; }
+        .member .search form .category { width: 250px; margin-left: 10px; }
+        .member .search form .keyword { width: 350px; margin-left: 10px; }
+        .member .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .member .search form .submit { margin-left: 10px; }
     </style>
 </th:block>
 
@@ -70,13 +70,13 @@
 
     <main id="main">
         <div class="container">
-            <div class="wrapper">
+            <section class="today">
                 <div class="mainTitle">
                     <div class="subject">
                         <p>오늘의 팀원을 소개합니다</p>
                     </div>
                 </div>
-                <div class="todayMember">
+                <div class="wrap">
                     <div class="profileImg">
                         <img th:if="${todayMember.profileImg!=null}" src="[[${todayMember.profileImg}]]" alt="">
                         <img th:unless="${todayMember.profileImg!=null}" src="/images/profileBlank.png" alt="">
@@ -104,8 +104,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="wrapper">
+            </section>
+
+            <section class="member">
                 <div class="mainTitle">
                     <div class="subject">
                         <p>팀원 찾기</p>
@@ -140,10 +141,10 @@
                     </form>
                 </div>
 
-                <div class="findMember">
+                <div class="wrap">
                     <ul class="memberList"></ul>
                 </div>
-            </div>
+            </section>
         </div>
     </main>
 

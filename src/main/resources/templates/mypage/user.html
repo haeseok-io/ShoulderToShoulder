@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/css/customSelect2.css">
+    <link rel="stylesheet" href="/css/mypage.css">
+</th:block>
+
+<th:block layout:fragment="js">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</th:block>
+
+<th:block layout:fragment="container">
+    <section class="pageBanner">
+        <img src="/images/memberBanner.png" alt="">
+    </section>
+
+    <main id="main">
+        <div class="container">
+            <th:block th:replace="fragment/mypage/mypageTab :: mypageTab(tab='user')"></th:block>
+
+        </div>
+    </main>
+</th:block>
+
+</html>
