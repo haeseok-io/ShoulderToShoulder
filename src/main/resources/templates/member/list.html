@@ -1,0 +1,131 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout" layout:decorate="~{fragment/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/css/customSelect2.css">
+    <link rel="stylesheet" href="/css/memberList.css">
+    <style>
+        .member { width: 100%; }
+        .member .search { margin-bottom: 30px; }
+        .member .search form { display: flex; justify-content: flex-start; align-items: center; }
+
+        .member .search form .type { width: 200px; }
+        .member .search form .position { width: 250px; margin-left: 10px; }
+        .member .search form .category { width: 250px; margin-left: 10px; }
+        .member .search form .keyword { width: 350px; margin-left: 10px; }
+        .member .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .member .search form .submit { margin-left: 10px; }
+    </style>
+</th:block>
+
+<th:block layout:fragment="js">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/js/memberList.js"></script>
+    <script>
+        $.fn.select2.defaults.set("minimumResultsForSearch", -1);
+        $.fn.select2.defaults.set("width", "100%");
+
+        let positionSelect, categorySelect;
+
+        $(() => {
+            // select 플러그인 적용
+            positionSelect = $("select[name='positionDetailNo']").select2();
+            categorySelect = $("select[name='categoryNo']").select2();
+
+            // 초기 리스트 호출
+            callList();
+        });
+
+
+        const callList = page => {
+            let form = $("form[name='searchForm']");
+
+            // Init
+            page = page ? page : 1;
+            $("input[name='pageRequest.page']").val(page);
+
+            // Process
+            getMemberListData(form.serialize());
+
+            // Result
+            return false;
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="container">
+    <section class="pageBanner">
+        <img src="/images/memberBanner.png" alt="">
+    </section>
+
+    <main id="main">
+        <div class="container">
+            <div class="wrapper">
+                <div class="todayMember">
+                    <div class="mainTitle">
+                        <div class="subject">
+                            <p>오늘의 팀원을 소개합니다</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="profile">
+                            <img th:if="${todayMember.profileImg!=null}" src="[[${todayMember.profileImg}]]" alt="">
+                            <img th:unless="${todayMember.profileImg!=null}" src="/images/profileBlank.png" alt="">
+                        </div>
+                        <div class="memberContent">
+                            <div class="nickname">
+                                <p>[[${todayMember.nickname}]]</p>
+                            </div>
+                        </div>
+                        [[${todayMember}]]
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper">
+                <div class="member">
+                    <div class="mainTitle">
+                        <div class="subject">
+                            <p>팀원 찾기</p>
+                        </div>
+                    </div>
+                    <div class="search">
+                        <form name="searchForm" onsubmit="return callList();">
+                            <input type="hidden" name="pageRequest.page" value="1">
+                            <input type="hidden" name="pageRequest.scale" value="16">
+
+                            <div class="position">
+                                <select name="positionDetailNo" onchange="callList();">
+                                    <option value="">직무</option>
+                                    <optgroup th:each="position : ${positionMergeList}" th:label="${position.name}">
+                                        <option th:each="detail : ${position.positionDetailList}" th:value="${detail.no}">[[${detail.name}]]</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="category">
+                                <select name="categoryNo" onchange="callList();">
+                                    <option value="">관심분야</option>
+                                    <option th:each="category : ${categoryList}" th:value="${category.no}">[[${category.name}]]</option>
+                                </select>
+                            </div>
+                            <div class="keyword">
+                                <input type="text" name="keyword" placeholder="ex) 닉네임, 사용언어/기술, 키워드">
+                            </div>
+                            <div class="submit">
+                                <button type="submit" class="btn btn-main">검색</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="content">
+                        <ul class="memberList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <template id="memberListTemplate">
+        <th:block th:replace="fragment/member/memberList :: memberList"></th:block>
+    </template>
+</th:block>
+
+</html>
