@@ -5,16 +5,26 @@
     <link rel="stylesheet" href="/css/customSelect2.css">
     <link rel="stylesheet" href="/css/memberList.css">
     <style>
-        .member { width: 100%; }
-        .member .search { margin-bottom: 30px; }
-        .member .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .todayMember { display: flex; justify-content: space-between; border: 1px solid #343A47; border-radius: 10px; overflow: hidden; }
+        .todayMember .profileImg { width: 250px; }
+        .todayMember .profileImg img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
+        .todayMember .content { width: calc(100% - 250px); padding: 50px 50px; }
+        .todayMember .content > div { margin-bottom: 10px; color: #aaa; font-size: 14px; }
+        .todayMember .content > div:last-child { margin-bottom: 0; }
+        .todayMember .content .tit { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: #eee; }
+        .todayMember .content .tit span { margin-right: 10px; }
 
-        .member .search form .type { width: 200px; }
-        .member .search form .position { width: 250px; margin-left: 10px; }
-        .member .search form .category { width: 250px; margin-left: 10px; }
-        .member .search form .keyword { width: 350px; margin-left: 10px; }
-        .member .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
-        .member .search form .submit { margin-left: 10px; }
+        .todayMember .content .nickname { margin-bottom: 40px; }
+        .todayMember .content .nickname .tit { font-size: 18px; }
+
+        .search { margin-bottom: 30px; }
+        .search form { display: flex; justify-content: flex-start; align-items: center; }
+        .search form .type { width: 200px; }
+        .search form .position { width: 250px; margin-left: 10px; }
+        .search form .category { width: 250px; margin-left: 10px; }
+        .search form .keyword { width: 350px; margin-left: 10px; }
+        .search form .keyword input[type='text'] { width: 100%; height: 40px; border-radius: 5px; padding-left: 10px; }
+        .search form .submit { margin-left: 10px; }
     </style>
 </th:block>
 
@@ -61,63 +71,77 @@
     <main id="main">
         <div class="container">
             <div class="wrapper">
+                <div class="mainTitle">
+                    <div class="subject">
+                        <p>오늘의 팀원을 소개합니다</p>
+                    </div>
+                </div>
                 <div class="todayMember">
-                    <div class="mainTitle">
-                        <div class="subject">
-                            <p>오늘의 팀원을 소개합니다</p>
-                        </div>
+                    <div class="profileImg">
+                        <img th:if="${todayMember.profileImg!=null}" src="[[${todayMember.profileImg}]]" alt="">
+                        <img th:unless="${todayMember.profileImg!=null}" src="/images/profileBlank.png" alt="">
                     </div>
                     <div class="content">
-                        <div class="profile">
-                            <img th:if="${todayMember.profileImg!=null}" src="[[${todayMember.profileImg}]]" alt="">
-                            <img th:unless="${todayMember.profileImg!=null}" src="/images/profileBlank.png" alt="">
-                        </div>
-                        <div class="memberContent">
-                            <div class="nickname">
+                        <div class="nickname">
+                            <div class="tit">
+                                <span class="icon">💟</span>
                                 <p>[[${todayMember.nickname}]]</p>
                             </div>
                         </div>
-                        [[${todayMember}]]
+                        <div class="introduce">
+                            <div class="tit">
+                                <span class="icon">💻</span>
+                                <p>백엔드개발 :: 웹서버</p>
+                            </div>
+                            <p>주로 java를 사용하여 개발하는 백엔드 개발자 입니다. 사이드 프로젝트에 관심이 있어 가입했습니다.</p>
+                        </div>
+                        <div class="ongoing">
+                            <div class="tit">
+                                <span class="icon">💪</span>
+                                <p>현재 참여중인 모임은?</p>
+                            </div>
+                            <p>현재 참여중인 모임이 없습니다.</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="wrapper">
-                <div class="member">
-                    <div class="mainTitle">
-                        <div class="subject">
-                            <p>팀원 찾기</p>
-                        </div>
+                <div class="mainTitle">
+                    <div class="subject">
+                        <p>팀원 찾기</p>
                     </div>
-                    <div class="search">
-                        <form name="searchForm" onsubmit="return callList();">
-                            <input type="hidden" name="pageRequest.page" value="1">
-                            <input type="hidden" name="pageRequest.scale" value="16">
+                </div>
 
-                            <div class="position">
-                                <select name="positionDetailNo" onchange="callList();">
-                                    <option value="">직무</option>
-                                    <optgroup th:each="position : ${positionMergeList}" th:label="${position.name}">
-                                        <option th:each="detail : ${position.positionDetailList}" th:value="${detail.no}">[[${detail.name}]]</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="category">
-                                <select name="categoryNo" onchange="callList();">
-                                    <option value="">관심분야</option>
-                                    <option th:each="category : ${categoryList}" th:value="${category.no}">[[${category.name}]]</option>
-                                </select>
-                            </div>
-                            <div class="keyword">
-                                <input type="text" name="keyword" placeholder="ex) 닉네임, 사용언어/기술, 키워드">
-                            </div>
-                            <div class="submit">
-                                <button type="submit" class="btn btn-main">검색</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="content">
-                        <ul class="memberList"></ul>
-                    </div>
+                <div class="search">
+                    <form name="searchForm" onsubmit="return callList();">
+                        <input type="hidden" name="pageRequest.page" value="1">
+                        <input type="hidden" name="pageRequest.scale" value="16">
+
+                        <div class="position">
+                            <select name="positionDetailNo" onchange="callList();">
+                                <option value="">직무</option>
+                                <optgroup th:each="position : ${positionMergeList}" th:label="${position.name}">
+                                    <option th:each="detail : ${position.positionDetailList}" th:value="${detail.no}">[[${detail.name}]]</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="category">
+                            <select name="categoryNo" onchange="callList();">
+                                <option value="">관심분야</option>
+                                <option th:each="category : ${categoryList}" th:value="${category.no}">[[${category.name}]]</option>
+                            </select>
+                        </div>
+                        <div class="keyword">
+                            <input type="text" name="keyword" placeholder="ex) 닉네임, 사용언어/기술, 키워드">
+                        </div>
+                        <div class="submit">
+                            <button type="submit" class="btn btn-main">검색</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="findMember">
+                    <ul class="memberList"></ul>
                 </div>
             </div>
         </div>

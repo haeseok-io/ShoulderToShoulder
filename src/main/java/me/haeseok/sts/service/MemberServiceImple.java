@@ -101,6 +101,7 @@ public class MemberServiceImple implements MemberService {
 
         MemberListResponse memberListResponse = MemberListResponse.convertMemberDTO(memberDTO);
         memberListResponse.setProfileImg(profileImg);
+        //memberListResponse.setJob();
         return memberListResponse;
     }
 }
