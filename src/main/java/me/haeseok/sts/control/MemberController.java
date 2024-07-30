@@ -6,16 +6,18 @@ import me.haeseok.sts.dto.MemberDTO;
 import me.haeseok.sts.request.MemberListRequest;
 import me.haeseok.sts.response.CustomPageResponse;
 import me.haeseok.sts.response.MemberListResponse;
+import me.haeseok.sts.service.CategoryService;
 import me.haeseok.sts.service.MemberService;
+import me.haeseok.sts.service.PositionService;
 import me.haeseok.sts.util.SessionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,6 +25,17 @@ import java.util.Map;
 @RequestMapping(value = "/member")
 public class MemberController {
     private final MemberService memberService;
+    private final PositionService positionService;
+    private final CategoryService categoryService;
+
+    @GetMapping(value = "/")
+    public String list(Model model) {
+        model.addAttribute("todayMember", memberService.readTodayMember());
+        model.addAttribute("positionMergeList", positionService.readPositionMergeList());
+        model.addAttribute("categoryList", categoryService.readCategoryAll());
+
+        return "member/list";
+    }
 
     @GetMapping("/login")
     public String login(HttpSession session) {
