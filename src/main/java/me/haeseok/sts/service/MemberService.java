@@ -8,6 +8,8 @@ import me.haeseok.sts.response.MemberListResponse;
 public interface MemberService {
     MemberDTO register(MemberDTO memberDTO);
     CustomPageResponse<MemberListResponse> readMemberList(MemberListRequest request);
+    MemberListResponse readTodayMember();
     boolean isEmailExist(String email);
     boolean isNicknameExist(String nickname);
+    MemberListResponse convertMemberList(MemberDTO memberDTO);
 }
