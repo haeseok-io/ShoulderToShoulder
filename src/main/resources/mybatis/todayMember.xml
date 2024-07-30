@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.TodayMemberDAO">
+    <resultMap id="todayMemberResultMap" type="TodayMemberDTO">
+        <result property="memberNo" column="member_no" />
+    </resultMap>
+
+    <select id="findTodayMemberByDate" parameterType="java.time.LocalDate" resultMap="todayMemberResultMap">
+        Select * From today_member Where regdate=#{today}
+    </select>
+
+    <insert id="addTodayMember" parameterType="TodayMemberDTO">
+        Insert Into today_member (member_no, regdate) Values (#{memberNo}, #{regdate})
+    </insert>
+</mapper>
