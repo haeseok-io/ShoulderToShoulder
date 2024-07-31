@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.MemberCategoryDAO">
+    <resultMap id="memberCategoryResultMap" type="MemberCategoryDTO">
+        <result property="categoryNo" column="category_no" />
+        <result property="memberNo" column="member_no" />
+    </resultMap>
+
+    <select id="findMemberCategoryByMemberNo" parameterType="long" resultMap="memberCategoryResultMap">
+        Select no, category_no, member_no
+        From member_category
+        Where member_no=#{memberNo}
+    </select>
+</mapper>
