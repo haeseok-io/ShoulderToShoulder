@@ -60,11 +60,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequest) ->
                         authorizeRequest
                                 .requestMatchers("/moim/write").hasAnyRole("USER") // user 권한이 있는 사용자만 접근 가능
+                                .requestMatchers("/mypage/**").hasAnyRole("USER") // user 권한이 있는 사용자만 접근 가능
                                 .anyRequest().permitAll()
                 )
                 .formLogin(auth ->
                         auth
-                                .loginPage("/login")
+                                .loginPage("/member/login")
                                 .loginProcessingUrl("/login/loginProc")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
@@ -73,7 +74,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 ->
                         oauth2
-                                .loginPage("/login")
+                                .loginPage("/member/login")
                                 .userInfoEndpoint(user ->
                                     user.userService(customOAuth2UserService)
                                 )
