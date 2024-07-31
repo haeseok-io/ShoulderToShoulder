@@ -19,6 +19,18 @@
         <div class="container">
             <th:block th:replace="fragment/mypage/mypageTab :: mypageTab(tab='user')"></th:block>
 
+            <section class="user">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="no">
+
+                    <div class="profileImg">
+                        <input type="file" name="profileImg">
+                        <div class="wrap">
+                            [[${data}]]
+                        </div>
+                    </div>
+                </form>
+            </section>
         </div>
     </main>
 </th:block>
