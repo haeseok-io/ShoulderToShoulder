@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.MemberOnlineDAO">
+    <resultMap id="memberOnlineResultMap" type="MemberOnlineDTO">
+        <result property="onlineNo" column="online_no" />
+        <result property="memberNo" column="member_no" />
+    </resultMap>
+
+    <select id="findMemberOnlineByMemberNo" parameterType="long" resultMap="memberOnlineResultMap">
+        Select no, online_no, member_no
+        From member_online
+        Where member_no=#{memberNo}
+    </select>
+</mapper>
+
