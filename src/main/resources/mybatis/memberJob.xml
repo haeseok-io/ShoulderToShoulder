@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.haeseok.sts.dao.MemberJobDAO">
+    <resultMap id="memberJobResultMap" type="MemberJobDTO">
+        <result property="positionDetailNo" column="pd_no" />
+        <result property="memberNo" column="member_no" />
+    </resultMap>
+
+    <select id="findMemberJobByMemberNo" parameterType="long" resultMap="memberJobResultMap">
+        Select no, level, career, pd_no, member_no
+        From member_job
+        Where member_no=#{memberNo}
+    </select>
+</mapper>
