@@ -57,6 +57,7 @@ public class MemberServiceImple implements MemberService {
 
 
         response.setNo(member.getNo());
+        response.setEmail(member.getEmail());
         response.setNickname(member.getNickname());
         response.setProfileImg(memberDetail.map(MemberDetailDTO::getProfileImg).orElse(null));
         response.setIntroduce(memberDetail.map(MemberDetailDTO::getIntroduce).orElse(null));
