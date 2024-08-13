@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberResponse {
     private Long no;
+    private String email;
     private String nickname;
     private String profileImg;
     private String introduce;
