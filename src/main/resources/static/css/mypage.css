@@ -5,15 +5,22 @@
 .mypageTab {}
 .mypageTab .tabList { display: flex; }
 .mypageTab .tabList li { width: 150px; height: 60px; }
-.mypageTab .tabList li a { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; font-size: 1.2rem; color: #eee; }
+.mypageTab .tabList li a { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; font-size: 1.1rem; color: #eee; }
 
 .mypageTab .tabList li:hover,
 .mypageTab .tabList li.active { border-bottom: 2px solid #1F1926; }
 .mypageTab .tabList li:hover a,
-.mypageTab .tabList li.active a { font-weight: 600; color: orange; }
+.mypageTab .tabList li.active a { font-weight: 600; color: #FF7F50; }
 
-.mypageTitle { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px; }
-.mypageTitle { font-weight: 600; font-size: 1.2rem; color: #ccc; }
+.mypageContents { border: 1px solid #343A47; border-radius: 10px; padding: 20px; margin-top: 30px !important; }
+.mypageContents .title { margin-bottom: 30px; }
+.mypageContents .title p { font-weight: 600; font-size: 20px; }
+.mypageContents .wrap {}
+.mypageContents .wrap .mypageItem {}
+.mypageContents .wrap .mypageItem > li { margin-bottom: 20px; }
+.mypageContents .wrap .mypageItem > li .name { margin-bottom: 10px; }
+.mypageContents .wrap .mypageItem > li .name p { font-size: 14px; }
+.mypageContents .wrap .mypageItem > li .item {}
+.mypageContents .wrap .mypageItem > li .item input[type='text'] { width: 100%; height: 40px; }
+.mypageContents .wrap .mypageItem > li .item textarea { width: 100%; height: 100px; }
 
-.mypageBlank { background: #f1f1f1; padding: 20px; }
-.mypageBlank p { color: #aaa; }

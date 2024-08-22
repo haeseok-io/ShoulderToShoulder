@@ -19,6 +19,10 @@ input[type='password']::placeholder { color: #888; }
 input[type='text']:focus,
 input[type='password']:focus { border: 2px solid #6366F1; }
 
+textarea { padding: 10px; background: #1D2432; border: 1px solid #343A47; border-radius: 5px; color: #eee; resize: none; }
+textarea::placeholder { color: #888; }
+textarea:focus { border: 2px solid #6366F1; }
+
 /* # 버튼 색상 */
 .btn-light { background: #e4e4e4; color: #111827; }
 
@@ -88,4 +92,4 @@ input[type='password']:focus { border: 2px solid #6366F1; }
 
 #main { padding-bottom: 100px; }
 #main .container {}
-#main .container > section { margin-top: 50px; padding: 10px 0; }
+#main .container section { margin-top: 50px; }
