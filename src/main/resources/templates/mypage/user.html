@@ -5,19 +5,36 @@
     <link rel="stylesheet" href="/css/customSelect2.css">
     <link rel="stylesheet" href="/css/mypage.css">
     <style>
-        .user {}
-        .user .userWrap { border: 1px solid #ccc; border-radius: 10px; }
+        .userImg { padding-bottom: 30px; }
+        .userImg .wrap { position: relative; width: 200px; height: 200px; margin: 0 auto; }
+        .userImg .wrap input[type='file'] { display: none; }
+        .userImg .wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+        .userImg .wrap button { position: absolute; bottom: 10px; right: 10px; width: 50px; height: 50px; background: #fff; border: none; border-radius: 100%; box-shadow: 1px 1px 5px #888; font-size: 16px; }
 
-        /*.user .profileImg { display: flex; justify-content: center; }*/
-        /*.user .profileImg input[type='file'] { display: none; }*/
-        /*.user .profileImg .wrap { position: relative; width: 200px; height: 200px; }*/
-        /*.user .profileImg .wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 100%; }*/
-        /*.user .profileImg .wrap button { position: absolute; bottom: 0; right: 0; width: 50px; height: 50px; background: #fff; border: none; border-radius: 100%; box-shadow: 0 2px 2px #ccc; }*/
+        .addition {}
+        .addition .wrap {}
+        .addition .wrap .col { display: flex; justify-content: flex-start; gap: 1.3333%; }
     </style>
 </th:block>
 
 <th:block layout:fragment="js">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $.fn.select2.defaults.set("minimumResultsForSearch", -1);
+        $.fn.select2.defaults.set("width", '24%');
+
+        let positionSelect, positionDetailSelect, levelSelect, careerSelect;
+        let onlineSelect, areaSelect;
+
+        $(()=>{
+            positionSelect = $("select[name='position']").select2();
+            positionDetailSelect = $("select[name='positionDetail']").select2();
+            levelSelect = $("select[name='level']").select2();
+            careerSelect = $("select[name='career']").select2();
+            onlineSelect = $("select[name='online']").select2();
+            areaSelect = $("select[name='preferArea']").select2();
+        });
+    </script>
 </th:block>
 
 <th:block layout:fragment="container">
@@ -29,173 +46,175 @@
         <div class="container">
             <th:block th:replace="fragment/mypage/mypageTab :: mypageTab(tab='user')"></th:block>
 
-            <section class="user">
-                <form action="" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="no">
+            <form action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="no">
 
-                    <div class="userImg">
+                <section class="userImg">
+                    <div class="wrap">
                         <input type="file" name="profileImg">
-                        <div class="wrap">
-                            <img th:if="${data.profileImg==null}" src="https://letspl.me/assets/images/prof-no-img.png" alt="">
-                            <img th:unless="${data.profileImg==null}" th:src="'/display?filename='+${data.profileImg}" alt="">
+                        <img th:if="${data.profileImg==null}" src="https://letspl.me/assets/images/prof-no-img.png" alt="">
+                        <img th:unless="${data.profileImg==null}" th:src="'/display?filename='+${data.profileImg}" alt="">
 
-                            <button type="button">
-                                <i class="bi bi-camera"></i>
-                            </button>
-                        </div>
+                        <button type="button">
+                            <i class="bi bi-camera"></i>
+                        </button>
                     </div>
-                    <div class="mypageContents">
-                        <div class="title">
-                            <p>기본 정보</p>
-                        </div>
-                        <div class="wrap">
-                            <ul class="mypageItem">
-                                <li>
-                                    <div class="name">
-                                        <p>이메일</p>
-                                    </div>
-                                    <div class="item">
-                                        <input type="text" name="email" th:value="${data.email}" disabled>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>닉네임</p>
-                                    </div>
-                                    <div class="item">
-                                        <input type="text" name="nickname" th:value="${data.nickname}" placeholder="닉네임을 입력해주세요.">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>소개</p>
-                                    </div>
-                                    <div class="item">
-                                        <textarea name="introduce" placeholder="자기소개를 입력해주세요.">[[${data.introduce}]]</textarea>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mypageContents">
-                        <div class="title">
-                            <p>추가 정보</p>
-                        </div>
-                        <div class="wrap">
-                            <ul>
-                                <li>
-                                    <div class="name">
-                                        <p>직무/능력치</p>
-                                    </div>
-                                    <div class="item">
-                                        <select name="position">
-                                            <option value="">대분류 선택</option>
-                                            <option th:each="position: ${positionList}" th:value="${position.no}" th:selected="${position.no==data.position}">[[${position.name}]]</option>
-                                        </select>
-                                        <select name="positionDetail">
-                                            <option value="">중분류 선택</option>
-                                        </select>
-                                        <select name="level">
-                                            <option value="">레벨 선택</option>
-                                            <option th:each="dex : ${#numbers.sequence(1, 5)}" th:value="${dex}" th:selected="${dex==data.level}">[[${T(me.haeseok.sts.util.LevelMapper).getLevelText(dex)}]]</option>
-                                        </select>
-                                        <select name="career">
-                                            <option value="">경력 선택</option>
-                                            <option th:each="dex : ${#numbers.sequence(1, 4)}" th:value="${dex}" th:selected="${dex==data.career}">[[${T(me.haeseok.sts.util.CareerMapper).getCareerText(dex)}]]</option>
-                                        </select>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>선호 지역 설정</p>
-                                    </div>
-                                    <div class="item">
-                                        <select name="online">
-                                            <option value="">온/오프라인 선택</option>
+                </section>
 
-                                            <option th:each="online: ${onlineList}" th:value="${online.no}" th:selected="${online.no==data.online}">[[${online.name}]]</option>
-                                        </select>
-                                        <select name="preferArea">
-                                            <option value="">선호지역 선택</option>
-                                            <option th:each="dex: ${#numbers.sequence(1, 20)}" th:value="${dex}" th:selected="${dex==data.preferArea}">[[${T(me.haeseok.sts.util.AreaMapper).getAreaText(dex)}]]</option>
-                                        </select>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>관심분야</p>
-                                    </div>
-                                    <div class="item">
-                                        <th:block th:each="category: ${categoryList}">
-                                            <input type="checkbox" name="category" th:id="'category_'+${category.no}" th:value="${category.no}" th:checked="${#lists.contains(data.category, category.no)}">
-                                            <label th:for="'category_'+${category.no}">[[${category.name}]]</label>
-                                        </th:block>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                <section class="mypageContents">
+                    <div class="title">
+                        <p>기본 정보</p>
                     </div>
-                    <div class="mypageContents">
-                        <div class="title">
-                            <p>외부 사이트 연동</p>
-                        </div>
-                        <div class="wrap">
-                            <ul>
-                                <li>
-                                    <div class="name">
-                                        <p>깃허브</p>
-                                    </div>
-                                    <div class="item">
-                                        <input type="text" name="gitLink" placeholder="깃허브 주소를 입력해주세요.">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>블로그</p>
-                                    </div>
-                                    <div class="item">
-                                        <input type="text" name="blogLink" placeholder="블로그 주소를 입력해주세요.">
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="wrap">
+                        <ul class="mypageItem">
+                            <li>
+                                <div class="name">
+                                    <p>이메일</p>
+                                </div>
+                                <div class="item">
+                                    <input type="text" name="email" th:value="${data.email}" disabled>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>닉네임</p>
+                                </div>
+                                <div class="item">
+                                    <input type="text" name="nickname" th:value="${data.nickname}" placeholder="닉네임을 입력해주세요.">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>소개</p>
+                                </div>
+                                <div class="item">
+                                    <textarea name="introduce" placeholder="자기소개를 입력해주세요.">[[${data.introduce}]]</textarea>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="mypageContents">
-                        <div class="title">
-                            <p>기술/언어 및 포트폴리오</p>
-                        </div>
-                        <div class="wrap">
-                            <ul>
-                                <li>
-                                    <div class="name">
-                                        <p>사용가능한 기술/언어</p>
-                                    </div>
-                                    <div class="item">
+                </section>
 
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="name">
-                                        <p>포트폴리오 링크</p>
-                                    </div>
-                                    <div class="item">
-                                        <div class="portfolioWrap" th:if="${data.portfolio.isEmpty()}">
-                                            <input type="text" name="portfolio" placeholder="포트폴리오 URL 을 입력해주세요.">
-                                        </div>
-                                        <div class="portfolioWrap" th:unless="${data.portfolio.isEmpty()}">
-                                            <input type="text" name="portfolio" th:value="${data.portfolio.url}">
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                <section class="mypageContents addition">
+                    <div class="title">
+                        <p>추가 정보</p>
                     </div>
+                    <div class="wrap">
+                        <ul class="mypageItem">
+                            <li>
+                                <div class="name">
+                                    <p>직무/능력치</p>
+                                </div>
+                                <div class="item col">
+                                    <select name="position">
+                                        <option value="">대분류 선택</option>
+                                        <option th:each="position: ${positionList}" th:value="${position.no}" th:selected="${position.no==data.position}">[[${position.name}]]</option>
+                                    </select>
+                                    <select name="positionDetail">
+                                        <option value="">중분류 선택</option>
+                                    </select>
+                                    <select name="level">
+                                        <option value="">레벨 선택</option>
+                                        <option th:each="dex : ${#numbers.sequence(1, 5)}" th:value="${dex}" th:selected="${dex==data.level}">[[${T(me.haeseok.sts.util.LevelMapper).getLevelText(dex)}]]</option>
+                                    </select>
+                                    <select name="career">
+                                        <option value="">경력 선택</option>
+                                        <option th:each="dex : ${#numbers.sequence(1, 4)}" th:value="${dex}" th:selected="${dex==data.career}">[[${T(me.haeseok.sts.util.CareerMapper).getCareerText(dex)}]]</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>선호 지역 설정</p>
+                                </div>
+                                <div class="item col">
+                                    <select name="online">
+                                        <option value="">온/오프라인 선택</option>
 
-                    <div class="formButton">
-                        <button type="submit" class="btn btn-main">업데이트</button>
+                                        <option th:each="online: ${onlineList}" th:value="${online.no}" th:selected="${online.no==data.online}">[[${online.name}]]</option>
+                                    </select>
+                                    <select name="preferArea">
+                                        <option value="">선호지역 선택</option>
+                                        <option th:each="dex: ${#numbers.sequence(1, 20)}" th:value="${dex}" th:selected="${dex==data.preferArea}">[[${T(me.haeseok.sts.util.AreaMapper).getAreaText(dex)}]]</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>관심분야</p>
+                                </div>
+                                <div class="item">
+                                    <th:block th:each="category: ${categoryList}">
+                                        <input type="checkbox" name="category" th:id="'category_'+${category.no}" th:value="${category.no}" th:checked="${#lists.contains(data.category, category.no)}">
+                                        <label th:for="'category_'+${category.no}">[[${category.name}]]</label>
+                                    </th:block>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                </form>
-            </section>
+                </section>
+
+                <section class="mypageContents">
+                    <div class="title">
+                        <p>외부 사이트 연동</p>
+                    </div>
+                    <div class="wrap">
+                        <ul class="mypageItem">
+                            <li>
+                                <div class="name">
+                                    <p>깃허브</p>
+                                </div>
+                                <div class="item">
+                                    <input type="text" name="gitLink" placeholder="깃허브 주소를 입력해주세요.">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>블로그</p>
+                                </div>
+                                <div class="item">
+                                    <input type="text" name="blogLink" placeholder="블로그 주소를 입력해주세요.">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="mypageContents">
+                    <div class="title">
+                        <p>기술/언어 및 포트폴리오</p>
+                    </div>
+                    <div class="wrap">
+                        <ul class="mypageItem">
+                            <li>
+                                <div class="name">
+                                    <p>사용가능한 기술/언어</p>
+                                </div>
+                                <div class="item">
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="name">
+                                    <p>포트폴리오 링크</p>
+                                </div>
+                                <div class="item">
+                                    <div class="portfolioWrap" th:if="${data.portfolio.isEmpty()}">
+                                        <input type="text" name="portfolio" placeholder="포트폴리오 URL 을 입력해주세요.">
+                                    </div>
+                                    <div class="portfolioWrap" th:unless="${data.portfolio.isEmpty()}">
+                                        <input type="text" name="portfolio" th:value="${data.portfolio.url}">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="formButton">
+                    <button type="submit" class="btn btn-main">업데이트</button>
+                </div>
+            </form>
         </div>
     </main>
 </th:block>
