@@ -15,11 +15,11 @@
     <select id="getAppliedCountByMoimHeadcountNo" parameterType="long" resultType="int">
         Select count(*)
         From moim_applicant
-        Where applicant_status='A' And moim_headcount_no=#{headcountNo}
+        Where status!='C' And moim_headcount_no=#{headcountNo}
     </select>
     <select id="getApprovedCountByMoimHeadcountNo" parameterType="long" resultType="int">
         Select count(*)
         From moim_applicant
-        Where applicant_status='A' And approval_status='A' And moim_headcount_no=#{headcountNo}
+        Where status='A' And moim_headcount_no=#{headcountNo}
     </select>
 </mapper>

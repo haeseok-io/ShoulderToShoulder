@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MoimApplicantDTO {
     private Long no;
-    private String applicantStatus;
-    private String approvalStatus;
+    private String status;
     private String rejectionReason;
     private Long memberNo;
     private Long moimHeadcountNo;

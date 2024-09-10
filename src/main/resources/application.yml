@@ -5,7 +5,7 @@ spring:
     include: oauth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://34.64.197.88:3306/shoulder
+    url: jdbc:mysql://34.82.246.171:3306/shoulder
     username: shoulder
     password: '@shoulder!database@'
     hikari:

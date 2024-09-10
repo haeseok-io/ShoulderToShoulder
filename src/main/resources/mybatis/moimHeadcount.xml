@@ -5,11 +5,11 @@
 
 <mapper namespace="me.haeseok.sts.dao.MoimHeadcountDAO">
     <resultMap id="moimHeadcountDTOResultMap" type="MoimHeadcountDTO">
-        <result property="positionDetailNo" column="pd_no" />
+        <result property="positionDetailNo" column="position_detail_no" />
     </resultMap>
 
     <insert id="addOne" parameterType="MoimHeadcountDTO">
-        Insert Into moim_headcount (personnel, pd_no, moim_no)
+        Insert Into moim_headcount (personnel, position_detail_no, moim_no)
         Values (#{personnel}, #{positionDetailNo}, #{moimNo})
     </insert>
 

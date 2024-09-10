@@ -20,7 +20,7 @@
             Left Join moim_detail md On md.no=m.no
             Left Join moim_headcount mh On mh.moim_no=m.no
             Left Join moim_language ml On ml.moim_no=m.no
-            Left Join position_detail pd On pd.no=mh.pd_no
+            Left Join position_detail pd On pd.no=mh.position_detail_no
             Left Join position p On p.no=pd.position_no
             Left Join category c On c.no=md.category_no
             Left Join study_category sc On sc.no=md.category_no
@@ -57,12 +57,12 @@
     </select>
 
     <select id="findSearchList" parameterType="MoimListRequest" resultMap="moimResultMap">
-        Select DISTINCT m.no, m.type, m.subject, m.explanation, m.thumbnail, m.status, m.heart, m.hits, m.regdate, m.member_no
+        Select DISTINCT m.no, m.type, m.subject, m.explanation, m.thumbnail, m.status, m.hits, m.regdate, m.member_no
         From moim m
         Left Join moim_detail md On md.no=m.no
         Left Join moim_headcount mh On mh.moim_no=m.no
         Left Join moim_language ml On ml.moim_no=m.no
-        Left Join position_detail pd On pd.no=mh.pd_no
+        Left Join position_detail pd On pd.no=mh.position_detail_no
         Left Join position p On p.no=pd.position_no
         Left Join category c On c.no=md.category_no
         Left Join study_category sc On sc.no=md.category_no
