@@ -22,7 +22,7 @@
         <where>
             <trim prefixOverrides="And">
                 <if test="positionDetailNo!=null and positionDetailNo!=''">
-                    And mj.pd_no=#{positionDetailNo}
+                    And mj.position_detail_no=#{positionDetailNo}
                 </if>
                 <if test="categoryNo!=null and categoryNo!=''">
                     And mc.category_no=#{categoryNo}
@@ -63,7 +63,7 @@
         <where>
             <trim prefixOverrides="And">
                 <if test="positionDetailNo!=null and positionDetailNo!=''">
-                    And mj.pd_no=#{positionDetailNo}
+                    And mj.position_detail_no=#{positionDetailNo}
                 </if>
                 <if test="categoryNo!=null and categoryNo!=''">
                     And mc.category_no=#{categoryNo}

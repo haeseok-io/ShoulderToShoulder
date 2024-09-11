@@ -5,12 +5,12 @@
 
 <mapper namespace="me.haeseok.sts.dao.MemberJobDAO">
     <resultMap id="memberJobResultMap" type="MemberJobDTO">
-        <result property="positionDetailNo" column="pd_no" />
+        <result property="positionDetailNo" column="position_detail_no" />
         <result property="memberNo" column="member_no" />
     </resultMap>
 
     <select id="findMemberJobByMemberNo" parameterType="long" resultMap="memberJobResultMap">
-        Select no, level, career, pd_no, member_no
+        Select no, level, career, position_detail_no, member_no
         From member_job
         Where member_no=#{memberNo}
     </select>

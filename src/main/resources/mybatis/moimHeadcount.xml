@@ -14,6 +14,6 @@
     </insert>
 
     <select id="getMoimHeadcountByMoimNo" parameterType="long" resultMap="moimHeadcountDTOResultMap">
-        Select no, personnel, pd_no From moim_headcount Where moim_no=#{moimNo}
+        Select no, personnel, position_detail_no From moim_headcount Where moim_no=#{moimNo}
     </select>
 </mapper>
