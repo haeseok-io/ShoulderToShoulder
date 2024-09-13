@@ -8,12 +8,22 @@
         .userImg { padding-bottom: 30px; }
         .userImg .wrap { position: relative; width: 200px; height: 200px; margin: 0 auto; }
         .userImg .wrap input[type='file'] { display: none; }
-        .userImg .wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
-        .userImg .wrap button { position: absolute; bottom: 10px; right: 10px; width: 50px; height: 50px; background: #fff; border: none; border-radius: 100%; box-shadow: 1px 1px 5px #888; font-size: 16px; }
+        .userImg .wrap #profileImgBtn { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; }
+        .userImg .wrap #profileImgBtn img { width: 100%; height: 100%; object-fit: cover; }
+        .userImg .wrap i { position: absolute; bottom: 15px; right: 15px; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: #fff; box-shadow: 1px 1px 5px #888; border-radius: 100%; font-size: 16px; color: #888; cursor: pointer; }
 
-        .addition {}
-        .addition .wrap {}
-        .addition .wrap .col { display: flex; justify-content: flex-start; gap: 1.3333%; }
+        textarea[name='introduce'] { width: 100%; height: 100px; }
+        .col { display: flex; justify-content: flex-start; gap: 1.3333%; }
+
+        .category {}
+        .category input[type='checkbox'] { display: none; }
+        .category label { border: 1px solid #343A47; border-radius: 20px; padding: 10px 20px; margin-right: 5px; margin-bottom: 10px; cursor: pointer; }
+        .category input[type='checkbox']:checked + label { background: #343A47; }
+
+        .portfolio {}
+        .portfolio .portfolioWrap { display: flex; }
+        .portfolio .portfolioWrap.add input[type='text'] { width: calc(100% - 90px) !important; margin-right: auto; }
+        .portfolio .portfolioWrap.add button { width: 80px; }
     </style>
 </th:block>
 
@@ -24,7 +34,8 @@
         $.fn.select2.defaults.set("width", '24%');
 
         let positionSelect, positionDetailSelect, levelSelect, careerSelect;
-        let onlineSelect, areaSelect;
+        let onlineSelect, areaSelect, languageSelect;
+        let profileImgFileInfo;
 
         $(()=>{
             positionSelect = $("select[name='position']").select2();
@@ -33,7 +44,57 @@
             careerSelect = $("select[name='career']").select2();
             onlineSelect = $("select[name='online']").select2();
             areaSelect = $("select[name='preferArea']").select2();
+            languageSelect = $("select[name='language']").select2({
+                width: '100%',
+                tags: true,
+                placeholder: "사용하는 기술/언어를 입력해주세요.",
+                minimumResultsForSearch: 0
+            });
+
+            $("input[name='profileImg']").on("click change", profileImgUploadEvent);
         });
+
+        // 이미지 업로드
+        const profileImgUploadTrigger = () => {
+            $("input[name='profileImg']").click();
+        }
+        const profileImgUploadEvent = e => {
+            if( e.type==="click" ) {
+                profileImgFileInfo = e.target.files[0];
+            } else {
+                let target = $("#profileImgBtn");
+
+                if( e.target.files.length>0 ) {
+                    let file = e.target.files[0];
+
+                    if( file!==profileImgFileInfo ) {
+                        let reader = new FileReader();
+
+                        reader.onload = e => {
+                            let imgElement = $("<img />");
+                            imgElement.attr("src", e.target.result);
+
+                            target.html("");
+                            target.append(imgElement);
+                        }
+
+                        reader.readAsDataURL(file);
+                    }
+                } else {
+                    $(e.currentTarget).prop("files", profileImgFileInfo);
+                }
+            }
+        }
+
+        // 포트폴리오 추가 및 제거
+        const portfolioAddEvent = () => {
+            let target = $(".portfolio");
+
+            target.append("123213");
+        }
+        const portfolioDropEvent = () => {
+
+        }
     </script>
 </th:block>
 
@@ -52,12 +113,11 @@
                 <section class="userImg">
                     <div class="wrap">
                         <input type="file" name="profileImg">
-                        <img th:if="${data.profileImg==null}" src="https://letspl.me/assets/images/prof-no-img.png" alt="">
-                        <img th:unless="${data.profileImg==null}" th:src="'/display?filename='+${data.profileImg}" alt="">
-
-                        <button type="button">
-                            <i class="bi bi-camera"></i>
+                        <button type="button" id="profileImgBtn" onclick="profileImgUploadTrigger();">
+                            <img th:if="${data.profileImg==null}" src="https://letspl.me/assets/images/prof-no-img.png" alt="">
+                            <img th:unless="${data.profileImg==null}" th:src="'/display?filename='+${data.profileImg}" alt="">
                         </button>
+                        <i class="bi bi-camera" onclick="profileImgUploadTrigger();"></i>
                     </div>
                 </section>
 
@@ -95,7 +155,7 @@
                     </div>
                 </section>
 
-                <section class="mypageContents addition">
+                <section class="mypageContents">
                     <div class="title">
                         <p>추가 정보</p>
                     </div>
@@ -143,7 +203,7 @@
                                 <div class="name">
                                     <p>관심분야</p>
                                 </div>
-                                <div class="item">
+                                <div class="item category">
                                     <th:block th:each="category: ${categoryList}">
                                         <input type="checkbox" name="category" th:id="'category_'+${category.no}" th:value="${category.no}" th:checked="${#lists.contains(data.category, category.no)}">
                                         <label th:for="'category_'+${category.no}">[[${category.name}]]</label>
@@ -191,19 +251,17 @@
                                     <p>사용가능한 기술/언어</p>
                                 </div>
                                 <div class="item">
-
+                                    <select name="language" multiple></select>
                                 </div>
                             </li>
                             <li>
                                 <div class="name">
                                     <p>포트폴리오 링크</p>
                                 </div>
-                                <div class="item">
-                                    <div class="portfolioWrap" th:if="${data.portfolio.isEmpty()}">
+                                <div class="item portfolio">
+                                    <div class="portfolioWrap add">
                                         <input type="text" name="portfolio" placeholder="포트폴리오 URL 을 입력해주세요.">
-                                    </div>
-                                    <div class="portfolioWrap" th:unless="${data.portfolio.isEmpty()}">
-                                        <input type="text" name="portfolio" th:value="${data.portfolio.url}">
+                                        <button type="button" class="btn btn-light" onclick="portfolioAddEvent();">추가</button>
                                     </div>
                                 </div>
                             </li>
