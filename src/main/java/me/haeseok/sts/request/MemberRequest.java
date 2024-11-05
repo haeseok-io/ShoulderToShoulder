@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.haeseok.sts.dto.MemberPortfolioDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,5 +26,6 @@ public class MemberRequest {
     private String gitLink;
     private String blogLink;
     private List<Integer> category;
-    private List<MemberPortfolioDTO> portfolio;
+    private List<String> language;
+    private List<String> portfolio;
 }
