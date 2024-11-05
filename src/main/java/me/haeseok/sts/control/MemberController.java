@@ -1,23 +1,32 @@
 package me.haeseok.sts.control;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dto.MemberDTO;
+import me.haeseok.sts.dto.MemberPortfolioDTO;
 import me.haeseok.sts.request.MemberListRequest;
+import me.haeseok.sts.request.MemberRequest;
 import me.haeseok.sts.response.CustomPageResponse;
 import me.haeseok.sts.response.MemberListResponse;
 import me.haeseok.sts.service.CategoryService;
 import me.haeseok.sts.service.MemberService;
 import me.haeseok.sts.service.PositionService;
+import me.haeseok.sts.util.Result;
 import me.haeseok.sts.util.SessionUtils;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,6 +36,16 @@ public class MemberController {
     private final MemberService memberService;
     private final PositionService positionService;
     private final CategoryService categoryService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder, HttpServletRequest request) {
+        binder.registerCustomEditor(List.class, "portfolio", new CustomCollectionEditor(List.class) {
+            @Override
+            protected Object convertElement(Object element) {
+                return super.convertElement(element);
+            }
+        });
+    }
 
     @GetMapping(value = "/")
     public String list(Model model) {
@@ -91,6 +110,21 @@ public class MemberController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    @PostMapping(value = "/modify")
+    public String modify(@ModelAttribute MemberRequest request, RedirectAttributes redirectAttributes) {
+
+        if( request.getNickname()==null || request.getNickname().isBlank() ) {
+            return errorMessage(redirectAttributes, "닉네임이 존재하지 않습니다.", "/mypage/user");
+        }
+
+        Result result = memberService.modify(request);
+        if( !result.isSuccess() ) {
+            return errorMessage(redirectAttributes, result.getMessage(), "/mypage/user");
+        }
+
+        return "redirect:/mypage/user";
+    }
+
     @ResponseBody
     @GetMapping(value = "/emailExist", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> emailExist(@RequestParam("email") String email) {
@@ -121,5 +155,10 @@ public class MemberController {
         }
 
         return ResponseEntity.ok().body(resultMap);
+    }
+
+    private String errorMessage(RedirectAttributes redirectAttributes, String errorMsg, String redirectPath) {
+        redirectAttributes.addFlashAttribute("error", errorMsg);
+        return "redirect:"+redirectPath;
     }
 }

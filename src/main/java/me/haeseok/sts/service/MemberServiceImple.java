@@ -5,19 +5,22 @@ import lombok.RequiredArgsConstructor;
 import me.haeseok.sts.dao.*;
 import me.haeseok.sts.dto.*;
 import me.haeseok.sts.request.MemberListRequest;
+import me.haeseok.sts.request.MemberRequest;
 import me.haeseok.sts.response.CustomPageResponse;
 import me.haeseok.sts.response.MemberListResponse;
 import me.haeseok.sts.response.MemberResponse;
+import me.haeseok.sts.util.Result;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImple implements MemberService {
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final HttpSession session;
+    private final FileUploadService fileUploadService;
     private final MemberDAO memberDAO;
     private final MemberDetailDAO memberDetailDAO;
     private final MemberJobDAO memberJobDAO;
@@ -34,6 +39,9 @@ public class MemberServiceImple implements MemberService {
     private final TodayMemberDAO todayMemberDAO;
     private final PositionDetailDAO positionDetailDAO;
 
+    @Value("${me.haeseok.sts.upload.directory.user}")
+    private String uploadDirectory;
+
     @Override
     public MemberDTO register(MemberDTO memberDTO) {
         memberDTO.hashPassword(bCryptPasswordEncoder);
@@ -42,6 +50,53 @@ public class MemberServiceImple implements MemberService {
         memberDAO.addMember(memberDTO);
         
         return memberDTO;
+    }
+
+    @Override
+    public Result modify(MemberRequest request) {
+        Long memberNo = (Long) session.getAttribute("MEMBERNO");
+
+        try {
+            MemberDetailDTO orgMemberDetail = memberDetailDAO.findMemberDetailByNo(memberNo);
+            String uploadFilename = orgMemberDetail.getProfileImg();
+
+            // 파일 업로드
+            if( !request.getProfileImg().isEmpty() ) {
+                Map<String, String> fileUpload = fileUploadService.uploadFile(request.getProfileImg(), uploadDirectory);
+                uploadFilename = fileUpload.get("uploadFileName");
+
+                // 기존 업로드파일 제거
+                if( orgMemberDetail!=null && orgMemberDetail.getProfileImg()!=null ) {
+                    fileUploadService.deleteFile(orgMemberDetail.getProfileImg(), uploadDirectory);
+                }
+            }
+
+            // 회원 정보 수정
+            MemberDTO memberDTO = MemberDTO.builder()
+                    .no(memberNo)
+                    .nickname(request.getNickname())
+                    .build();
+            memberDAO.modifyMember(memberDTO);
+
+            // 회원 상세정보 수정
+            MemberDetailDTO memberDetailDTO = MemberDetailDTO.builder()
+                    .no(memberNo)
+                    .introduce(request.getIntroduce())
+                    .preferArea(request.getPreferArea())
+                    .profileImg(uploadFilename)
+                    .gitLink(request.getGitLink())
+                    .blogLink(request.getBlogLink())
+                    .build();
+
+            // 기존 회원상세정보가 있는지 체크
+            if( orgMemberDetail==null ) memberDetailDAO.addMemberDetail(memberDetailDTO);
+            else                        memberDetailDAO.modifyMemberDetail(memberDetailDTO);
+
+        } catch(IOException e) {
+            return Result.failure(e.getMessage());
+        }
+
+        return Result.success("회원정보가 변경되었습니다.");
     }
 
     @Override
