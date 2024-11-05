@@ -47,6 +47,18 @@ public class FileUploadService {
         return result;
     }
 
+    public void deleteFile(String fileName, String directory) throws IOException {
+        Path filePath = Paths.get(directory).resolve(fileName).normalize().toAbsolutePath();
+
+        // 파일이 존재하는지 확인
+        if (Files.notExists(filePath)) {
+            throw new IOException("삭제할 파일이 존재하지 않습니다: " + fileName);
+        }
+
+        // 파일 삭제
+        Files.delete(filePath);
+    }
+
 
     // 현재 타임스탬프 값을 반환
     private String getUniqueFileName(String filename) {
