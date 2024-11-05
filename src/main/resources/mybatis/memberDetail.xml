@@ -16,4 +16,14 @@
         From member_detail
         Where no=#{no}
     </select>
+
+    <insert id="addMemberDetail" parameterType="MemberDetailDTO">
+        Insert Into member_detail (no, introduce, prefer_area, profile_img, git_link, blog_link)
+        Values (#{no}, #{introduce}, #{preferArea}, #{profileImg}, #{gitLink}, #{blogLink})
+    </insert>
+    <update id="modifyMemberDetail" parameterType="MemberDetailDTO">
+        Update member_detail
+        Set introduce=#{introduce}, prefer_area=#{preferArea}, profile_img=#{profileImg}, git_link=#{gitLink}, blog_link=#{blogLink}
+        Where no=#{no}
+    </update>
 </mapper>

@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberDetailDAO {
     MemberDetailDTO findMemberDetailByNo(Long no);
+
+    void addMemberDetail(MemberDetailDTO memberDetailDTO);
+    void modifyMemberDetail(MemberDetailDTO memberDetailDTO);
 }
