@@ -18,7 +18,7 @@
 .mypageContents .wrap {}
 .mypageContents .wrap .mypageItem {}
 .mypageContents .wrap .mypageItem > li { margin-bottom: 30px; }
-.mypageContents .wrap .mypageItem > li .name { margin-bottom: 10px; }
+.mypageContents .wrap .mypageItem > li .name { display: flex; justify-content: space-between; margin-bottom: 10px; }
 .mypageContents .wrap .mypageItem > li .name p { font-size: 14px; }
 .mypageContents .wrap .mypageItem > li .item {}
 .mypageContents .wrap .mypageItem > li .item input[type='text'] { width: 100%; height: 40px; }

@@ -36,6 +36,8 @@ textarea:focus { border: 2px solid #6366F1; }
 .btn-active:focus { background: #FF6E39; }
 .btn-active:active { background: #FF672F !important; border: 1px solid #FF672F !important; }
 
+.btn-xsm { padding: 4px 8px; font-size: 11px; }
+
 /* # 벳지 색상 */
 .badge { font-weight: 400; font-size: 14px; }
 
