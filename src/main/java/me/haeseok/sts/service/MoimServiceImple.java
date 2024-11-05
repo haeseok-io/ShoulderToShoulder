@@ -88,6 +88,7 @@ public class MoimServiceImple implements MoimService {
         String uploadFilename = null;
 
         try {
+            // 파일 업로드
             if( !request.getThumbnail().isEmpty() ) {
                 Map<String, String> fileUpload = fileUploadService.uploadFile(request.getThumbnail(), uploadDirectory);
                 uploadFilename = fileUpload.get("uploadFileName");
