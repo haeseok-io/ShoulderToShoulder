@@ -23,6 +23,7 @@ public interface MemberDAO {
     List<MemberDTO> findSearchList(MemberListRequest request);
 
     void addMember(MemberDTO memberDTO);
+    void modifyMember(MemberDTO memberDTO);
     void dropMember(Long no);
 
     Boolean emailExist(String email);
