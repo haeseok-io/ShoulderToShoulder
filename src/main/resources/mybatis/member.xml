@@ -85,6 +85,12 @@
         Values (#{email}, #{password}, #{nickname}, #{provider}, now())
     </insert>
 
+    <update id="modifyMember" parameterType="MemberDTO">
+        Update member
+        Set nickname=#{nickname}
+        Where no=#{no}
+    </update>
+
     <delete id="dropMember" parameterType="long">
         Delete From member Where no=#{no}
     </delete>
