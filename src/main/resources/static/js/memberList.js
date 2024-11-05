@@ -29,7 +29,7 @@ const convertMemberList = data => {
         let append = $(appendHtml);
 
         // - 프로필이미지
-        let profileImg = obj.profileImg==null ? "/images/profileBlank.png" : obj.profileImg;
+        let profileImg = obj.profileImg==null ? `/images/profileBlank.png` : `/display?fileName=${obj.profileImg}&directory=user`;
 
         // - 데이터 담기
         append.find(".profileImg img").attr("src", profileImg);
