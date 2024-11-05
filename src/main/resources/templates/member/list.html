@@ -78,7 +78,7 @@
                 </div>
                 <div class="wrap">
                     <div class="profileImg">
-                        <img th:if="${todayMember.profileImg!=null}" src="[[${todayMember.profileImg}]]" alt="">
+                        <img th:if="${todayMember.profileImg!=null}" th:src="'/display?fileName='+${todayMember.profileImg}+'&directory=user'" alt="">
                         <img th:unless="${todayMember.profileImg!=null}" src="/images/profileBlank.png" alt="">
                     </div>
                     <div class="content">

@@ -21,9 +21,11 @@
         .category input[type='checkbox']:checked + label { background: #343A47; }
 
         .portfolio {}
-        .portfolio .portfolioWrap { display: flex; }
-        .portfolio .portfolioWrap.add input[type='text'] { width: calc(100% - 90px) !important; margin-right: auto; }
-        .portfolio .portfolioWrap.add button { width: 80px; }
+        .portfolio .portfolioWrap { display: flex; margin-top: 10px; }
+        .portfolio .portfolioWrap:first-child { margin-top: 0; }
+
+        .portfolio .portfolioWrap.add { position: relative; }
+        .portfolio .portfolioWrap.add button { position: absolute; top: 50%; right: 5px; transform: translateY(-50%); }
     </style>
 </th:block>
 
@@ -89,11 +91,16 @@
         // 포트폴리오 추가 및 제거
         const portfolioAddEvent = () => {
             let target = $(".portfolio");
+            let template = $("#portfolioTemplate").html();
 
-            target.append("123213");
+            if( target.find(".portfolioWrap").length>=10 ) {
+                return false;
+            }
+
+            target.append(template);
         }
-        const portfolioDropEvent = () => {
-
+        const portfolioDropEvent = e => {
+            $(e).parent().remove();
         }
     </script>
 </th:block>
@@ -107,15 +114,15 @@
         <div class="container">
             <th:block th:replace="fragment/mypage/mypageTab :: mypageTab(tab='user')"></th:block>
 
-            <form action="" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="no">
+            <form action="/member/modify" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="no" th:value="${data.no}">
 
                 <section class="userImg">
                     <div class="wrap">
                         <input type="file" name="profileImg">
                         <button type="button" id="profileImgBtn" onclick="profileImgUploadTrigger();">
                             <img th:if="${data.profileImg==null}" src="https://letspl.me/assets/images/prof-no-img.png" alt="">
-                            <img th:unless="${data.profileImg==null}" th:src="'/display?filename='+${data.profileImg}" alt="">
+                            <img th:unless="${data.profileImg==null}" th:src="'/display?fileName='+${data.profileImg}+'&directory=user'" alt="">
                         </button>
                         <i class="bi bi-camera" onclick="profileImgUploadTrigger();"></i>
                     </div>
@@ -257,11 +264,13 @@
                             <li>
                                 <div class="name">
                                     <p>포트폴리오 링크</p>
+                                    <div class="etc">
+                                        <button type="button" class="btn btn-main btn-xsm" onclick="portfolioAddEvent();">추가</button>
+                                    </div>
                                 </div>
                                 <div class="item portfolio">
-                                    <div class="portfolioWrap add">
+                                    <div class="portfolioWrap">
                                         <input type="text" name="portfolio" placeholder="포트폴리오 URL 을 입력해주세요.">
-                                        <button type="button" class="btn btn-light" onclick="portfolioAddEvent();">추가</button>
                                     </div>
                                 </div>
                             </li>
@@ -275,6 +284,13 @@
             </form>
         </div>
     </main>
+
+    <template id="portfolioTemplate">
+        <div class="portfolioWrap add">
+            <input type="text" name="portfolio" placeholder="포트폴리오 URL 을 입력해주세요.">
+            <button type="button" class="btn btn-danger btn-xsm" onclick="portfolioDropEvent(this);">제거</button>
+        </div>
+    </template>
 </th:block>
 
 </html>
